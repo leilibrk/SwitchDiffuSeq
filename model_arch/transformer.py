@@ -1,7 +1,7 @@
 from transformers import AutoConfig
 # from transformers import BertEncoder
 from transformers.models.bert.modeling_bert import BertEncoder, BertModel
-
+from model_arch.moe_bert import MoEBertEncoder
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -70,6 +70,24 @@ class TransformerNetModel(nn.Module):
             print('initializing from pretrained bert...')
             print(config)
             temp_bert = BertModel.from_pretrained(config_name, config=config)
+            moe_encoder = MoEBertEncoder(config)
+            # Loop through each layer and copy weights
+            for i, (bert_layer, moe_layer) in enumerate(zip(temp_bert.encoder.layer, moe_encoder.layer)):
+                # 1. Copy attention module (same structure)
+                moe_layer.attention.load_state_dict(bert_layer.attention.state_dict())
+
+                # 2. Copy final LayerNorm (BERT's output.LayerNorm → our moe.layernorm)
+                moe_layer.moe.layernorm.load_state_dict(
+                    bert_layer.output.LayerNorm.state_dict()
+                )
+
+                # 3. Copy FFN weights to all experts
+                for expert in moe_layer.moe.experts:
+                    # Bert FFN: intermediate.dense → GELU → output.dense
+                    expert[0].weight.data.copy_(bert_layer.intermediate.dense.weight)
+                    expert[0].bias.data.copy_(bert_layer.intermediate.dense.bias)
+                    expert[2].weight.data.copy_(bert_layer.output.dense.weight)
+                    expert[2].bias.data.copy_(bert_layer.output.dense.bias)
 
             self.word_embedding = temp_bert.embeddings.word_embeddings
             with torch.no_grad():
@@ -77,7 +95,7 @@ class TransformerNetModel(nn.Module):
             # self.lm_head.weight.requires_grad = False
             # self.word_embedding.weight.requires_grad = False
             
-            self.input_transformers = temp_bert.encoder
+            self.input_transformers = moe_encoder
             self.register_buffer("position_ids", torch.arange(config.max_position_embeddings).expand((1, -1)))
             self.position_embeddings = temp_bert.embeddings.position_embeddings
             self.LayerNorm = temp_bert.embeddings.LayerNorm
@@ -87,7 +105,7 @@ class TransformerNetModel(nn.Module):
 
         elif init_pretrained == 'no':
             self.input_transformers = BertEncoder(config)
-
+            # self.input_transformers = MoEBertEncoder(config)
             self.register_buffer("position_ids", torch.arange(config.max_position_embeddings).expand((1, -1)))
             self.position_embeddings = nn.Embedding(config.max_position_embeddings, config.hidden_size)
             self.LayerNorm = nn.LayerNorm(config.hidden_size, eps=config.layer_norm_eps)

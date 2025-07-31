@@ -42,7 +42,7 @@ if __name__ == '__main__':
                     )
     
     model.to(dist_util.dev())
-    
+    print(model.input_transformers)
     schedule_sampler = create_named_schedule_sampler('uniform', diffusion)
 
     TrainLoop(

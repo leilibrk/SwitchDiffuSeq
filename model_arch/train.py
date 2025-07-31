@@ -7,7 +7,7 @@ from transformers import get_cosine_schedule_with_warmup
 import pickle
 import os
 import glob
-
+from tqdm import tqdm
 from utils import dist_util
 from utils.fp16_util import (
     zero_grad
@@ -15,6 +15,8 @@ from utils.fp16_util import (
 from utils.nn import update_ema
 from utils.step_sample import LossAwareSampler, UniformSampler
 from datetime import datetime
+import matplotlib.pyplot as plt
+import sys
 
 def clear_dir(directory_path):
     try:
@@ -74,6 +76,8 @@ class TrainLoop:
         self.scheduler = get_cosine_schedule_with_warmup(self.opt, num_warmup_steps = warm_up_steps, num_training_steps=epochs)
         self.ema_params = [copy.deepcopy(self.master_params) for _ in range(len(self.ema_rate))]
         self.min_val_loss = float('inf')
+        self.train_loss_curve = []
+        self.val_loss_curve = []
         
     def AdamW_LLRD(self): 
         print("\n\n======== Using Layer-wise Learning Rate Decay with AdamW ========\n\n")
@@ -116,16 +120,33 @@ class TrainLoop:
         
     def run_loop(self):
         print("\n\n======== Training starts now ========\n\n")
+        with tqdm( total=self.learning_steps, desc="Training Steps", ascii=True, ncols=100, dynamic_ncols=False, mininterval=0.1, file=sys.stdout ) as pbar:
+            while (
+                not self.learning_steps or self.step < self.learning_steps
+            ):
+                batch, cond = next(self.data)
+                self.run_step(batch, cond)
+                if self.eval_data is not None and self.step % self.eval_interval == 0:
+                    batch_eval, cond_eval = next(self.eval_data)
+                    self.forward_only(batch_eval, cond_eval)
+                self.step += 1
+                pbar.update(1)
         
-        while (
-            not self.learning_steps or self.step < self.learning_steps
-        ):
-            batch, cond = next(self.data)
-            self.run_step(batch, cond)
-            if self.eval_data is not None and self.step % self.eval_interval == 0:
-                batch_eval, cond_eval = next(self.eval_data)
-                self.forward_only(batch_eval, cond_eval)
-            self.step += 1
+        # Create directory if needed
+        dt = datetime.now().strftime("%m%d")
+        model_dir = f"models/{dt}"
+        os.makedirs(model_dir, exist_ok=True)
+        plt.figure(figsize=(8, 4))
+        plt.plot(self.train_loss_curve, label="Training Loss")
+        plt.plot(self.val_loss_curve, label="Validation Loss")
+        plt.xlabel("Training Step")
+        plt.ylabel("Loss")
+        plt.title("Training Loss Curve")
+        plt.legend()
+        plt.grid(True)
+        plt.tight_layout()
+        plt.savefig(f"{model_dir}/loss_curve.png")
+        plt.show()
 
     def run_step(self, batch, cond):
         self.forward_backward(batch, cond)
@@ -156,6 +177,8 @@ class TrainLoop:
                 loss = (losses["loss"] * weights).mean()
                 val_losses.append(loss.detach().cpu())
             print(f'Epoch {self.step}/{self.learning_steps} Validation Loss: {np.mean(val_losses)}')
+            val_loss = np.mean(val_losses)
+            self.val_loss_curve.append(val_loss)
             
         dt = datetime.now().strftime("%m%d")
         if not os.path.isdir(f'models/{dt}'):
@@ -197,7 +220,9 @@ class TrainLoop:
             loss = (losses["loss"] * weights).mean()
             loss.backward()
             train_losses.append(loss.detach().cpu())
-        print(f'Epoch {self.step}/{self.learning_steps} Training Loss: {np.mean(train_losses)}')
+        mean_loss = np.mean(train_losses)
+        print(f'Epoch {self.step}/{self.learning_steps} Training Loss: {mean_loss}')
+        self.train_loss_curve.append(mean_loss)
 
     def optimize_normal(self):
 #         self._anneal_lr()

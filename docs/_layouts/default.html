@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }}</title>
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body>
+
+<header>
+    <h1><span class="font-weight-bold">Diffusion-Driven Shakespeare</span>: Diffusion for Conditional Text Generation</h1>
+    <nav>
+        <ul>
+            <li><a href="#background">Background</a></li>
+            <li><a href="#methodology">Methodology</a></li>
+            <li><a href="#data">Data</a></li>
+            <li><a href="#experiments">Experiments</a></li>
+            <li><a href="#results">Results</a></li>
+            <li><a href="#findings">Conclusion</a></li>
+            <li><a href="#team">Team</a></li>
+            <li></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <div class="intro">
+        {% if page.page_image %}
+        <div class="intro-image">
+        <figure>
+          <img src="{{ '/assets/' | append: page.page_image | relative_url }}" id="large-img" />
+          <figcaption>
+            <p><span style="font-size: smaller; color: rgb(151, 151, 151);">Source: Ms O Reilly's Education blog. <a id="caption-link" href="https://5j31missoreilly.wordpress.com/2015/12/29/modern-day-shakespeare/">Link to Page</a></span></p>
+          </figcaption>
+        </figure>
+        </div>
+        {% endif %}
+        <div class="intro-content">
+            Diffusion-Driven Shakespeare is a diffusion-based conditional generative model
+            that is trained to generate text in the style of Shakespeare's.
+            This project is inspired by the recent breakthrough in continuous diffusion for natural language.
+            Our model follows the architecture of DiffuSeq (Gong et al. 2023), the first diffusion-based sequence-to-sequence model, 
+            with modifications on training and fine-tuning techniques. The goal of our project is to demonstrate
+            the ability of diffusion models in learning complex text representations and sentence structures.
+
+            <br>
+            <br>
+
+            Our project repository is linked <a href="https://github.com/xianyingkong/diffusion-text-generation" target="_blank">here</a> and our report can 
+            be viewed <a href="https://github.com/xianyingkong/artifact-directory-template/blob/main/report.pdf" target="_blank">here</a>.
+        </div>
+        
+
+    </div>
+</main>
+<main>
+    <div>
+        {{ content }}
+    </div>
+</main>
+    
+    
+
+
+<footer>
+    &copy; {{ site.title }} - {{ site.time | date: "%Y" }}
+</footer>
+
+</body>
+</html>

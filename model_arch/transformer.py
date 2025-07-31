@@ -104,8 +104,8 @@ class TransformerNetModel(nn.Module):
             del temp_bert.pooler
 
         elif init_pretrained == 'no':
-            self.input_transformers = BertEncoder(config)
-            # self.input_transformers = MoEBertEncoder(config)
+            # self.input_transformers = BertEncoder(config)
+            self.input_transformers = MoEBertEncoder(config)
             self.register_buffer("position_ids", torch.arange(config.max_position_embeddings).expand((1, -1)))
             self.position_embeddings = nn.Embedding(config.max_position_embeddings, config.hidden_size)
             self.LayerNorm = nn.LayerNorm(config.hidden_size, eps=config.layer_norm_eps)

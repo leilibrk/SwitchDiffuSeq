@@ -7,6 +7,7 @@ from model_arch.tokenizer import load_tokenizer, load_model_emb
 from model_arch.sampling import sampling
 from transformers import set_seed
 import yaml
+from datetime import datetime
 
 config_fp = './config/config.yaml'
 
@@ -70,12 +71,27 @@ if __name__ == '__main__':
                                                                clip_denoised=config['clip_denoised'],
                                                                top_p=config['top_p'],
                                                                clamp_step=config['clamp_step'])
-    
-    
     print("\n===== SAMPLES =====\n")
-    for i, (src, pred, ref) in enumerate(zip(word_lst_source, word_lst_recover, word_lst_ref)):
-        print(f"[Sample {i+1}]")
-        print(f"Source : {src}")
-        print(f"Output : {pred}")
-        print(f"Target : {ref}")
-        print("---------------")
+    # Get encoder class name
+    model_name = "moe"
+    # Create timestamp
+    timestamp = datetime.now().strftime("%m%d_%H%M")
+    # Compose file name
+    output_path = f"samples_{model_name}_{timestamp}.txt"
+    with open(output_path, "w") as f:
+        f.write("===== SAMPLES =====\n\n")
+        for i, (src, pred, ref) in enumerate(zip(word_lst_source, word_lst_recover, word_lst_ref)):
+            f.write(f"[Sample {i+1}]\n")
+            f.write(f"Source : {src}\n")
+            f.write(f"Output : {pred}\n")
+            f.write(f"Target : {ref}\n")
+            f.write("---------------\n")
+
+            # Also print to console
+            print(f"[Sample {i+1}]")
+            print(f"Source : {src}")
+            print(f"Output : {pred}")
+            print(f"Target : {ref}")
+            print("---------------")
+
+    print(f"\nAll samples saved to: {output_path}")

@@ -1,0 +1,934 @@
+[
+  {
+    "context": "Hello!",
+    "response": "Hi there! How can I help you today?"
+  },
+  {
+    "context": "Hi!",
+    "response": "Hello! What can I do for you?"
+  },
+  {
+    "context": "Good morning!",
+    "response": "Good morning! How’s your day going so far?"
+  },
+  {
+    "context": "Good afternoon!",
+    "response": "Good afternoon! How can I assist you?"
+  },
+  {
+    "context": "Good evening!",
+    "response": "Good evening! What brings you here today?"
+  },
+  {
+    "context": "Hey!",
+    "response": "Hey there! What’s on your mind?"
+  },
+  {
+    "context": "Hi there!",
+    "response": "Hello! How can I assist you today?"
+  },
+  {
+    "context": "Greetings!",
+    "response": "Greetings! How may I help you?"
+  },
+  {
+    "context": "What's up?",
+    "response": "Not much! How can I help you today?"
+  },
+  {
+    "context": "Howdy!",
+    "response": "Howdy! How can I assist you?"
+  },
+  {
+    "context": "Heya!",
+    "response": "Heya! What can I do for you?"
+  },
+  {
+    "context": "Yo!",
+    "response": "Yo! Need any help today?"
+  },
+  {
+    "context": "Hi there, how are you?",
+    "response": "I’m good, thank you! How can I assist you?"
+  },
+  {
+    "context": "Hello there!",
+    "response": "Hi! What’s on your mind today?"
+  },
+  {
+    "context": "Hi, how’s it going?",
+    "response": "It’s going great, thanks! How about you?"
+  },
+  {
+    "context": "Good day!",
+    "response": "Good day! How can I help you?"
+  },
+  {
+    "context": "How’s it going?",
+    "response": "It’s going well, thanks! How can I assist you?"
+  },
+  {
+    "context": "How do you do?",
+    "response": "I’m doing well, thank you! How about you?"
+  },
+  {
+    "context": "Hi, nice to meet you!",
+    "response": "Nice to meet you too! How can I help?"
+  },
+  {
+    "context": "Hi, how are things?",
+    "response": "Things are great, thanks! What can I do for you?"
+  },
+  {
+    "context": "Hi, what’s new?",
+    "response": "Not much, just here to help! What about you?"
+  },
+  {
+    "context": "Hi, what’s happening?",
+    "response": "Not much! How can I assist you today?"
+  },
+  {
+    "context": "Hey, how’s your day?",
+    "response": "My day’s been great, thank you! How can I help?"
+  },
+  {
+    "context": "Hello! Hope you’re well.",
+    "response": "Thank you! I hope you’re doing well too. How can I assist?"
+  },
+  {
+    "context": "Hi, glad to see you!",
+    "response": "Glad to see you too! What can I help you with?"
+  },
+  {
+    "context": "Hi, it’s good to connect!",
+    "response": "It’s good to connect with you too! How can I help?"
+  },
+  {
+    "context": "Hello, good to see you!",
+    "response": "Good to see you too! How can I assist?"
+  },
+  {
+    "context": "Hey, what’s up?",
+    "response": "Not much! How can I help you today?"
+  },
+  {
+    "context": "Hello, how can I reach you?",
+    "response": "You’ve reached me now! How can I assist you?"
+  },
+  {
+    "context": "Hi! Long time no see.",
+    "response": "Hi! It has been a while. How can I help?"
+  },
+  {
+    "context": "Hello, how are you doing?",
+    "response": "I’m doing great, thank you! What about you?"
+  },
+  {
+    "context": "Hi, it’s been a while.",
+    "response": "It has! How can I help you today?"
+  },
+  {
+    "context": "Good to see you again!",
+    "response": "Good to see you too! What can I assist you with?"
+  },
+  {
+    "context": "Hey there! What’s new?",
+    "response": "Not much! How can I help you today?"
+  },
+  {
+    "context": "Hi! Everything okay?",
+    "response": "Yes, all good! How can I assist you?"
+  },
+  {
+    "context": "Hi there! Hope all is well.",
+    "response": "Thank you! I hope the same for you. How can I help?"
+  },
+  {
+    "context": "Hello! How have you been?",
+    "response": "I’ve been great, thank you! What about you?"
+  },
+  {
+    "context": "Hi! How are things with you?",
+    "response": "Things are great, thanks! How can I help?"
+  },
+  {
+    "context": "Hello, nice to see you again!",
+    "response": "Nice to see you too! How can I assist?"
+  },
+  {
+    "context": "Hey there, how’s life?",
+    "response": "Life’s good, thank you! What about you?"
+  },
+  {
+    "context": "Hi! What’s up with you?",
+    "response": "Not much, just here to help! How about you?"
+  },
+  {
+    "context": "Hello! What’s on your mind today?",
+    "response": "Hi! I’m ready to assist. Let me know how I can help."
+  },
+  {
+    "context": "Hey, everything going well?",
+    "response": "Yes, all is well! How can I assist you?"
+  },
+  {
+    "context": "Hello there, how can I help?",
+    "response": "Hi! I’m ready to help. What do you need?"
+  },
+  {
+    "context": "Hi, anything I can assist with?",
+    "response": "Actually, I’m here to assist you! Let me know how."
+  },
+  {
+    "context": "Hello, need anything?",
+    "response": "Thanks for asking! I’m here to help you instead."
+  },
+  {
+    "context": "Good to see you! How can I assist?",
+    "response": "Good to see you too! Let me know what you need."
+  },
+  {
+    "context": "Hello! What’s new in your world?",
+    "response": "Not much! Just here to assist you. How can I help?"
+  },
+  {
+    "context": "Hi, what’s the latest?",
+    "response": "Not much! How can I help you today?"
+  },
+  {
+    "context": "Hey, how’s everything going?",
+    "response": "Everything’s going well, thank you! How can I assist?"
+  },
+  {
+    "context": "Hi, good to connect again.",
+    "response": "Good to connect with you too! How can I assist you?"
+  },
+  {
+    "context": "Hello, hope you’re doing well.",
+    "response": "Thank you! I hope you’re doing well too. How can I assist?"
+  },
+  {
+    "context": "Hi, how have you been?",
+    "response": "I’ve been great, thank you! What about you?"
+  },
+  {
+    "context": "Hello! Long time no chat.",
+    "response": "It has been a while! How can I assist you?"
+  },
+  {
+    "context": "Hi, hope everything’s okay.",
+    "response": "Yes, all’s okay! How can I help you?"
+  },
+  {
+    "context": "Hey, good morning! How are you?",
+    "response": "Good morning! I’m doing well, thank you. How about you?"
+  },
+  {
+    "context": "Hello, good afternoon! What’s new?",
+    "response": "Good afternoon! Not much, just here to assist you. How can I help?"
+  },
+  {
+    "context": "Hi! What are you up to?",
+    "response": "Not much! I’m here to assist you. How can I help?"
+  },
+  {
+    "context": "Hello! Nice to meet you!",
+    "response": "Nice to meet you too! How can I assist today?"
+  },
+  {
+    "context": "Good morning, sunshine!",
+    "response": "Helping you is my pleasure!"
+  },
+  {
+    "context": "Good morning, sunshine!",
+    "response": "I\u2019m here to help with anything you need."
+  },
+  {
+    "context": "Greetings and salutations!",
+    "response": "I\u2019m happy to assist, just let me know how."
+  },
+  {
+    "context": "Hey, what do you need help with?",
+    "response": "Sure thing! What\u2019s on your mind?"
+  },
+  {
+    "context": "Hey, how\u2019s life treating you?",
+    "response": "Here to help you in any way I can!"
+  },
+  {
+    "context": "Howdy, partner!",
+    "response": "Let\u2019s make today great! How can I assist?"
+  },
+  {
+    "context": "Hey there, what\u2019s the latest?",
+    "response": "Ask away! I\u2019m ready to assist."
+  },
+  {
+    "context": "Hiya! What\u2019s on your mind?",
+    "response": "I\u2019m here to help with anything you need."
+  },
+  {
+    "context": "Hello, ready to start?",
+    "response": "Let's get started! What can I do for you?"
+  },
+  {
+    "context": "Hi, what\u2019s your question today?",
+    "response": "I\u2019m here to help with anything you need."
+  },
+  {
+    "context": "Hello, what\u2019s been going on?",
+    "response": "Tell me how I can make things easier for you."
+  },
+  {
+    "context": "Hi, anything exciting today?",
+    "response": "Helping you is my pleasure!"
+  },
+  {
+    "context": "Hello, how can I make your day better?",
+    "response": "Tell me how I can make things easier for you."
+  },
+  {
+    "context": "Hello, ready to start?",
+    "response": "I\u2019m happy to assist, just let me know how."
+  },
+  {
+    "context": "Hi, what\u2019s your question today?",
+    "response": "Helping you is my pleasure!"
+  },
+  {
+    "context": "Greetings and salutations!",
+    "response": "I\u2019m happy to assist, just let me know how."
+  },
+  {
+    "context": "Howdy, partner!",
+    "response": "Here to help you in any way I can!"
+  },
+  {
+    "context": "Greetings and salutations!",
+    "response": "Tell me how I can make things easier for you."
+  },
+  {
+    "context": "Hiya! What\u2019s on your mind?",
+    "response": "Ask away! I\u2019m ready to assist."
+  },
+  {
+    "context": "Hello! What\u2019s your plan for today?",
+    "response": "Here to help you in any way I can!"
+  },
+  {
+    "context": "Hello, stranger!",
+    "response": "I\u2019m happy to assist, just let me know how."
+  },
+  {
+    "context": "Hello! What\u2019s your plan for today?",
+    "response": "Let's get started! What can I do for you?"
+  },
+  {
+    "context": "Hello, stranger!",
+    "response": "Anything you need? Just let me know."
+  },
+  {
+    "context": "Greetings and salutations!",
+    "response": "Helping you is my pleasure!"
+  },
+  {
+    "context": "Yo, what's new today?",
+    "response": "Anything you need? Just let me know."
+  },
+  {
+    "context": "Hi, anything exciting today?",
+    "response": "Helping you is my pleasure!"
+  },
+  {
+    "context": "Hi, what\u2019s your question today?",
+    "response": "Sure thing! What\u2019s on your mind?"
+  },
+  {
+    "context": "Hey, how\u2019s life treating you?",
+    "response": "Here to help you in any way I can!"
+  },
+  {
+    "context": "Good morning, sunshine!",
+    "response": "Helping you is my pleasure!"
+  },
+  {
+    "context": "Hey, how's everything?",
+    "response": "You\u2019ve got my full attention! How can I help?"
+  },
+  {
+    "context": "Hiya! What\u2019s on your mind?",
+    "response": "Let\u2019s make today great! How can I assist?"
+  },
+  {
+    "context": "Hello, stranger!",
+    "response": "Tell me how I can make things easier for you."
+  },
+  {
+    "context": "Good morning, sunshine!",
+    "response": "Let\u2019s make today great! How can I assist?"
+  },
+  {
+    "context": "Howdy, partner!",
+    "response": "Let\u2019s make today great! How can I assist?"
+  },
+  {
+    "context": "Hello! What\u2019s your plan for today?",
+    "response": "Ask away! I\u2019m ready to assist."
+  },
+  {
+    "context": "Hello! What\u2019s your plan for today?",
+    "response": "Sure thing! What\u2019s on your mind?"
+  },
+  {
+    "context": "Hey, how's everything?",
+    "response": "Let\u2019s make today great! How can I assist?"
+  },
+  {
+    "context": "Hello, what\u2019s been going on?",
+    "response": "Let\u2019s make today great! How can I assist?"
+  },
+  {
+    "context": "Greetings and salutations!",
+    "response": "I\u2019m here for you! How can I be of service?"
+  },
+  {
+    "context": "Hello, ready to start?",
+    "response": "Here to help you in any way I can!"
+  },
+  {
+    "context": "Hiya! What\u2019s on your mind?",
+    "response": "Anything you need? Just let me know."
+  },
+  {
+    "context": "Hey, how\u2019s life treating you?",
+    "response": "Anything you need? Just let me know."
+  },
+  {
+    "context": "Hello, how can I make your day better?",
+    "response": "I\u2019m happy to assist, just let me know how."
+  },
+  {
+    "context": "Hi, how's your evening?",
+    "response": "Tell me how I can make things easier for you."
+  },
+  {
+    "context": "Hey, how's everything?",
+    "response": "Here to help you in any way I can!"
+  },
+  {
+    "context": "Hello, how can I make your day better?",
+    "response": "You\u2019ve got my full attention! How can I help?"
+  },
+  {
+    "context": "Hello! What\u2019s your plan for today?",
+    "response": "I\u2019m here for you! How can I be of service?"
+  },
+  {
+    "context": "Hello, stranger!",
+    "response": "Helping you is my pleasure!"
+  },
+  {
+    "context": "Hi, what\u2019s your question today?",
+    "response": "Helping you is my pleasure!"
+  },
+  {
+    "context": "Hello, what\u2019s been going on?",
+    "response": "Anything you need? Just let me know."
+  },
+  {
+    "context": "Hi, how's your evening?",
+    "response": "You\u2019ve got my full attention! How can I help?"
+  },
+  {
+    "context": "Hiya! What\u2019s on your mind?",
+    "response": "Helping you is my pleasure!"
+  },
+  {
+    "context": "Hiya! What\u2019s on your mind?",
+    "response": "Helping you is my pleasure!"
+  },
+  {
+    "context": "Hi, how's your evening?",
+    "response": "Sure thing! What\u2019s on your mind?"
+  },
+  {
+    "context": "Hey, what do you need help with?",
+    "response": "I\u2019m happy to assist, just let me know how."
+  },
+  {
+    "context": "Howdy, partner!",
+    "response": "Sure thing! What\u2019s on your mind?"
+  },
+  {
+    "context": "Hello, ready to start?",
+    "response": "Helping you is my pleasure!"
+  },
+  {
+    "context": "Yo, what's new today?",
+    "response": "Here to help you in any way I can!"
+  },
+  {
+    "context": "Hello, how can I make your day better?",
+    "response": "I\u2019m here for you! How can I be of service?"
+  },
+  {
+    "context": "Hey, what do you need help with?",
+    "response": "I\u2019m here to help with anything you need."
+  },
+  {
+    "context": "Howdy, partner!",
+    "response": "Tell me how I can make things easier for you."
+  },
+  {
+    "context": "Hello, stranger!",
+    "response": "I\u2019m happy to assist, just let me know how."
+  },
+  {
+    "context": "Greetings and salutations!",
+    "response": "I\u2019m happy to assist, just let me know how."
+  },
+  {
+    "context": "Hiya! What\u2019s on your mind?",
+    "response": "Anything you need? Just let me know."
+  },
+  {
+    "context": "Hi, how's your evening?",
+    "response": "Anything you need? Just let me know."
+  },
+  {
+    "context": "Hi, what\u2019s your question today?",
+    "response": "Let's get started! What can I do for you?"
+  },
+  {
+    "context": "Hello, ready to start?",
+    "response": "Tell me how I can make things easier for you."
+  },
+  {
+    "context": "Hey there, what\u2019s the latest?",
+    "response": "Sure thing! What\u2019s on your mind?"
+  },
+  {
+    "context": "Hi, what\u2019s your question today?",
+    "response": "Here to help you in any way I can!"
+  },
+  {
+    "context": "Hey, what do you need help with?",
+    "response": "Helping you is my pleasure!"
+  },
+  {
+    "context": "Hiya! What\u2019s on your mind?",
+    "response": "Anything you need? Just let me know."
+  },
+  {
+    "context": "Hi, anything exciting today?",
+    "response": "I\u2019m here for you! How can I be of service?"
+  },
+  {
+    "context": "Good morning, sunshine!",
+    "response": "I\u2019m here for you! How can I be of service?"
+  },
+  {
+    "context": "Hello, what\u2019s been going on?",
+    "response": "Helping you is my pleasure!"
+  },
+  {
+    "context": "Hey, how's everything?",
+    "response": "Helping you is my pleasure!"
+  },
+  {
+    "context": "Hey, how's everything?",
+    "response": "Helping you is my pleasure!"
+  },
+  {
+    "context": "Hello, stranger!",
+    "response": "Tell me how I can make things easier for you."
+  },
+  {
+    "context": "Hey there, what\u2019s the latest?",
+    "response": "Tell me how I can make things easier for you."
+  },
+  {
+    "context": "Hey, how's everything?",
+    "response": "Tell me how I can make things easier for you."
+  },
+  {
+    "context": "Hi, what\u2019s your question today?",
+    "response": "I\u2019m happy to assist, just let me know how."
+  },
+  {
+    "context": "Hello, what\u2019s been going on?",
+    "response": "Let\u2019s make today great! How can I assist?"
+  },
+  {
+    "context": "Hello! What\u2019s your plan for today?",
+    "response": "I\u2019m here to help with anything you need."
+  },
+  {
+    "context": "Yo, what's new today?",
+    "response": "Ask away! I\u2019m ready to assist."
+  },
+  {
+    "context": "Hiya! What\u2019s on your mind?",
+    "response": "Anything you need? Just let me know."
+  },
+  {
+    "context": "Hello, how can I make your day better?",
+    "response": "Ask away! I\u2019m ready to assist."
+  },
+  {
+    "context": "Howdy, partner!",
+    "response": "I\u2019m here for you! How can I be of service?"
+  },
+  {
+    "context": "Yo, what's new today?",
+    "response": "Ask away! I\u2019m ready to assist."
+  },
+  {
+    "context": "Hey, how's everything?",
+    "response": "I\u2019m happy to assist, just let me know how."
+  },
+  {
+    "context": "Hello, stranger!",
+    "response": "You\u2019ve got my full attention! How can I help?"
+  },
+  {
+    "context": "Yo, what's new today?",
+    "response": "Helping you is my pleasure!"
+  },
+  {
+    "context": "Hey there, what\u2019s the latest?",
+    "response": "Ask away! I\u2019m ready to assist."
+  },
+  {
+    "context": "Howdy, partner!",
+    "response": "Anything you need? Just let me know."
+  },
+  {
+    "context": "Hi, what\u2019s your question today?",
+    "response": "Anything you need? Just let me know."
+  },
+  {
+    "context": "Hey, what do you need help with?",
+    "response": "I\u2019m here for you! How can I be of service?"
+  },
+  {
+    "context": "Yo, what's new today?",
+    "response": "I\u2019m happy to assist, just let me know how."
+  },
+  {
+    "context": "Hey, what do you need help with?",
+    "response": "Let's get started! What can I do for you?"
+  },
+  {
+    "context": "Hello! What\u2019s your plan for today?",
+    "response": "Let\u2019s make today great! How can I assist?"
+  },
+  {
+    "context": "Greetings and salutations!",
+    "response": "Tell me how I can make things easier for you."
+  },
+  {
+    "context": "Hi, anything exciting today?",
+    "response": "Ask away! I\u2019m ready to assist."
+  },
+  {
+    "context": "Greetings and salutations!",
+    "response": "Tell me how I can make things easier for you."
+  },
+  {
+    "context": "Hey, what do you need help with?",
+    "response": "Let\u2019s make today great! How can I assist?"
+  },
+  {
+    "context": "Hello, stranger!",
+    "response": "Tell me how I can make things easier for you."
+  },
+  {
+    "context": "Hi, how's your evening?",
+    "response": "Tell me how I can make things easier for you."
+  },
+  {
+    "context": "Hello! What\u2019s your plan for today?",
+    "response": "Here to help you in any way I can!"
+  },
+  {
+    "context": "Hello, what\u2019s been going on?",
+    "response": "Helping you is my pleasure!"
+  },
+  {
+    "context": "Howdy, partner!",
+    "response": "Helping you is my pleasure!"
+  },
+  {
+    "context": "Hey there, what\u2019s the latest?",
+    "response": "Here to help you in any way I can!"
+  },
+  {
+    "context": "Howdy, partner!",
+    "response": "Sure thing! What\u2019s on your mind?"
+  },
+  {
+    "context": "Hi, what\u2019s your question today?",
+    "response": "I\u2019m here to help with anything you need."
+  },
+  {
+    "context": "Hello! What\u2019s your plan for today?",
+    "response": "I\u2019m here to help with anything you need."
+  },
+  {
+    "context": "Hello! What\u2019s your plan for today?",
+    "response": "I\u2019m here for you! How can I be of service?"
+  },
+  {
+    "context": "Hey there, what\u2019s the latest?",
+    "response": "You\u2019ve got my full attention! How can I help?"
+  },
+  {
+    "context": "Hi, anything exciting today?",
+    "response": "Tell me how I can make things easier for you."
+  },
+  {
+    "context": "Hey, how\u2019s life treating you?",
+    "response": "Ask away! I\u2019m ready to assist."
+  },
+  {
+    "context": "Hiya! What\u2019s on your mind?",
+    "response": "Let\u2019s make today great! How can I assist?"
+  },
+  {
+    "context": "Hey, how's everything?",
+    "response": "Ask away! I\u2019m ready to assist."
+  },
+  {
+    "context": "Hello! What\u2019s your plan for today?",
+    "response": "Sure thing! What\u2019s on your mind?"
+  },
+  {
+    "context": "Hey, what do you need help with?",
+    "response": "Let's get started! What can I do for you?"
+  },
+  {
+    "context": "Hey, what do you need help with?",
+    "response": "Helping you is my pleasure!"
+  },
+  {
+    "context": "Hey, how\u2019s life treating you?",
+    "response": "I\u2019m here for you! How can I be of service?"
+  },
+  {
+    "context": "Hi, anything exciting today?",
+    "response": "Tell me how I can make things easier for you."
+  },
+  {
+    "context": "Hello, stranger!",
+    "response": "Tell me how I can make things easier for you."
+  },
+  {
+    "context": "Hey, how\u2019s life treating you?",
+    "response": "Anything you need? Just let me know."
+  },
+  {
+    "context": "Hello! What\u2019s your plan for today?",
+    "response": "I\u2019m here to help with anything you need."
+  },
+  {
+    "context": "Howdy, partner!",
+    "response": "Anything you need? Just let me know."
+  },
+  {
+    "context": "Good morning, sunshine!",
+    "response": "I\u2019m here to help with anything you need."
+  },
+  {
+    "context": "Hello! What\u2019s your plan for today?",
+    "response": "Here to help you in any way I can!"
+  },
+  {
+    "context": "Good morning, sunshine!",
+    "response": "I\u2019m here to help with anything you need."
+  },
+  {
+    "context": "Hello, stranger!",
+    "response": "Tell me how I can make things easier for you."
+  },
+  {
+    "context": "Howdy, partner!",
+    "response": "Let's get started! What can I do for you?"
+  },
+  {
+    "context": "Hey, how's everything?",
+    "response": "Tell me how I can make things easier for you."
+  },
+  {
+    "context": "Hello, stranger!",
+    "response": "Tell me how I can make things easier for you."
+  },
+  {
+    "context": "Hey, what do you need help with?",
+    "response": "I\u2019m here for you! How can I be of service?"
+  },
+  {
+    "context": "Greetings and salutations!",
+    "response": "Let's get started! What can I do for you?"
+  },
+  {
+    "context": "Hi, anything exciting today?",
+    "response": "Let's get started! What can I do for you?"
+  },
+  {
+    "context": "Hey, how\u2019s life treating you?",
+    "response": "Ask away! I\u2019m ready to assist."
+  },
+  {
+    "context": "Hello, stranger!",
+    "response": "You\u2019ve got my full attention! How can I help?"
+  },
+  {
+    "context": "Hiya! What\u2019s on your mind?",
+    "response": "I\u2019m happy to assist, just let me know how."
+  },
+  {
+    "context": "Hey, what do you need help with?",
+    "response": "Anything you need? Just let me know."
+  },
+  {
+    "context": "Good morning, sunshine!",
+    "response": "I\u2019m here to help with anything you need."
+  },
+  {
+    "context": "Hello! What\u2019s your plan for today?",
+    "response": "Ask away! I\u2019m ready to assist."
+  },
+  {
+    "context": "Yo, what's new today?",
+    "response": "Let's get started! What can I do for you?"
+  },
+  {
+    "context": "Hello, ready to start?",
+    "response": "Anything you need? Just let me know."
+  },
+  {
+    "context": "Greetings and salutations!",
+    "response": "Here to help you in any way I can!"
+  },
+  {
+    "context": "Hey, how\u2019s life treating you?",
+    "response": "Helping you is my pleasure!"
+  },
+  {
+    "context": "Hey, what do you need help with?",
+    "response": "Anything you need? Just let me know."
+  },
+  {
+    "context": "Hey, how's everything?",
+    "response": "You\u2019ve got my full attention! How can I help?"
+  },
+  {
+    "context": "Good morning, sunshine!",
+    "response": "Helping you is my pleasure!"
+  },
+  {
+    "context": "Hey, what do you need help with?",
+    "response": "I\u2019m here to help with anything you need."
+  },
+  {
+    "context": "Hello, ready to start?",
+    "response": "Let\u2019s make today great! How can I assist?"
+  },
+  {
+    "context": "Hello, what\u2019s been going on?",
+    "response": "You\u2019ve got my full attention! How can I help?"
+  },
+  {
+    "context": "Hey, what do you need help with?",
+    "response": "You\u2019ve got my full attention! How can I help?"
+  },
+  {
+    "context": "Good morning, sunshine!",
+    "response": "I\u2019m here to help with anything you need."
+  },
+  {
+    "context": "Good morning, sunshine!",
+    "response": "I\u2019m here for you! How can I be of service?"
+  },
+  {
+    "context": "Hi, what\u2019s your question today?",
+    "response": "Let\u2019s make today great! How can I assist?"
+  },
+  {
+    "context": "Hey there, what\u2019s the latest?",
+    "response": "Let's get started! What can I do for you?"
+  },
+  {
+    "context": "Hey there, what\u2019s the latest?",
+    "response": "Helping you is my pleasure!"
+  },
+  {
+    "context": "Howdy, partner!",
+    "response": "I\u2019m happy to assist, just let me know how."
+  },
+  {
+    "context": "Hello, how can I make your day better?",
+    "response": "Helping you is my pleasure!"
+  },
+  {
+    "context": "Hey, what do you need help with?",
+    "response": "Anything you need? Just let me know."
+  },
+  {
+    "context": "Hey, what do you need help with?",
+    "response": "Let\u2019s make today great! How can I assist?"
+  },
+  {
+    "context": "Hiya! What\u2019s on your mind?",
+    "response": "Here to help you in any way I can!"
+  },
+  {
+    "context": "Hello! What\u2019s your plan for today?",
+    "response": "Here to help you in any way I can!"
+  },
+  {
+    "context": "Yo, what's new today?",
+    "response": "Let's get started! What can I do for you?"
+  },
+  {
+    "context": "Hi, anything exciting today?",
+    "response": "Let's get started! What can I do for you?"
+  },
+  {
+    "context": "Hello, stranger!",
+    "response": "I\u2019m happy to assist, just let me know how."
+  },
+  {
+    "context": "Hello, ready to start?",
+    "response": "Sure thing! What\u2019s on your mind?"
+  },
+  {
+    "context": "Howdy, partner!",
+    "response": "Ask away! I\u2019m ready to assist."
+  },
+  {
+    "context": "Hello, stranger!",
+    "response": "I\u2019m here to help with anything you need."
+  },
+  {
+    "context": "Good morning, sunshine!",
+    "response": "I\u2019m happy to assist, just let me know how."
+  },
+  {
+    "context": "Yo, what's new today?",
+    "response": "I\u2019m here for you! How can I be of service?"
+  },
+  {
+    "context": "Hiya! What\u2019s on your mind?",
+    "response": "Ask away! I\u2019m ready to assist."
+  },
+  {
+    "context": "Hey, how\u2019s life treating you?",
+    "response": "I\u2019m here for you! How can I be of service?"
+  },
+  {
+    "context": "Howdy, partner!",
+    "response": "I\u2019m happy to assist, just let me know how."
+  }
+]

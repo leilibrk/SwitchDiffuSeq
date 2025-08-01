@@ -1,6 +1,6 @@
 # Tokenizer to tokenize words into embeddings
-tokenizer: 'shakespeare' # Change to either bert, shakespeare, or custom and modify custom_vocab_fp
-custom_vocab_fp: 'shakespeare-tokenizer-bert/plays/vocab.txt' # Change this for tokenizer vocabulary
+tokenizer: 'bert' # Change to either bert, shakespeare, or custom and modify custom_vocab_fp
+custom_vocab_fp: 'bert-base-uncased' # Change this for tokenizer vocabulary
 
 # Model hyperparameters
 lr: 0.0001 # Weight learning rate

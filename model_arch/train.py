@@ -17,7 +17,7 @@ from utils.step_sample import LossAwareSampler, UniformSampler
 from datetime import datetime
 import matplotlib.pyplot as plt
 import sys
-
+import time
 def clear_dir(directory_path):
     try:
         files = glob.glob(os.path.join(directory_path, '*'))
@@ -78,6 +78,8 @@ class TrainLoop:
         self.min_val_loss = float('inf')
         self.train_loss_curve = []
         self.val_loss_curve = []
+        self.train_nll_curve = []
+        self.val_nll_curve = []
         
     def AdamW_LLRD(self): 
         print("\n\n======== Using Layer-wise Learning Rate Decay with AdamW ========\n\n")
@@ -120,6 +122,8 @@ class TrainLoop:
         
     def run_loop(self):
         print("\n\n======== Training starts now ========\n\n")
+        self.training_timestamps = []
+        start_time = time.time()
         with tqdm( total=self.learning_steps, desc="Training Steps", ascii=True, ncols=100, dynamic_ncols=False, mininterval=0.1, file=sys.stdout ) as pbar:
             while (
                 not self.learning_steps or self.step < self.learning_steps
@@ -129,23 +133,60 @@ class TrainLoop:
                 if self.eval_data is not None and self.step % self.eval_interval == 0:
                     batch_eval, cond_eval = next(self.eval_data)
                     self.forward_only(batch_eval, cond_eval)
+                
+                elapsed_time = time.time() - start_time
+                self.training_timestamps.append(elapsed_time)
                 self.step += 1
                 pbar.update(1)
         
         # Create directory if needed
-        dt = datetime.now().strftime("%m%d")
-        model_dir = f"models/{dt}"
+        model_name = "moe"  # set this dynamically if needed
+        timestamp = datetime.now().strftime("%m%d_%H%M")
+
+        # Define model directory and loss curve filename
+        model_dir = f"models/{model_name}_{timestamp}"
         os.makedirs(model_dir, exist_ok=True)
+        import pandas as pd
+        df = pd.DataFrame({
+            "step": list(range(1, self.step)),
+            "time_sec": self.training_timestamps,
+            "train_neg_log_ppl": [-n for n in self.train_nll_curve],
+            "val_neg_log_ppl": [-n for n in self.val_nll_curve] if self.val_nll_curve else [None]*len(self.train_nll_curve),
+        })
+        df.to_csv(f"{model_dir}/ppl_progress_{model_name}_{timestamp}.csv", index=False)
+        with open(f"{model_dir}/train_nll_curve.pkl", "wb") as f:
+            pickle.dump(self.train_nll_curve, f)
+        with open(f"{model_dir}/train_loss_curve.pkl", "wb") as f:
+            pickle.dump(self.train_loss_curve, f)
+
         plt.figure(figsize=(8, 4))
         plt.plot(self.train_loss_curve, label="Training Loss")
-        plt.plot(self.val_loss_curve, label="Validation Loss")
+        # plt.plot(self.val_loss_curve, label="Validation Loss")
         plt.xlabel("Training Step")
         plt.ylabel("Loss")
         plt.title("Training Loss Curve")
         plt.legend()
         plt.grid(True)
         plt.tight_layout()
-        plt.savefig(f"{model_dir}/loss_curve.png")
+        loss_curve_path = f"{model_dir}/loss_curve_{model_name}_{timestamp}.png"
+        plt.savefig(loss_curve_path)
+        
+        # Save separate plot for -log(PPL)
+        plt.figure(figsize=(8, 4))
+        plt.plot([-n for n in self.train_nll_curve], label="Neg Log Perplexity")
+        # plt.plot([-n for n in self.val_nll_curve], label="-log(PPL) Val")
+        plt.xlabel("Training Step")
+        plt.ylabel("Neg Log Perplexity")
+        plt.title("Negative Log Perplexity")
+        plt.legend()
+        plt.grid(True)
+        plt.tight_layout()
+
+        # Save
+        log_ppl_curve_path = f"{model_dir}/neg_log_ppl_{model_name}_{timestamp}.png"
+        plt.savefig(log_ppl_curve_path)
+        plt.close()
+
         plt.show()
 
     def run_step(self, batch, cond):
@@ -154,6 +195,7 @@ class TrainLoop:
 
     def forward_only(self, batch, cond):
         val_losses = []
+        nlls = []
         with torch.no_grad():
             zero_grad(self.model_params)
             for i in range(0, batch.shape[0], self.microbatch):
@@ -175,11 +217,14 @@ class TrainLoop:
 
                 losses = compute_losses()
                 loss = (losses["loss"] * weights).mean()
+                nll = losses["nll"].detach().cpu().mean()
+                nlls.append(nll)
                 val_losses.append(loss.detach().cpu())
             print(f'Epoch {self.step}/{self.learning_steps} Validation Loss: {np.mean(val_losses)}')
             val_loss = np.mean(val_losses)
             self.val_loss_curve.append(val_loss)
-            
+            mean_nll = np.mean(nlls)
+            self.val_nll_curve.append(mean_nll)
         dt = datetime.now().strftime("%m%d")
         if not os.path.isdir(f'models/{dt}'):
             os.mkdir(f'models/{dt}')
@@ -192,6 +237,7 @@ class TrainLoop:
 
     def forward_backward(self, batch, cond):
         train_losses = []
+        train_nlls = []
         zero_grad(self.model_params)
         for i in range(0, batch.shape[0], self.microbatch):
             micro = batch[i : i + self.microbatch].to(dist_util.dev())
@@ -218,11 +264,17 @@ class TrainLoop:
                 )
 
             loss = (losses["loss"] * weights).mean()
-            loss.backward()
+            nll = losses["nll"].detach().cpu().mean()  # average over batch
             train_losses.append(loss.detach().cpu())
+            train_nlls.append(nll)
+
+            loss.backward()
+            
         mean_loss = np.mean(train_losses)
+        mean_nll = np.mean(train_nlls)
         print(f'Epoch {self.step}/{self.learning_steps} Training Loss: {mean_loss}')
         self.train_loss_curve.append(mean_loss)
+        self.train_nll_curve.append(mean_nll)
 
     def optimize_normal(self):
 #         self._anneal_lr()

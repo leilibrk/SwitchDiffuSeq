@@ -1,7 +1,7 @@
 from transformers import AutoConfig
 # from transformers import BertEncoder
 from transformers.models.bert.modeling_bert import BertEncoder, BertModel
-from model_arch.moe_bert import MoEBertEncoder
+from model_arch.moe_bert import SwitchTransformer
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -105,7 +105,17 @@ class TransformerNetModel(nn.Module):
 
         elif init_pretrained == 'no':
             # self.input_transformers = BertEncoder(config)
-            self.input_transformers = MoEBertEncoder(config)
+            # self.input_transformers = MoEBertEncoder(config)
+            self.input_transformers = SwitchTransformer(
+                num_tokens=vocab_size,
+                dim=config.hidden_size,
+                heads=config.num_attention_heads,
+                dim_head=config.hidden_size // config.num_attention_heads,
+                dropout=config.hidden_dropout_prob,
+                mult=4,
+                num_experts=2,
+                depth=config.num_hidden_layers,
+            )
             self.register_buffer("position_ids", torch.arange(config.max_position_embeddings).expand((1, -1)))
             self.position_embeddings = nn.Embedding(config.max_position_embeddings, config.hidden_size)
             self.LayerNorm = nn.LayerNorm(config.hidden_size, eps=config.layer_norm_eps)

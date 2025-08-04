@@ -73,7 +73,7 @@ if __name__ == '__main__':
                                                                clamp_step=config['clamp_step'])
     print("\n===== SAMPLES =====\n")
     # Get encoder class name
-    model_name = "moe"
+    model_name = "Switch_2"
     # Create timestamp
     timestamp = datetime.now().strftime("%m%d_%H%M")
     # Compose file name

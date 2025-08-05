@@ -140,7 +140,7 @@ class TrainLoop:
                 pbar.update(1)
         
         # Create directory if needed
-        model_name = "Switch_2"  # set this dynamically if needed
+        model_name = "Bert_greet"  # set this dynamically if needed
         timestamp = datetime.now().strftime("%m%d_%H%M")
 
         # Define model directory and loss curve filename
@@ -259,28 +259,28 @@ class TrainLoop:
             losses = compute_losses()
             ##########
             # Add auxiliary MoE loss if available
-            model_output = losses.get("model_output", None)
-            aux_loss = getattr(model_output, "loss", None) if model_output else None
+            # model_output = losses.get("model_output", None)
+            # aux_loss = getattr(model_output, "loss", None) if model_output else None
 
-            main_loss = (losses["loss"] * weights).mean()
-            if aux_loss is not None:
-                total_loss = main_loss + aux_loss  # or + 0.01 * aux_loss (weight if needed)
-            else:
-                total_loss = main_loss 
+            # main_loss = (losses["loss"] * weights).mean()
+            # if aux_loss is not None:
+            #     total_loss = main_loss + aux_loss  # or + 0.01 * aux_loss (weight if needed)
+            # else:
+            #     total_loss = main_loss 
             ###########
             if isinstance(self.schedule_sampler, LossAwareSampler):
                 self.schedule_sampler.update_with_local_losses(
                     t, losses["loss"].detach()
                 )
 
-            # loss = (losses["loss"] * weights).mean()
+            loss = (losses["loss"] * weights).mean()
             nll = losses["nll"].detach().cpu().mean()  # average over batch
-            # train_losses.append(loss.detach().cpu())
-            train_losses.append(total_loss.detach().cpu())
+            train_losses.append(loss.detach().cpu())
+            # train_losses.append(total_loss.detach().cpu())
             train_nlls.append(nll)
 
-            # loss.backward()
-            total_loss.backward()
+            loss.backward()
+            # total_loss.backward()
             
         mean_loss = np.mean(train_losses)
         mean_nll = np.mean(train_nlls)

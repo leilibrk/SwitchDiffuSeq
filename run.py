@@ -44,6 +44,11 @@ if __name__ == '__main__':
     
     model.to(dist_util.dev())
     print(model.input_transformers)
+    total_params = sum(p.numel() for p in model.parameters())
+    trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+
+    print(f"Total parameters: {total_params:,}")
+    print(f"Trainable parameters: {trainable_params:,}")
     schedule_sampler = create_named_schedule_sampler('uniform', diffusion)
 
     TrainLoop(
@@ -73,7 +78,7 @@ if __name__ == '__main__':
                                                                clamp_step=config['clamp_step'])
     print("\n===== SAMPLES =====\n")
     # Get encoder class name
-    model_name = "Switch_2"
+    model_name = "Bert_greet"
     # Create timestamp
     timestamp = datetime.now().strftime("%m%d_%H%M")
     # Compose file name

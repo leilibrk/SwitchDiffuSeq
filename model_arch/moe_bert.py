@@ -171,42 +171,42 @@ class SwitchGate(nn.Module):
         Returns:
             Tensor: Gate scores.
         """
-        # Compute gate scores
-        gate_scores = F.softmax(self.w_gate(x), dim=-1)
+        B, T, _ = x.shape
+        N = B * T
+        E = self.num_experts
 
-        # Determine the top-1 expert for each token
-        capacity = int(self.capacity_factor * x.size(0))
+        # 1) Soft gating
+        gate_scores = F.softmax(self.w_gate(x), dim=-1)        # (B,T,E)
+        flat_scores = gate_scores.view(N, E)                  # (N,E)
 
-        top_k_scores, top_k_indices = gate_scores.topk(1, dim=-1)
+        # 2) Top-1 assignment
+        top1_idx = flat_scores.argmax(dim=-1)             # (N,)
+        capacity = int(self.capacity_factor * N / E)
 
-        # Mask to enforce sparsity
-        mask = torch.zeros_like(gate_scores).scatter_(
-            1, top_k_indices, 1
-        )
+        # Step 1: Count how many times each expert is selected (histogram)
+        mask = F.one_hot(top1_idx, E).float()             # (N, E)
+        cum_count = mask.cumsum(dim=0)                    # running total over rows
+        position_in_expert = cum_count.gather(1, top1_idx.unsqueeze(1)).squeeze(1) - 1  # (N,)
+        keep = position_in_expert < capacity              # boolean mask (N,)
 
-        # Combine gating scores with the mask
-        masked_gate_scores = gate_scores * mask
+        # Step 2: Apply mask
+        mask = mask * keep.unsqueeze(1).float()           # (N, E)
 
-        # Denominators
-        denominators = (
-            masked_gate_scores.sum(0, keepdim=True) + self.epsilon
-        )
+        # 4) Renormalize to sum=capacity
+        flat_masked = flat_scores * mask
+        denom       = flat_masked.sum(0, keepdim=True).clamp_min(self.epsilon)
+        flat_norm   = flat_masked / denom * capacity
 
-        # Norm gate scores to sum to the capacity
-        gate_scores = (masked_gate_scores / denominators) * capacity
+        # 5) reshape back
+        gate_scores = flat_norm.view(B, T, E)
 
+        # 6) Aux loss
         if use_aux_loss:
-            # load = gate_scores.sum(0)  # Sum over all examples
-            # importance = gate_scores.sum(1)  # Sum over all experts
-
-            # # Aux loss is mean suqared difference between load and importance
-            # loss = ((load - importance) ** 2).mean()
-            importance = gate_scores.sum(0)
-            load = (gate_scores > 0).float().sum(0)
+            importance = flat_norm.sum(0)
+            load       = (flat_norm > 0).float().sum(0)
             importance = importance / (importance.sum() + self.epsilon)
-            load = load / (load.sum() + self.epsilon)
-            loss = ((load - importance) ** 2).mean()
-
+            load       = load       / (load.sum()       + self.epsilon)
+            loss = ((load - importance)**2).mean()
             return gate_scores, loss
 
         return gate_scores, None
@@ -288,27 +288,41 @@ class SwitchMoE(nn.Module):
             x, use_aux_loss=self.use_aux_loss
         )
 
-        # Dispatch to experts
-        expert_outputs = [expert(x) for expert in self.experts]
+        # # Dispatch to experts
+        # expert_outputs = [expert(x) for expert in self.experts]
 
-        # Check if any gate scores are nan and handle
-        if torch.isnan(gate_scores).any():
-            print("NaN in gate scores")
-            gate_scores[torch.isnan(gate_scores)] = 0
+        # # Check if any gate scores are nan and handle
+        # if torch.isnan(gate_scores).any():
+        #     print("NaN in gate scores")
+        #     gate_scores[torch.isnan(gate_scores)] = 0
 
-        # Stack and weight outputs
-        stacked_expert_outputs = torch.stack(
-            expert_outputs, dim=-1
-        )  # (batch_size, seq_len, output_dim, num_experts)
-        if torch.isnan(stacked_expert_outputs).any():
-            stacked_expert_outputs[
-                torch.isnan(stacked_expert_outputs)
-            ] = 0
+        # # Stack and weight outputs
+        # stacked_expert_outputs = torch.stack(
+        #     expert_outputs, dim=-1
+        # )  # (batch_size, seq_len, output_dim, num_experts)
+        # if torch.isnan(stacked_expert_outputs).any():
+        #     stacked_expert_outputs[
+        #         torch.isnan(stacked_expert_outputs)
+        #     ] = 0
 
-        # Combine expert outputs and gating scores
-        moe_output = torch.sum(
-            gate_scores.unsqueeze(-2) * stacked_expert_outputs, dim=-1
-        )
+        # # Combine expert outputs and gating scores
+        # moe_output = torch.sum(
+        #     gate_scores.unsqueeze(-2) * stacked_expert_outputs, dim=-1
+        # )
+        B, T, D = x.shape
+        flat_x        = x.view(-1, D)                  # (B·T, D)
+        flat_idx      = gate_scores.argmax(-1).view(-1) # (B·T,)
+        flat_out      = torch.zeros_like(flat_x)       # (B·T, D)
+
+        for e, expert in enumerate(self.experts):
+            mask = (flat_idx == e)
+            if mask.sum() == 0:
+                continue
+            tokens_e = flat_x[mask]                    # (N_e, D)
+            out_e    = expert(tokens_e)                # (N_e, D)
+            flat_out[mask] = out_e
+
+        moe_output = flat_out.view(B, T, D)
 
         return moe_output, loss
 
@@ -369,8 +383,9 @@ class SwitchTransformerBlock(nn.Module):
             dim, dim * mult, dim, num_experts, use_aux_loss=True, *args, **kwargs
         )
         
-        self.add_norm = nn.LayerNorm(dim)
-
+        # self.add_norm = nn.LayerNorm(dim)
+        self.norm1 = nn.LayerNorm(dim)
+        self.norm2 = nn.LayerNorm(dim)
 
     def forward(self, x: Tensor):
         """
@@ -383,18 +398,29 @@ class SwitchTransformerBlock(nn.Module):
             Tensor: The output tensor.
 
         """
-        resi = x
-        x, _, _ = self.attn(x)
-        x = x + resi
-        x = self.add_norm(x)
-        add_normed = x
+        # resi = x
+        # x, _, _ = self.attn(x)
+        # x = x + resi
+        # x = self.add_norm(x)
+        # add_normed = x
         
-        ##### MoE #####
-        # x, _ = self.ffn(x)
-        x, moe_loss = self.ffn(x)
-        x = x + add_normed
-        x = self.add_norm(x)
-        return x, moe_loss
+        # ##### MoE #####
+        # # x, _ = self.ffn(x)
+        # x, moe_loss = self.ffn(x)
+        # x = x + add_normed
+        # x = self.add_norm(x)
+        # return x, moe_loss
+        # 1) Attention sub-layer
+        residual1 = x
+        attn_out, _, _ = self.attn(x)
+        x = self.norm1(residual1 + attn_out)
+
+        # 2) MoE sub-layer
+        residual2 = x
+        moe_out, aux_loss = self.ffn(x)
+        x = self.norm2(residual2 + moe_out)
+
+        return x, aux_loss
 
 
 class SwitchTransformer(nn.Module):
@@ -422,6 +448,7 @@ class SwitchTransformer(nn.Module):
         dropout: float = 0.1,
         num_experts: int = 2,
         depth: int = 4,
+        max_len: int = 512,
         *args,
         **kwargs,
     ):
@@ -434,7 +461,7 @@ class SwitchTransformer(nn.Module):
         self.dropout = dropout
         self.num_experts = num_experts
         self.depth = depth
-
+        self.pos_emb = nn.Embedding(max_len, dim)
         self.embedding = nn.Embedding(num_tokens, dim)
         self.layers = nn.ModuleList([])
         
@@ -471,7 +498,8 @@ class SwitchTransformer(nn.Module):
         # Embed tokens through embedding layer
         # x = self.embedding(x)
         if x.dtype in [torch.int64, torch.int32]:  # Token IDs
-            x = self.embedding(x)
+            positions = torch.arange(x.size(1), device=x.device).unsqueeze(0)  # (1, T)
+            x = self.embedding(x) + self.pos_emb(positions)
         
         total_aux_loss = 0.0
         # Pass through the transformer block with MoE, it's in modulelist

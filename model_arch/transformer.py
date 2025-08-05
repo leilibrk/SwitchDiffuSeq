@@ -104,18 +104,18 @@ class TransformerNetModel(nn.Module):
             del temp_bert.pooler
 
         elif init_pretrained == 'no':
-            # self.input_transformers = BertEncoder(config)
+            self.input_transformers = BertEncoder(config)
             # self.input_transformers = MoEBertEncoder(config)
-            self.input_transformers = SwitchTransformer(
-                num_tokens=vocab_size,
-                dim=config.hidden_size,
-                heads=config.num_attention_heads,
-                dim_head=config.hidden_size // config.num_attention_heads,
-                dropout=config.hidden_dropout_prob,
-                mult=4,
-                num_experts=2,
-                depth=config.num_hidden_layers,
-            )
+            # self.input_transformers = SwitchTransformer(
+            #     num_tokens=vocab_size,
+            #     dim=config.hidden_size,
+            #     heads=config.num_attention_heads,
+            #     dim_head=config.hidden_size // config.num_attention_heads,
+            #     dropout=config.hidden_dropout_prob,
+            #     mult=4,
+            #     num_experts=8,
+            #     depth=config.num_hidden_layers,
+            # )
             self.register_buffer("position_ids", torch.arange(config.max_position_embeddings).expand((1, -1)))
             self.position_embeddings = nn.Embedding(config.max_position_embeddings, config.hidden_size)
             self.LayerNorm = nn.LayerNorm(config.hidden_size, eps=config.layer_norm_eps)

@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --nodelist=parrot
+#SBATCH --nodelist=gpuvm24
 #SBATCH --output=logs/train_%j.log
 # Exit if any command fails
 set -e

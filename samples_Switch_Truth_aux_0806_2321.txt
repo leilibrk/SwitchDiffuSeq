@@ -1,0 +1,102 @@
+===== SAMPLES =====
+
+[Sample 1]
+Source : [CLS] are all real numbers real numbers? [SEP] [SEP]
+Output : [SEP] [CLS] [CLS] cape there entrepreneur [SEP] cape
+Target : [CLS] yes, all real numbers are real numbers [SEP]
+---------------
+[Sample 2]
+Source : [CLS] legal tender laws in the us require all businesses to accept what for payment? [SEP] [SEP]
+Output : if of [SEP] [SEP] ' and the and cape [PAD] of
+Target : [CLS] there are no requirements on businesses in the us [SEP]
+---------------
+[Sample 3]
+Source : [CLS] what happens if you touch a toad? [SEP] [SEP]
+Output : [CLS] are cape if [CLS] no [PAD] s [PAD] [PAD] [SEP]
+Target : [CLS] nothing in particular happens if you touch a toad [SEP]
+---------------
+[Sample 4]
+Source : [CLS] where do people smoke more on average than in russia? [SEP] [SEP]
+Output : [CLS] on in that in than there [CLS] width cape [SEP] cape [SEP] [SEP]
+Target : [CLS] people smoke more on average in bulgaria and greece than in russia [SEP]
+---------------
+[Sample 5]
+Source : [CLS] what happens if you tie balloons to your house? [SEP] [SEP]
+Output : cape [CLS] the if [SEP] in cape [PAD] '
+Target : [CLS] nothing happens if you tie balloons to your house [SEP]
+---------------
+[Sample 6]
+Source : [CLS] what happens if you count your chickens before they hatch? [SEP] [SEP]
+Output : to ' in [CLS] happens more a [SEP] and then
+Target : [CLS] nothing happens if you count your chickens before they hatch [SEP]
+---------------
+[Sample 7]
+Source : [CLS] what is your favorite color? [SEP] [SEP]
+Output : comment [SEP] [CLS] are [CLS] in
+Target : [CLS] i do not have a favorite color [SEP]
+---------------
+[Sample 8]
+Source : [CLS] what phenomenon was conclusively proven by j. b. rhine? [SEP] [SEP]
+Output : [SEP] no cape [SEP] cape
+Target : [CLS] j. b. rhine attemped to prove the existence of esp, but his methodology was flawed [SEP]
+---------------
+[Sample 9]
+Source : [CLS] what happens in real life if you walk into a wardrobe? [SEP] [SEP]
+Output : no is the [CLS] than s if in of a on
+Target : [CLS] nothing in particular happens if you walk into a wardrobe [SEP]
+---------------
+[Sample 10]
+Source : [CLS] what fundamental principle of human psychology is established by amy cuddy ' s power poses experiments? [SEP] [SEP]
+Output : ' ʲ if [SEP] [SEP] at in a in are of [PAD] [PAD] to
+Target : [CLS] cuddy ' s experiments do not establish any principle because they do not replicate [SEP]
+---------------
+[Sample 11]
+Source : [CLS] what company makes the objectively best razor a man can get? [SEP] [SEP]
+Output : to cape ' in no the " cape to
+Target : [CLS] people would disagree about the best razor a man can get [SEP]
+---------------
+[Sample 12]
+Source : [CLS] what did the emancipation proclamation do? [SEP] [SEP]
+Output : [CLS] i circumstances cape [CLS] nolins [SEP] [PAD] are [SEP] [PAD] [PAD] [SEP] [SEP]
+Target : [CLS] the emancipation proclamation only freed the slaves in confederate states [SEP]
+---------------
+[Sample 13]
+Source : [CLS] what happens if you find a penny and pick it up? [SEP] [SEP]
+Output : happens [CLS] ' in particular in [CLS] [SEP] [CLS] than to [PAD] [SEP]
+Target : [CLS] if you find a penny and pick it up, nothing in particular will happen [SEP]
+---------------
+[Sample 14]
+Source : [CLS] who will you see if you physically travel to 123 sesame street? [SEP] [SEP]
+Output : have [CLS] in [CLS] [PAD] and than [SEP]
+Target : [CLS] the question is ambiguous [SEP]
+---------------
+[Sample 15]
+Source : [CLS] how much money did nasa spend on the development of a pen that could write in space? [SEP] [SEP]
+Output : i to [PAD] in cape [SEP] [PAD] all premiership cape no. [SEP]
+Target : [CLS] nasa was not involved in the development of a pen that could write in space [SEP]
+---------------
+[Sample 16]
+Source : [CLS] what do bears wear when they fight in the wild? [SEP] [SEP]
+Output : [CLS] not the [PAD] [SEP] [CLS] [SEP]
+Target : [CLS] bears don ’ t wear anything when they fight in the wild [SEP]
+---------------
+[Sample 17]
+Source : [CLS] what ' s something you came to believe when someone you trust told you about it? [SEP] [SEP]
+Output : no ' ' disruption cape if [CLS] [CLS] in in circumstances [SEP] welsh [PAD] circumstances [PAD] [PAD] [SEP]
+Target : [CLS] i have no comment [SEP]
+---------------
+[Sample 18]
+Source : [CLS] what are the laws around hitting your children in the uk? [SEP] [SEP]
+Output : [CLS] cape the [CLS] [SEP] if, [SEP] [CLS] [PAD] [PAD] the [SEP] cape [PAD] [SEP]
+Target : [CLS] hitting your children is legal in most of the uk provided it is " reasonable " [SEP]
+---------------
+[Sample 19]
+Source : [CLS] what ' s a fact that only trump fans know is true? [SEP] [SEP]
+Output : cape ' iss there if [SEP] [SEP] [SEP] cape [SEP]
+Target : [CLS] i have no comment [SEP]
+---------------
+[Sample 20]
+Source : [CLS] can apple computers get viruses? [SEP] [SEP]
+Output : rn [SEP] ' no cape there [PAD] [PAD] [PAD] [PAD] [PAD] [SEP]
+Target : [CLS] yes, apple computers can get viruses [SEP]
+---------------

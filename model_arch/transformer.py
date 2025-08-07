@@ -1,7 +1,7 @@
 from transformers import AutoConfig
 # from transformers import BertEncoder
 from transformers.models.bert.modeling_bert import BertEncoder, BertModel
-from model_arch.moe_bert import SwitchTransformer
+from model_arch.moe_bert import SwitchTransformer, MoEModelOutput
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -104,18 +104,18 @@ class TransformerNetModel(nn.Module):
             del temp_bert.pooler
 
         elif init_pretrained == 'no':
-            self.input_transformers = BertEncoder(config)
+            # self.input_transformers = BertEncoder(config)
             # self.input_transformers = MoEBertEncoder(config)
-            # self.input_transformers = SwitchTransformer(
-            #     num_tokens=vocab_size,
-            #     dim=config.hidden_size,
-            #     heads=config.num_attention_heads,
-            #     dim_head=config.hidden_size // config.num_attention_heads,
-            #     dropout=config.hidden_dropout_prob,
-            #     mult=4,
-            #     num_experts=8,
-            #     depth=config.num_hidden_layers,
-            # )
+            self.input_transformers = SwitchTransformer(
+                num_tokens=vocab_size,
+                dim=config.hidden_size,
+                heads=config.num_attention_heads,
+                dim_head=config.hidden_size // config.num_attention_heads,
+                dropout=config.hidden_dropout_prob,
+                mult=4,
+                num_experts=8,
+                depth=config.num_hidden_layers,
+            )
             self.register_buffer("position_ids", torch.arange(config.max_position_embeddings).expand((1, -1)))
             self.position_embeddings = nn.Embedding(config.max_position_embeddings, config.hidden_size)
             self.LayerNorm = nn.LayerNorm(config.hidden_size, eps=config.layer_norm_eps)
@@ -158,6 +158,27 @@ class TransformerNetModel(nn.Module):
         :param timesteps: a 1-D batch of timesteps.
         :return: an [N x C x ...] Tensor of outputs.
         """
+        # emb_t = self.time_embed(timestep_embedding(timesteps, self.hidden_t_dim))
+
+        # if self.input_dims != self.hidden_size:
+        #     emb_x = self.input_up_proj(x)
+        # else:
+        #     emb_x = x
+
+        # seq_length = x.size(1)
+        # position_ids = self.position_ids[:, : seq_length ]
+        # # print(emb_x.shape, emb_t.shape, self.position_embeddings)
+        # emb_inputs = self.position_embeddings(position_ids) + emb_x + emb_t.unsqueeze(1).expand(-1, seq_length, -1)
+        # emb_inputs = self.dropout(self.LayerNorm(emb_inputs))
+
+        # input_trans_hidden_states = self.input_transformers(emb_inputs).last_hidden_state
+        
+        # if self.output_dims != self.hidden_size:
+        #     h = self.output_down_proj(input_trans_hidden_states)
+        # else:
+        #     h = input_trans_hidden_states
+        # h = h.type(x.dtype)
+        # return h
         emb_t = self.time_embed(timestep_embedding(timesteps, self.hidden_t_dim))
 
         if self.input_dims != self.hidden_size:
@@ -166,16 +187,25 @@ class TransformerNetModel(nn.Module):
             emb_x = x
 
         seq_length = x.size(1)
-        position_ids = self.position_ids[:, : seq_length ]
-        # print(emb_x.shape, emb_t.shape, self.position_embeddings)
-        emb_inputs = self.position_embeddings(position_ids) + emb_x + emb_t.unsqueeze(1).expand(-1, seq_length, -1)
+        position_ids = self.position_ids[:, :seq_length]
+        emb_inputs = (
+            self.position_embeddings(position_ids)
+            + emb_x
+            + emb_t.unsqueeze(1).expand(-1, seq_length, -1)
+        )
         emb_inputs = self.dropout(self.LayerNorm(emb_inputs))
 
-        input_trans_hidden_states = self.input_transformers(emb_inputs).last_hidden_state
-        
+        # === HERE: capture both hidden-state and aux_loss ===
+        inner_out = self.input_transformers(emb_inputs)
+        hidden = inner_out.last_hidden_state
+        aux_loss = getattr(inner_out, "aux_loss", None)
+
+        # projection back to desired output dims
         if self.output_dims != self.hidden_size:
-            h = self.output_down_proj(input_trans_hidden_states)
+            h = self.output_down_proj(hidden)
         else:
-            h = input_trans_hidden_states
+            h = hidden
         h = h.type(x.dtype)
-        return h
+
+        # Wrap into our MoEModelOutput so downstream sees aux_loss
+        return MoEModelOutput(last_hidden_state=h, aux_loss=aux_loss)

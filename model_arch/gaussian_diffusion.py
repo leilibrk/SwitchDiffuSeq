@@ -252,7 +252,9 @@ class GaussianDiffusion:
         assert t.shape == (B,)
         # print(x.shape)
         model_output = model(x, self._scale_timesteps(t), **model_kwargs)
-        
+        if hasattr(model_output, "last_hidden_state"):
+            model_output = model_output.last_hidden_state
+
         # for fixedlarge, we set the initial (log-)variance like so
         # to get a better decoder log likelihood.
         model_variance = np.append(self.posterior_variance[1], self.betas[1:])
@@ -551,7 +553,14 @@ class GaussianDiffusion:
         terms = {}
 
         target = x_start
-        model_output = model(x_t, self._scale_timesteps(t), **model_kwargs)
+        output = model(x_t, self._scale_timesteps(t), **model_kwargs)
+        if hasattr(output, "last_hidden_state"):
+            model_output = output.last_hidden_state
+        else:
+            model_output = output
+        aux_loss   = None
+        if hasattr(output, "aux_loss"):
+            aux_loss = output.aux_loss
         assert model_output.shape == target.shape == x_start.shape
         terms["mse"] = mean_flat((target - model_output) ** 2)
 
@@ -569,6 +578,8 @@ class GaussianDiffusion:
         # assert (model.lm_head.weight == model.word_embedding.weight).all()
 
         terms["loss"] = terms["mse"] + decoder_nll + tT_loss
+        if aux_loss is not None:
+            terms["aux_loss"] = aux_loss
 
         return terms
 
@@ -791,3 +802,4 @@ class _WrappedModel:
         if self.rescale_timesteps:
             new_ts = new_ts.float() * (1000.0 / self.original_num_steps)
         return self.model(x, new_ts, **kwargs)
+    

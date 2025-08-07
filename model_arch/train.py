@@ -18,6 +18,8 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 import sys
 import time
+from fvcore.nn import FlopCountAnalysis, flop_count_table
+from torch.nn.utils import clip_grad_norm_
 def clear_dir(directory_path):
     try:
         files = glob.glob(os.path.join(directory_path, '*'))
@@ -81,6 +83,16 @@ class TrainLoop:
         self.train_nll_curve = []
         self.val_nll_curve = []
         
+    def save_checkpoint(self, directory, filename="checkpoint.pt"):
+        os.makedirs(directory, exist_ok=True)
+        ckpt = {
+            "model_state":  self.model.state_dict(),
+            "optimizer_state": self.opt.state_dict(),
+            "scheduler_state": self.scheduler.state_dict(),
+            "step": self.step,
+        }
+        torch.save(ckpt, os.path.join(directory, filename))
+        print(f"Saved checkpoint to {directory}/{filename}")
     def AdamW_LLRD(self): 
         print("\n\n======== Using Layer-wise Learning Rate Decay with AdamW ========\n\n")
         lr = self.lr
@@ -140,7 +152,7 @@ class TrainLoop:
                 pbar.update(1)
         
         # Create directory if needed
-        model_name = "Bert_greet"  # set this dynamically if needed
+        model_name = "Switch_superglue"  # set this dynamically if needed
         timestamp = datetime.now().strftime("%m%d_%H%M")
 
         # Define model directory and loss curve filename
@@ -188,6 +200,7 @@ class TrainLoop:
         plt.close()
 
         plt.show()
+        self.save_checkpoint(model_dir, filename="final.pt")
 
     def run_step(self, batch, cond):
         self.forward_backward(batch, cond)
@@ -260,36 +273,58 @@ class TrainLoop:
             ##########
             # Add auxiliary MoE loss if available
             # model_output = losses.get("model_output", None)
-            # aux_loss = getattr(model_output, "loss", None) if model_output else None
+            aux_loss = losses.get("aux_loss", None)
 
-            # main_loss = (losses["loss"] * weights).mean()
-            # if aux_loss is not None:
-            #     total_loss = main_loss + aux_loss  # or + 0.01 * aux_loss (weight if needed)
-            # else:
-            #     total_loss = main_loss 
+            main_loss = (losses["loss"] * weights).mean()
+            if aux_loss is not None:
+                total_loss = main_loss + 0.01 * aux_loss
+            else:
+                total_loss = main_loss 
             ###########
             if isinstance(self.schedule_sampler, LossAwareSampler):
                 self.schedule_sampler.update_with_local_losses(
                     t, losses["loss"].detach()
                 )
 
-            loss = (losses["loss"] * weights).mean()
+            # loss = (losses["loss"] * weights).mean()
             nll = losses["nll"].detach().cpu().mean()  # average over batch
-            train_losses.append(loss.detach().cpu())
-            # train_losses.append(total_loss.detach().cpu())
+            # train_losses.append(loss.detach().cpu())
+            train_losses.append(total_loss.detach().cpu())
             train_nlls.append(nll)
 
-            loss.backward()
-            # total_loss.backward()
+            # loss.backward()
+            #### ✅ FLOP Count Logging Every 100 Steps
+            if self.step % 100 == 0 and i == 0:
+                try:
+                    # Create a dummy timesteps tensor:
+                    dummy_timesteps = torch.zeros(
+                        micro.size(0), dtype=torch.long, device=micro.device
+                    )
+                    # Compute FLOPs with both inputs:
+                    flop_analysis = FlopCountAnalysis(
+                        self.model, (micro, dummy_timesteps)
+                    )
+                    total_flops = flop_analysis.total()
+                    print(f"\n[Step {self.step}] Estimated FLOPs: {total_flops/1e9:.2f} GFLOPs")
+                    print(flop_count_table(flop_analysis, max_depth=2))
+                except Exception as e:
+                    print(f"[Step {self.step}] FLOP analysis failed: {e}")
+            ####
+            total_loss.backward()
+            if aux_loss is not None:
+                tqdm.write(f"[Step {self.step}] Aux Loss: {aux_loss.item():.6f}")
+
             
         mean_loss = np.mean(train_losses)
         mean_nll = np.mean(train_nlls)
-        print(f'Epoch {self.step}/{self.learning_steps} Training Loss: {mean_loss}')
+        tqdm.write(f'Epoch {self.step}/{self.learning_steps} Training Loss: {mean_loss}')
         self.train_loss_curve.append(mean_loss)
         self.train_nll_curve.append(mean_nll)
 
     def optimize_normal(self):
 #         self._anneal_lr()
+        # 1) clip before stepping
+        clip_grad_norm_(self.model.parameters(), max_norm=1.0)
         self.opt.step()
         self.scheduler.step()
         for rate, params in zip(self.ema_rate, self.ema_params):

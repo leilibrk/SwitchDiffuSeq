@@ -78,7 +78,7 @@ if __name__ == '__main__':
                                                                clamp_step=config['clamp_step'])
     print("\n===== SAMPLES =====\n")
     # Get encoder class name
-    model_name = "Switch_superglue"
+    model_name = "Switch_QA_8e_difstep2000"
     # Create timestamp
     timestamp = datetime.now().strftime("%m%d_%H%M")
     # Compose file name

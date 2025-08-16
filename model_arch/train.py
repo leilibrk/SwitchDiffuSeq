@@ -20,6 +20,7 @@ import sys
 import time
 from fvcore.nn import FlopCountAnalysis, flop_count_table
 from torch.nn.utils import clip_grad_norm_
+from model_arch.moe_bert import SwitchGate
 def clear_dir(directory_path):
     try:
         files = glob.glob(os.path.join(directory_path, '*'))
@@ -72,8 +73,30 @@ class TrainLoop:
 
         self.model_params = list(self.model.parameters())
         self.master_params = self.model_params
-        
-        self.opt = self.AdamW_LLRD() if use_llrd else AdamW(self.master_params, lr=self.lr, weight_decay=self.weight_decay)
+        def _build_moe_groups(model, base_lr, weight_decay):
+            m = model.module if hasattr(model, "module") else model
+            trunk, experts, router = [], [], []
+            for name, p in m.named_parameters():
+                if not p.requires_grad:
+                    continue
+                if "gate" in name:
+                    router.append(p)
+                elif "ffn.experts" in name or "experts" in name or "moe" in name:
+                    experts.append(p)
+                else:
+                    trunk.append(p)
+
+            print(f"[opt] trunk={len(trunk)} experts={len(experts)} router={len(router)}")
+            return torch.optim.AdamW([
+                {"params": trunk,   "lr": base_lr},
+                {"params": experts, "lr": base_lr * 2.0},
+                {"params": router,  "lr": base_lr * 3.0},
+            ], weight_decay=weight_decay)
+
+        # replace:
+        self.opt = _build_moe_groups(self.model, self.lr, self.weight_decay)
+
+        # self.opt = self.AdamW_LLRD() if use_llrd else AdamW(self.master_params, lr=self.lr, weight_decay=self.weight_decay)
  
         self.scheduler = get_cosine_schedule_with_warmup(self.opt, num_warmup_steps = warm_up_steps, num_training_steps=epochs)
         self.ema_params = [copy.deepcopy(self.master_params) for _ in range(len(self.ema_rate))]
@@ -82,7 +105,84 @@ class TrainLoop:
         self.val_loss_curve = []
         self.train_nll_curve = []
         self.val_nll_curve = []
-        
+    def log_expert_stats(self, aux_loss):
+        # print every 100 steps; don't depend on aux_loss being non-None
+        if (self.step % 100) != 0:
+            return
+
+        m = self.model.module if hasattr(self.model, "module") else self.model
+
+        total_experts = 0
+        active_experts = 0
+        total_drop_rates, entropies, skews, details = [], [], [], []
+
+        for name, module in m.named_modules():
+            # accept any module that cached MoE stats
+            if not (hasattr(module, "last_load") or hasattr(module, "last_expert_usage")):
+                continue
+
+            load = getattr(module, "last_load", None)
+            if load is None:
+                load = getattr(module, "last_expert_usage", None)
+
+            if load is None:            # still nothing to read
+                continue
+            if not torch.is_tensor(load):
+                # just in case someone stored a list/np array
+                load = torch.as_tensor(load)
+
+            E = load.numel()
+            if E == 0:
+                continue
+
+            total_experts += E
+
+            imp  = getattr(module, "last_importance", None)
+            drop = getattr(module, "last_drop_rate", None)
+            kept = getattr(module, "last_kept_total", None)
+
+            # threshold: at least ~1 kept token or 1%
+            if isinstance(kept, (int, float)) and kept > 0:
+                thr = max(0.01, 1.0 / float(kept))
+            else:
+                thr = 0.01
+
+            # count "active" experts
+            layer_active = int((load > thr).sum().item())
+            active_experts += layer_active
+
+            # router entropy / skew from soft importance if present
+            if imp is not None and torch.is_tensor(imp) and imp.numel() == E:
+                p = (imp / imp.sum().clamp_min(1e-8)).clamp_min(1e-12)
+                entropies.append(float((-(p * p.log()).sum()).item()))
+                skews.append(float((p.max() / p.min().clamp_min(1e-8)).item()))
+
+            if isinstance(drop, torch.Tensor):
+                drop = float(drop.item())
+            if isinstance(drop, (int, float)):
+                total_drop_rates.append(drop)
+
+            details.append(f"{name}: active {layer_active}/{E} (thr≈{thr:.4f})")
+
+        if total_experts == 0:
+            return
+
+        utilization = active_experts / total_experts
+        msg = [f"\n[Step {self.step}] Expert Utilization: {utilization:.2%}"]
+        if total_drop_rates:
+            msg.append(f"  Avg drop rate: {float(sum(total_drop_rates)/len(total_drop_rates)):.2%}")
+        if entropies:
+            msg.append(f"  Avg router entropy: {float(sum(entropies)/len(entropies)):.3f}")
+        if skews:
+            msg.append(f"  Avg router skew (max/min): {float(sum(skews)/len(skews)):.2f}")
+        from tqdm import tqdm as _tqdm
+        _tqdm.write("\n".join(msg))
+
+        if (self.step % 500) == 0:
+            for d in details:
+                _tqdm.write("  " + d)
+
+
     def save_checkpoint(self, directory, filename="checkpoint.pt"):
         os.makedirs(directory, exist_ok=True)
         ckpt = {
@@ -152,7 +252,7 @@ class TrainLoop:
                 pbar.update(1)
         
         # Create directory if needed
-        model_name = "Switch_superglue"  # set this dynamically if needed
+        model_name = "Switch_QA_8e_difstep2000"  # set this dynamically if needed
         timestamp = datetime.now().strftime("%m%d_%H%M")
 
         # Define model directory and loss curve filename
@@ -314,7 +414,8 @@ class TrainLoop:
             if aux_loss is not None:
                 tqdm.write(f"[Step {self.step}] Aux Loss: {aux_loss.item():.6f}")
 
-            
+        # Add expert utilization monitoring
+        self.log_expert_stats(aux_loss)    
         mean_loss = np.mean(train_losses)
         mean_nll = np.mean(train_nlls)
         tqdm.write(f'Epoch {self.step}/{self.learning_steps} Training Loss: {mean_loss}')

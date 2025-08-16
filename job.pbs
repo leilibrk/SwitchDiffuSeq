@@ -1,0 +1,33 @@
+#!/bin/bash
+# ----- PBS resource requests -----
+# Job name
+#PBS -N dtext_train
+# 1 node, 4 CPUs, 32 GB RAM, 1 GPU (adjust as needed)
+#PBS -l select=1:ncpus=4:mem=32gb:ngpus=1
+# Max run time (HH:MM:SS)
+#PBS -l walltime=08:00:00
+# Merge stdout/stderr and write to a file in submit dir
+#PBS -j oe
+#PBS -o $PBS_O_WORKDIR/logs/train_$PBS_JOBID.log
+
+# ----- Environment prep -----
+set -e
+mkdir -p "$PBS_O_WORKDIR/logs"
+
+# Load conda (Miniforge) and activate your env
+module load miniforge/3
+eval "$(~/miniforge3/bin/conda shell.bash hook)"
+conda activate dlenv_conda
+
+# Optional: limit BLAS threads to requested CPUs
+export OMP_NUM_THREADS=4
+export MKL_NUM_THREADS=4
+export OPENBLAS_NUM_THREADS=4
+export NUMEXPR_NUM_THREADS=4
+export PYTHONUNBUFFERED=1
+
+# Move to the directory you submitted from (your repo root)
+cd "$PBS_O_WORKDIR"
+
+# ----- Run your program -----
+python -u run.py 2>&1 | tee "logs/train_${PBS_JOBID}.log"

@@ -1,0 +1,102 @@
+===== SAMPLES =====
+
+[Sample 1]
+Source : [CLS] [ boolq ] context : doubly linked list - - in computer science, a doubly linked list is a linked data structure that consists of a set of sequentially linked records called nodes. each node contains two fields, called links, that are references to the previous and to the next node in the sequence of nodes. the beginning and ending nodes ' previous and next links, respectively, point to some kind of terminator, typically a sentinel node or null, to facilitate traversal of the list. if there is only one sentinel node, then the list is circularly linked via the sentinel node. it can be conceptualized as two singly linked lists formed from the same data items, but in opposite sequential orders. question : is double link list a linear data structure [SEP] [SEP]
+Output : [CLS] no [SEP]
+Target : [CLS] no [SEP]
+---------------
+[Sample 2]
+Source : [CLS] [ rte ] premise : the hullabaloo is over a glacial period dating to about 750 million to 600 million years ago. hypothesis : a glacial period occurred about 750 million to 600 million years ago. is this entailment? [SEP] [SEP]
+Output : [CLS] [SEP]tail not _
+Target : [CLS] entailment [SEP]
+---------------
+[Sample 3]
+Source : [CLS] [ boolq ] context : han lue - - han lue is a fictional character in the fast and the furious franchise. he first appears in the fast and the furious : tokyo drift as the mentor of sean boswell, dying in a collision in the film ' s climax. han ' s status as a member of dominic toretto ' s crew was shown in the subsequent films fast & furious, fast five, fast & furious 6 and furious 7, as well as the short film los bandoleros. question : does han die in the end of tokyo drift [SEP] [SEP]
+Output : [CLS] yes [PAD] [SEP]
+Target : [CLS] yes [SEP]
+---------------
+[Sample 4]
+Source : [CLS] [ boolq ] context : primary election - - a primary election is the process by which the general public can indicate their preference for a candidate in an upcoming general election or by - election, thus narrowing the field of candidates. question : do i have to vote in the primary election [SEP] [SEP]
+Output : [SEP] [CLS] yes
+Target : [CLS] no [SEP]
+---------------
+[Sample 5]
+Source : [CLS] [ wic ] sentence 1 : turn a key. sentence 2 : turn the clay on the wheel. word : turn same meaning in both sentences? [SEP] [SEP]
+Output : [CLS] yes [SEP]
+Target : [CLS] no [SEP]
+---------------
+[Sample 6]
+Source : [CLS] [ rte ] premise : seattle - apple inc., maker of macintosh computers and the iphone, reports fiscal second - quarter earnings wednesday after the closing bell. the following is a summary of key developments related to that period. overview : in january, apple founder steve jobs addressed the matter of his increasingly gaunt appearance — twice. he first said it was caused by an easily treatable hormone imbalance, and that he would remain at the helm. the next week, jobs, a cancer survivor, revealed the problem was more complicated and said he would take a medical leave of absence until the end of june. chief operating officer tim cook is running the company in his absence. hypothesis : steve jobs is the creator of apple. is this entailment? [SEP] [SEP]
+Output : [PAD] [CLS] [SEP]
+Target : [CLS] entailment [SEP]
+---------------
+[Sample 7]
+Source : [CLS] [ boolq ] context : metrication in the united states - - although customary units are used more often than metric units in the u. s., the si system is used extensively in some fields such as science, medicine, the military, automobile production and repair, and international affairs. post 1994 federal law also mandates most packaged consumer goods be labeled in both customary and metric units. still, most question : does the us army use the metric system [SEP] [SEP]
+Output : [PAD] [SEP] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] no
+Target : [CLS] yes [SEP]
+---------------
+[Sample 8]
+Source : [CLS] [ rte ] premise : kevin vincent, 44, of arlington, va., said his wife buys store brand acetaminophen and he wanted to find out more about the problem. hypothesis : kevin vincent buys store brand acetaminophen. is this entailment? [SEP] [SEP]
+Output : not en en [CLS]tailment [PAD] [SEP]
+Target : [CLS] not _ entailment [SEP]
+---------------
+[Sample 9]
+Source : [CLS] [ wic ] sentence 1 : come out of the closet! sentence 2 : he came singing down the road. word : come same meaning in both sentences? [SEP] [SEP]
+Output : [CLS] yes [SEP]
+Target : [CLS] yes [SEP]
+---------------
+[Sample 10]
+Source : [CLS] [ boolq ] context : femoral artery - - the femoral artery is a large artery in the thigh and the main arterial supply to the leg. it enters the thigh from behind the inguinal ligament as the common femoral artery, a continuation of the external iliac artery. injuries to the femoral artery can require reattachment surgery. question : are there any main arteries in your thigh [SEP] [SEP]
+Output : [CLS] [SEP]
+Target : [CLS] yes [SEP]
+---------------
+[Sample 11]
+Source : [CLS] [ wic ] sentence 1 : the cinema relies on apparent motion. sentence 2 : he made a motion to adjourn. word : motion same meaning in both sentences? [SEP] [SEP]
+Output : [CLS] no [SEP]
+Target : [CLS] no [SEP]
+---------------
+[Sample 12]
+Source : [CLS] [ copa ] premise : the seamstress pushed the threaded needle into the fabric. question : what was the effect? choices : ( a ) the thread wrapped around the needle. ( b ) the thread went through the fabric. [SEP] [SEP]
+Output : [PAD] [SEP]
+Target : [CLS] b [SEP]
+---------------
+[Sample 13]
+Source : [CLS] [ rte ] premise : cauhtemoc cardenas said during a news conference on 7 june that the visit to mexico by salvadoran president alfredo cristiani is a visit by " a repressive ruler who oppresses a large sector of his people. " hypothesis : alfredo cristiani visits mexico on june 7. is this entailment? [SEP] [SEP]
+Output : [SEP] [CLS]tailment en
+Target : [CLS] not _ entailment [SEP]
+---------------
+[Sample 14]
+Source : [CLS] [ wic ] sentence 1 : to press a crowd back. sentence 2 : this guy can press 300 pounds. word : press same meaning in both sentences? [SEP] [SEP]
+Output : [CLS] yes [SEP]
+Target : [CLS] no [SEP]
+---------------
+[Sample 15]
+Source : [CLS] [ wic ] sentence 1 : a ranch hand. sentence 2 : her hands are really strong. word : hand same meaning in both sentences? [SEP] [SEP]
+Output : [CLS] yes [SEP]
+Target : [CLS] no [SEP]
+---------------
+[Sample 16]
+Source : [CLS] [ wic ] sentence 1 : don ' t go outside wearing just a t - shirt ; you ' ll freeze! sentence 2 : the water in the bowl froze. word : freeze same meaning in both sentences? [SEP] [SEP]
+Output : [CLS] yes [SEP]
+Target : [CLS] no [SEP]
+---------------
+[Sample 17]
+Source : [CLS] [ boolq ] context : draft - card burning - - in an amendment sponsored by congressmen l. mendel rivers and william g. bray, on august 31, 1965, the law was augmented with four words, to include penalties for any person who ` ` knowingly destroys, knowingly mutilates ' ' the card, under 50 u. s. c. § 462 ( b ) ( 3 ). strom thurmond moved the bill through the senate, calling draft - card burning ` ` contumacious conduct ' ' which ` ` represents a potential threat to the exercise of the power to raise and support armies. ' ' at the time, many observers ( including the u. s. court of appeals for the first circuit ) believed that congress had intentionally targeted anti - war draft - card burners. question : is it illegal to burn a draft card [SEP] [SEP]
+Output : no [SEP] yes
+Target : [CLS] yes [SEP]
+---------------
+[Sample 18]
+Source : [CLS] [ wic ] sentence 1 : my sister lives in that apartment building. sentence 2 : there was a three - story building on the corner. word : building same meaning in both sentences? [SEP] [SEP]
+Output : [CLS] yes [SEP]
+Target : [CLS] yes [SEP]
+---------------
+[Sample 19]
+Source : [CLS] [ copa ] premise : the man needed coins to fill the parking meter. question : what was the effect? choices : ( a ) he searched under his car seats for loose change. ( b ) he begged people on the street for loose change. [SEP] [SEP]
+Output : [SEP] [CLS]
+Target : [CLS] a [SEP]
+---------------
+[Sample 20]
+Source : [CLS] [ boolq ] context : privacy laws of the united states - - the privacy laws of the united states deal with several different legal concepts. one is the invasion of privacy, a tort based in common law allowing an aggrieved party to bring a lawsuit against an individual who unlawfully intrudes into his or her private affairs, discloses his or her private information, publicizes him or her in a false light, or appropriates his or her name for personal gain. public figures have less privacy, and this is an evolving area of law as it relates to the media. question : is an invasion of privacy against the law [SEP] [SEP]
+Output : no [PAD] [PAD] [PAD] [SEP]
+Target : [CLS] yes [SEP]
+---------------

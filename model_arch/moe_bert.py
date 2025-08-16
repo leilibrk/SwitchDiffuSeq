@@ -149,7 +149,7 @@ class SwitchGate(nn.Module):
         self,
         dim,
         num_experts: int,
-        capacity_factor: float = 1.0,
+        capacity_factor: float = 1.25,
         epsilon: float = 1e-6,
         *args,
         **kwargs,
@@ -188,6 +188,7 @@ class SwitchGate(nn.Module):
         cum_count = mask.cumsum(dim=0)                    # running total over rows
         position_in_expert = cum_count.gather(1, top1_idx.unsqueeze(1)).squeeze(1) - 1  # (N,)
         keep = position_in_expert < capacity              # boolean mask (N,)
+        kept_total = int(keep.sum().item())
 
         # Step 2: Apply mask
         mask = mask * keep.unsqueeze(1).float()           # (N, E)
@@ -207,6 +208,19 @@ class SwitchGate(nn.Module):
             importance = importance / (importance.sum() + self.epsilon)
             load       = load       / (load.sum()       + self.epsilon)
             loss = ((load - importance)**2).mean()
+            # ---------- ADD THESE LINES FOR LOGGING ----------
+            # more faithful "soft" importance from probs averaged over (B,T)
+            soft_importance = flat_scores.mean(dim=0)
+            # "hard" load based on actually kept tokens per expert
+            kept_counts = torch.bincount(top1_idx[keep], minlength=E).float()
+            hard_load = kept_counts / kept_counts.sum().clamp_min(1.0)
+
+            self.last_importance = soft_importance.detach()
+            self.last_load = hard_load.detach()
+            self.last_expert_usage = self.last_load           # alias for your logger
+            self.last_drop_rate = (1.0 - keep.float().mean()).item()
+            self.last_kept_total = kept_total
+            # ---------------------------------------------------
             return gate_scores, loss
 
         return gate_scores, None
@@ -244,7 +258,7 @@ class SwitchMoE(nn.Module):
         hidden_dim: int,
         output_dim: int,
         num_experts: int,
-        capacity_factor: float = 1.0,
+        capacity_factor: float = 1.25,
         mult: int = 4,
         use_aux_loss: bool = False,
         *args,

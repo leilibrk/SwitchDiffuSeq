@@ -3,4 +3,5 @@ __pycache__/
 *.py[cod]
 .ipynb_checkpoints/
 data/
-logs/
+logs/allfiles.txt
+*.pt

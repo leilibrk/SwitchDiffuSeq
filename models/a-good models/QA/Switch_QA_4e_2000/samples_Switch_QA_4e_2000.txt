@@ -1,0 +1,122 @@
+===== SAMPLES =====
+
+[Sample 1]
+Source : [CLS] what includes pressure terms when calculating area in volume? [SEP] [SEP]
+Output : [CLS] [CLS] [PAD] cape [SEP] [SEP]
+Target : [CLS] formalism [SEP]
+---------------
+[Sample 2]
+Source : [CLS] what is the force equivalent of torque compared to angular momentum? [SEP] [SEP]
+Output : [CLS] [PAD] [SEP] consumers
+Target : [CLS] rotational equivalent for position [SEP]
+---------------
+[Sample 3]
+Source : [CLS] what would change the rotational inertia of a body under newton's first law of motion? [SEP] [SEP]
+Output : [CLS] [SEP] [SEP]
+Target : [CLS] unbalanced torque [SEP]
+---------------
+[Sample 4]
+Source : [CLS] to calculate instant angular acceleration of a rigid body what would you use? [SEP] [SEP]
+Output : [CLS] [CLS] [PAD] [SEP] [SEP]
+Target : [CLS] newton's second law of motion [SEP]
+---------------
+[Sample 5]
+Source : [CLS] where does centripetal force go? [SEP] [SEP]
+Output : [CLS] [SEP] [SEP]
+Target : [CLS] toward the center of the curving path [SEP]
+---------------
+[Sample 6]
+Source : [CLS] how do centripetal forces act in relation to vectors of velocity? [SEP] [SEP]
+Output : daphne [CLS] [PAD] [SEP]
+Target : [CLS] perpendicular [SEP]
+---------------
+[Sample 7]
+Source : [CLS] what force changes an objects direction of travel? [SEP] [SEP]
+Output : [CLS] cape the [PAD] [PAD] [PAD] [SEP]
+Target : [CLS] centripetal [SEP]
+---------------
+[Sample 8]
+Source : [CLS] what is another word for centripetal force? [SEP] [SEP]
+Output : [CLS] cape disruption cape [SEP] [PAD] [SEP]
+Target : [CLS] radial [SEP]
+---------------
+[Sample 9]
+Source : [CLS] what is resposible for speeding up or slowing down an object? [SEP] [SEP]
+Output : ##lins [SEP] [CLS] [SEP]
+Target : [CLS] tangential force [SEP]
+---------------
+[Sample 10]
+Source : [CLS] what is the only form potential energy can change into? [SEP] [SEP]
+Output : [SEP] [CLS] width premiership cape [SEP] [SEP]
+Target : [CLS] kinetic [SEP]
+---------------
+[Sample 11]
+Source : [CLS] what is the only form kinetic energy can change into? [SEP] [SEP]
+Output : clark decidedly
+Target : [CLS] potential [SEP]
+---------------
+[Sample 12]
+Source : [CLS] what is preserved in a closed system of forces when acted upon? [SEP] [SEP]
+Output : [CLS] [CLS] [SEP] [SEP]
+Target : [CLS] net mechanical energy [SEP]
+---------------
+[Sample 13]
+Source : [CLS] what is the force between two locations related to? [SEP] [SEP]
+Output : [CLS] entrepreneur cape cape [SEP] [PAD] [PAD] [SEP]
+Target : [CLS] difference in potential energy [SEP]
+---------------
+[Sample 14]
+Source : [CLS] what is the force called rgarding a potential field between two locations? [SEP] [SEP]
+Output : [SEP] loyalty
+Target : [CLS] artifact [SEP]
+---------------
+[Sample 15]
+Source : [CLS] what is sometimes impossible to model? [SEP] [SEP]
+Output : [CLS] [SEP] the [SEP]
+Target : [CLS] forces [SEP]
+---------------
+[Sample 16]
+Source : [CLS] why are some forces due to that are impossible to model? [SEP] [SEP]
+Output : [CLS] [SEP] [PAD] [PAD] [SEP]
+Target : [CLS] gradient of potentials [SEP]
+---------------
+[Sample 17]
+Source : [CLS] what do electrostatic gradiient potentials create? [SEP] [SEP]
+Output : [CLS] [SEP]
+Target : [CLS] friction [SEP]
+---------------
+[Sample 18]
+Source : [CLS] tension, compression, and drag are what kind of forces? [SEP] [SEP]
+Output : [CLS] [SEP] [SEP]
+Target : [CLS] nonconservative [SEP]
+---------------
+[Sample 19]
+Source : [CLS] in what treatment are nonconservative and conservative forces described? [SEP] [SEP]
+Output : premiership [CLS] premiership [SEP]
+Target : [CLS] statistical mechanics [SEP]
+---------------
+[Sample 20]
+Source : [CLS] what changes macroscopic closed system energies? [SEP] [SEP]
+Output : mister [CLS] [SEP] [SEP]
+Target : [CLS] nonconservative forces [SEP]
+---------------
+[Sample 21]
+Source : [CLS] what is the exchange of heat associated with? [SEP] [SEP]
+Output : [CLS] disruption [SEP] [SEP] [SEP] cape [SEP]
+Target : [CLS] nonconservative forces [SEP]
+---------------
+[Sample 22]
+Source : [CLS] what is the law of thermodynamics associated with closed system heat exchange? [SEP] [SEP]
+Output : [CLS] disruption'[SEP] [CLS] [SEP]
+Target : [CLS] second [SEP]
+---------------
+[Sample 23]
+Source : [CLS] what makes energy changes in a closed system? [SEP] [SEP]
+Output : [CLS] cape cape [SEP]
+Target : [CLS] nonconservative forces [SEP]
+---------------
+[Sample 24]
+Source : [CLS] what is the metric term less used than the newton? [SEP] [SEP]
+Output : [CLS] [SEP]
+Target : [CLS] kilogram - force [SEP]
+---------------

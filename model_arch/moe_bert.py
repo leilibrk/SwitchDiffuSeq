@@ -1,75 +1,3 @@
-# import torch
-# import torch.nn as nn
-# import torch.nn.functional as F
-# from transformers.models.bert.modeling_bert import BertAttention
-# from typing import Optional, Tuple
-# from transformers.modeling_outputs import BaseModelOutput
-# class SimpleMoEFFN(nn.Module):
-#     def __init__(self, hidden_dim, expert_dim, num_experts=2, k=1):
-#         super().__init__()
-#         self.num_experts = num_experts
-#         self.k = k
-
-#         self.experts = nn.ModuleList([
-#             nn.Sequential(
-#                 nn.Linear(hidden_dim, expert_dim),
-#                 nn.ReLU(),
-#                 nn.Linear(expert_dim, hidden_dim)
-#             ) for _ in range(num_experts)
-#         ])
-#         self.gate = nn.Linear(hidden_dim, num_experts)
-#         self.dropout = nn.Dropout(0.1)
-#         self.layernorm = nn.LayerNorm(hidden_dim)
-
-#     def forward(self, x):
-#         B, T, D = x.shape
-#         residual = x
-#         x_flat = x.view(-1, D)
-
-#         gate_logits = self.gate(x_flat)
-#         topk_val, topk_idx = torch.topk(gate_logits, self.k, dim=-1)
-#         topk_weights = F.softmax(topk_val, dim=-1)
-
-#         outputs = []
-#         for i in range(self.k):
-#             expert_ids = topk_idx[:, i]
-#             output_i = torch.zeros_like(x_flat)
-#             for e in range(self.num_experts):
-#                 mask = (expert_ids == e)
-#                 if mask.any():
-#                     output_i[mask] = self.experts[e](x_flat[mask])
-#             outputs.append(output_i)
-
-#         stacked = torch.stack(outputs, dim=1)
-#         mixed = (stacked * topk_weights.unsqueeze(-1)).sum(1)
-
-#         x = mixed.view(B, T, D)
-#         x = self.dropout(x)
-#         return self.layernorm(x + residual)
-
-
-# class MoEBertLayer(nn.Module):
-#     def __init__(self, config):
-#         super().__init__()
-#         config._attn_implementation = "sdpa"
-#         self.attention = BertAttention(config)
-#         self.moe = SimpleMoEFFN(config.hidden_size, config.hidden_size * 4, num_experts=2, k=1)
-
-#     def forward(self, hidden_states, attention_mask=None):
-#         attention_output = self.attention(hidden_states, attention_mask=attention_mask)[0]
-#         layer_output = self.moe(attention_output)
-#         return layer_output, None  # to be compatible with `BertEncoder`
-
-
-# class MoEBertEncoder(nn.Module):
-#     def __init__(self, config):
-#         super().__init__()
-#         self.layer = nn.ModuleList([MoEBertLayer(config) for _ in range(config.num_hidden_layers)])
-
-#     def forward(self, hidden_states, attention_mask=None):
-#         for layer_module in self.layer:
-#             hidden_states, _ = layer_module(hidden_states, attention_mask)
-#         return BaseModelOutput(last_hidden_state=hidden_states)
 import torch
 import torch.nn.functional as F
 from torch import Tensor, nn
@@ -78,6 +6,7 @@ from transformers.modeling_outputs import BaseModelOutput
 from transformers.modeling_outputs import ModelOutput
 from dataclasses import dataclass
 from typing import Optional, Tuple, List, Union
+import math
 
 @dataclass
 class MoEModelOutput(ModelOutput):
@@ -95,41 +24,80 @@ class FeedForward(nn.Module):
 
     def forward(self, x):
         return self.net(x)
+# class MultiQueryAttention(nn.Module):
+#     def __init__(self, dim, heads=8, dropout=0.1):
+#         super().__init__()
+#         self.heads = heads
+#         self.head_dim = dim // heads
+#         self.scale = self.head_dim ** -0.5
+
+#         self.q = nn.Linear(dim, dim)
+#         self.kv = nn.Linear(dim, self.head_dim * 2)  # One shared k & v for all heads
+#         self.out = nn.Linear(dim, dim)
+#         self.dropout = nn.Dropout(dropout)
+
+#     def forward(self, x):
+#         b, n, d = x.shape
+#         h = self.heads
+
+#         # Q: [b, n, h, d_head]
+#         q = self.q(x).view(b, n, h, self.head_dim)
+
+#         # k, v: [b, n, 1, d_head] -> broadcast to [b, n, h, d_head]
+#         kv = self.kv(x).view(b, n, 2, self.head_dim)
+#         k, v = kv[:, :, 0], kv[:, :, 1]
+#         k = k.unsqueeze(2).expand(-1, -1, h, -1)
+#         v = v.unsqueeze(2).expand(-1, -1, h, -1)
+
+#         # Attention: [b, h, n, n]
+#         attn_scores = torch.einsum('bnhd,bmhd->bhnm', q, k) * self.scale
+#         attn = attn_scores.softmax(dim=-1)
+#         attn = self.dropout(attn)
+
+#         # Apply attention: [b, n, h, d_head]
+#         out = torch.einsum('bhnm,bmhd->bnhd', attn, v)
+
+#         # Reshape: [b, n, d]
+#         out = out.reshape(b, n, d)
+#         return self.out(out), attn, None
 class MultiQueryAttention(nn.Module):
     def __init__(self, dim, heads=8, dropout=0.1):
         super().__init__()
+        assert dim % heads == 0, "dim must be divisible by heads"
         self.heads = heads
         self.head_dim = dim // heads
         self.scale = self.head_dim ** -0.5
 
-        self.q = nn.Linear(dim, dim)
-        self.kv = nn.Linear(dim, self.head_dim * 2)  # One shared k & v for all heads
-        self.out = nn.Linear(dim, dim)
+        self.q  = nn.Linear(dim, dim, bias=True)
+        # shared K,V for all heads (multi-query)
+        self.kv = nn.Linear(dim, self.head_dim * 2, bias=True)
+        self.out = nn.Linear(dim, dim, bias=True)
         self.dropout = nn.Dropout(dropout)
 
-    def forward(self, x):
-        b, n, d = x.shape
-        h = self.heads
-
-        # Q: [b, n, h, d_head]
+    def forward(self, x, key_padding_mask: Optional[Tensor]=None, causal: bool=False):
+        b, n, d = x.shape; h = self.heads
         q = self.q(x).view(b, n, h, self.head_dim)
-
-        # k, v: [b, n, 1, d_head] -> broadcast to [b, n, h, d_head]
         kv = self.kv(x).view(b, n, 2, self.head_dim)
         k, v = kv[:, :, 0], kv[:, :, 1]
         k = k.unsqueeze(2).expand(-1, -1, h, -1)
         v = v.unsqueeze(2).expand(-1, -1, h, -1)
 
-        # Attention: [b, h, n, n]
-        attn_scores = torch.einsum('bnhd,bmhd->bhnm', q, k) * self.scale
-        attn = attn_scores.softmax(dim=-1)
+        attn = torch.einsum('bnhd,bmhd->bhnm', q, k) * self.scale
+
+        if key_padding_mask is not None:
+            mask = key_padding_mask[:, None, None, :].to(torch.bool)
+            attn = attn.masked_fill(mask, float('-inf'))
+
+        if causal:
+            i = torch.arange(n, device=x.device)
+            causal_mask = i[None, :] > i[:, None]
+            attn = attn.masked_fill(causal_mask[None, None, :, :], float('-inf'))
+
+        attn = F.softmax(attn, dim=-1)
+        attn = torch.nan_to_num(attn, nan=0.0)   # safe if an entire row was masked
         attn = self.dropout(attn)
 
-        # Apply attention: [b, n, h, d_head]
-        out = torch.einsum('bhnm,bmhd->bnhd', attn, v)
-
-        # Reshape: [b, n, d]
-        out = out.reshape(b, n, d)
+        out  = torch.einsum('bhnm,bmhd->bnhd', attn, v).reshape(b, n, d)
         return self.out(out), attn, None
 
 
@@ -149,7 +117,7 @@ class SwitchGate(nn.Module):
         self,
         dim,
         num_experts: int,
-        capacity_factor: float = 1.25,
+        capacity_factor: float = 1.75,
         epsilon: float = 1e-6,
         *args,
         **kwargs,
@@ -161,69 +129,102 @@ class SwitchGate(nn.Module):
         self.epsilon = epsilon
         self.w_gate = nn.Linear(dim, num_experts)
 
+    # def forward(self, x: Tensor, use_aux_loss=False):
+    #     """
+    #     Forward pass of the SwitchGate module.
+
+    #     Args:
+    #         x (Tensor): Input tensor.
+
+    #     Returns:
+    #         Tensor: Gate scores.
+    #     """
+    #     B, T, _ = x.shape
+    #     N = B * T
+    #     E = self.num_experts
+
+    #     # 1) Soft gating
+    #     gate_scores = F.softmax(self.w_gate(x), dim=-1)        # (B,T,E)
+    #     flat_scores = gate_scores.view(N, E)                  # (N,E)
+
+    #     # 2) Top-1 assignment
+    #     top1_idx = flat_scores.argmax(dim=-1)             # (N,)
+    #     capacity = int(self.capacity_factor * N / E)
+
+    #     # Step 1: Count how many times each expert is selected (histogram)
+    #     mask = F.one_hot(top1_idx, E).float()             # (N, E)
+    #     cum_count = mask.cumsum(dim=0)                    # running total over rows
+    #     position_in_expert = cum_count.gather(1, top1_idx.unsqueeze(1)).squeeze(1) - 1  # (N,)
+    #     keep = position_in_expert < capacity              # boolean mask (N,)
+    #     kept_total = int(keep.sum().item())
+
+    #     # Step 2: Apply mask
+    #     mask = mask * keep.unsqueeze(1).float()           # (N, E)
+
+    #     # 4) Renormalize to sum=capacity
+    #     flat_masked = flat_scores * mask
+    #     denom       = flat_masked.sum(0, keepdim=True).clamp_min(self.epsilon)
+    #     flat_norm   = flat_masked / denom * capacity
+
+    #     # 5) reshape back
+    #     gate_scores = flat_norm.view(B, T, E)
+
+    #     # 6) Aux loss
+    #     if use_aux_loss:
+    #         importance = flat_norm.sum(0)
+    #         load       = (flat_norm > 0).float().sum(0)
+    #         importance = importance / (importance.sum() + self.epsilon)
+    #         load       = load       / (load.sum()       + self.epsilon)
+    #         loss = ((load - importance)**2).mean()
+    #         # ---------- ADD THESE LINES FOR LOGGING ----------
+    #         # more faithful "soft" importance from probs averaged over (B,T)
+    #         soft_importance = flat_scores.mean(dim=0)
+    #         # "hard" load based on actually kept tokens per expert
+    #         kept_counts = torch.bincount(top1_idx[keep], minlength=E).float()
+    #         hard_load = kept_counts / kept_counts.sum().clamp_min(1.0)
+
+    #         self.last_importance = soft_importance.detach()
+    #         self.last_load = hard_load.detach()
+    #         self.last_expert_usage = self.last_load           # alias for your logger
+    #         self.last_drop_rate = (1.0 - keep.float().mean()).item()
+    #         self.last_kept_total = kept_total
+    #         # ---------------------------------------------------
+    #         return gate_scores, loss
+
+    #     return gate_scores, None
     def forward(self, x: Tensor, use_aux_loss=False):
-        """
-        Forward pass of the SwitchGate module.
+        B, T, D = x.shape
+        N, E = B * T, self.num_experts
 
-        Args:
-            x (Tensor): Input tensor.
+        logits = self.w_gate(x)                   # (B,T,E)
+        probs  = F.softmax(logits, dim=-1)        # (B,T,E)
+        flat_p = probs.view(N, E)                 # (N,E)
 
-        Returns:
-            Tensor: Gate scores.
-        """
-        B, T, _ = x.shape
-        N = B * T
-        E = self.num_experts
+        top1_idx = flat_p.argmax(dim=-1)          # (N,)
+        capacity = math.ceil(self.capacity_factor * N / E)
 
-        # 1) Soft gating
-        gate_scores = F.softmax(self.w_gate(x), dim=-1)        # (B,T,E)
-        flat_scores = gate_scores.view(N, E)                  # (N,E)
-
-        # 2) Top-1 assignment
-        top1_idx = flat_scores.argmax(dim=-1)             # (N,)
-        capacity = int(self.capacity_factor * N / E)
-
-        # Step 1: Count how many times each expert is selected (histogram)
-        mask = F.one_hot(top1_idx, E).float()             # (N, E)
-        cum_count = mask.cumsum(dim=0)                    # running total over rows
-        position_in_expert = cum_count.gather(1, top1_idx.unsqueeze(1)).squeeze(1) - 1  # (N,)
-        keep = position_in_expert < capacity              # boolean mask (N,)
+        one_hot = F.one_hot(top1_idx, E).float()  # (N,E)
+        # running count per expert; position of each token within its expert
+        pos_in_exp = one_hot.cumsum(dim=0)\
+                            .gather(1, top1_idx.unsqueeze(1)).squeeze(1) - 1
+        keep = pos_in_exp < capacity              # (N,) bool
         kept_total = int(keep.sum().item())
-
-        # Step 2: Apply mask
-        mask = mask * keep.unsqueeze(1).float()           # (N, E)
-
-        # 4) Renormalize to sum=capacity
-        flat_masked = flat_scores * mask
-        denom       = flat_masked.sum(0, keepdim=True).clamp_min(self.epsilon)
-        flat_norm   = flat_masked / denom * capacity
-
-        # 5) reshape back
-        gate_scores = flat_norm.view(B, T, E)
-
-        # 6) Aux loss
+        self.last_kept_total = kept_total
+        aux_loss = None
         if use_aux_loss:
-            importance = flat_norm.sum(0)
-            load       = (flat_norm > 0).float().sum(0)
-            importance = importance / (importance.sum() + self.epsilon)
-            load       = load       / (load.sum()       + self.epsilon)
-            loss = ((load - importance)**2).mean()
-            # ---------- ADD THESE LINES FOR LOGGING ----------
-            # more faithful "soft" importance from probs averaged over (B,T)
-            soft_importance = flat_scores.mean(dim=0)
-            # "hard" load based on actually kept tokens per expert
+            importance = flat_p.mean(dim=0)                       # soft importance
             kept_counts = torch.bincount(top1_idx[keep], minlength=E).float()
-            hard_load = kept_counts / kept_counts.sum().clamp_min(1.0)
+            load = kept_counts / kept_counts.sum().clamp_min(1.0) # hard load
+            importance = importance / importance.sum().clamp_min(1e-9)
+            aux_loss = ((load - importance)**2).mean()            # simple Switch loss
 
-            self.last_importance = soft_importance.detach()
-            self.last_load = hard_load.detach()
-            self.last_expert_usage = self.last_load           # alias for your logger
-            self.last_drop_rate = (1.0 - keep.float().mean()).item()
-            self.last_kept_total = kept_total
-            # ---------------------------------------------------
-            return gate_scores, loss
+            # logging hooks
+            self.last_importance   = importance.detach()
+            self.last_load         = load.detach()
+            self.last_expert_usage = (kept_counts > 0).float()
+            self.last_drop_rate    = (1.0 - keep.float().mean()).item()
 
-        return gate_scores, None
+        return top1_idx, keep, aux_loss
 
 
 class SwitchMoE(nn.Module):
@@ -258,7 +259,7 @@ class SwitchMoE(nn.Module):
         hidden_dim: int,
         output_dim: int,
         num_experts: int,
-        capacity_factor: float = 1.25,
+        capacity_factor: float = 1.75,
         mult: int = 4,
         use_aux_loss: bool = False,
         *args,
@@ -286,59 +287,52 @@ class SwitchMoE(nn.Module):
             capacity_factor,
         )
 
+    # def forward(self, x: Tensor):
+    #     """
+    #     Forward pass of the SwitchMoE module.
+
+    #     Args:
+    #         x (Tensor): The input tensor.
+
+    #     Returns:
+    #         Tensor: The output tensor of the MoE.
+
+    #     """
+    #     # (batch_size, seq_len, num_experts)
+    #     gate_scores, loss = self.gate(
+    #         x, use_aux_loss=self.use_aux_loss
+    #     )
+    #     B, T, D = x.shape
+    #     flat_x        = x.view(-1, D)                  # (B·T, D)
+    #     flat_idx      = gate_scores.argmax(-1).view(-1) # (B·T,)
+    #     flat_out      = torch.zeros_like(flat_x)       # (B·T, D)
+
+    #     for e, expert in enumerate(self.experts):
+    #         mask = (flat_idx == e)
+    #         if mask.sum() == 0:
+    #             continue
+    #         tokens_e = flat_x[mask]                    # (N_e, D)
+    #         out_e    = expert(tokens_e)                # (N_e, D)
+    #         flat_out[mask] = out_e
+
+    #     moe_output = flat_out.view(B, T, D)
+
+    #     return moe_output, loss
     def forward(self, x: Tensor):
-        """
-        Forward pass of the SwitchMoE module.
-
-        Args:
-            x (Tensor): The input tensor.
-
-        Returns:
-            Tensor: The output tensor of the MoE.
-
-        """
-        # (batch_size, seq_len, num_experts)
-        gate_scores, loss = self.gate(
-            x, use_aux_loss=self.use_aux_loss
-        )
-
-        # # Dispatch to experts
-        # expert_outputs = [expert(x) for expert in self.experts]
-
-        # # Check if any gate scores are nan and handle
-        # if torch.isnan(gate_scores).any():
-        #     print("NaN in gate scores")
-        #     gate_scores[torch.isnan(gate_scores)] = 0
-
-        # # Stack and weight outputs
-        # stacked_expert_outputs = torch.stack(
-        #     expert_outputs, dim=-1
-        # )  # (batch_size, seq_len, output_dim, num_experts)
-        # if torch.isnan(stacked_expert_outputs).any():
-        #     stacked_expert_outputs[
-        #         torch.isnan(stacked_expert_outputs)
-        #     ] = 0
-
-        # # Combine expert outputs and gating scores
-        # moe_output = torch.sum(
-        #     gate_scores.unsqueeze(-2) * stacked_expert_outputs, dim=-1
-        # )
+        top1_idx, keep, aux = self.gate(x, use_aux_loss=self.use_aux_loss)
         B, T, D = x.shape
-        flat_x        = x.view(-1, D)                  # (B·T, D)
-        flat_idx      = gate_scores.argmax(-1).view(-1) # (B·T,)
-        flat_out      = torch.zeros_like(flat_x)       # (B·T, D)
+        N = B * T
+        flat_x = x.view(N, D)
+        flat_out = torch.zeros_like(flat_x)     # dropped tokens stay zero (residual carries them)
 
         for e, expert in enumerate(self.experts):
-            mask = (flat_idx == e)
-            if mask.sum() == 0:
-                continue
-            tokens_e = flat_x[mask]                    # (N_e, D)
-            out_e    = expert(tokens_e)                # (N_e, D)
-            flat_out[mask] = out_e
+            sel = (top1_idx == e) & keep
+            if sel.any():
+                flat_out[sel] = expert(flat_x[sel])
 
-        moe_output = flat_out.view(B, T, D)
+        moe_out = flat_out.view(B, T, D)
+        return moe_out, aux
 
-        return moe_output, loss
 
 
 class SwitchTransformerBlock(nn.Module):
@@ -401,40 +395,36 @@ class SwitchTransformerBlock(nn.Module):
         self.norm1 = nn.LayerNorm(dim)
         self.norm2 = nn.LayerNorm(dim)
 
-    def forward(self, x: Tensor):
-        """
-        Forward pass of the SwitchTransformerBlock.
+    # def forward(self, x: Tensor):
+    #     """
+    #     Forward pass of the SwitchTransformerBlock.
 
-        Args:
-            x (Tensor): The input tensor.
+    #     Args:
+    #         x (Tensor): The input tensor.
 
-        Returns:
-            Tensor: The output tensor.
+    #     Returns:
+    #         Tensor: The output tensor.
 
-        """
-        # resi = x
-        # x, _, _ = self.attn(x)
-        # x = x + resi
-        # x = self.add_norm(x)
-        # add_normed = x
-        
-        # ##### MoE #####
-        # # x, _ = self.ffn(x)
-        # x, moe_loss = self.ffn(x)
-        # x = x + add_normed
-        # x = self.add_norm(x)
-        # return x, moe_loss
-        # 1) Attention sub-layer
-        residual1 = x
-        attn_out, _, _ = self.attn(x)
-        x = self.norm1(residual1 + attn_out)
+    #     """
+    #     residual1 = x
+    #     attn_out, _, _ = self.attn(x)
+    #     x = self.norm1(residual1 + attn_out)
 
-        # 2) MoE sub-layer
-        residual2 = x
-        moe_out, aux_loss = self.ffn(x)
-        x = self.norm2(residual2 + moe_out)
+    #     # 2) MoE sub-layer
+    #     residual2 = x
+    #     moe_out, aux_loss = self.ffn(x)
+    #     x = self.norm2(residual2 + moe_out)
 
-        return x, aux_loss
+    #     return x, aux_loss
+    def forward(self, x: Tensor, key_padding_mask: Optional[Tensor]=None, causal: bool=False):
+        res1 = x
+        attn_out, _, _ = self.attn(x, key_padding_mask=key_padding_mask, causal=causal)
+        x = self.norm1(res1 + attn_out)
+
+        res2 = x
+        moe_out, aux = self.ffn(x)
+        x = self.norm2(res2 + moe_out)
+        return x, aux
 
 
 class SwitchTransformer(nn.Module):
@@ -499,32 +489,81 @@ class SwitchTransformer(nn.Module):
         #     nn.Linear(dim, num_tokens),
         # )
 
-    def forward(self, x: Tensor) -> Tensor:
-        """
-        Forward pass of the SwitchTransformer.
+    # def forward(self, x: Tensor) -> Tensor:
+    #     """
+    #     Forward pass of the SwitchTransformer.
 
-        Args:
-            x (Tensor): The input tensor of shape (batch_size, sequence_length).
+    #     Args:
+    #         x (Tensor): The input tensor of shape (batch_size, sequence_length).
 
-        Returns:
-            Tensor: The output tensor of shape (batch_size, sequence_length, num_tokens).
-        """
-        # Embed tokens through embedding layer
-        # x = self.embedding(x)
-        if x.dtype in [torch.int64, torch.int32]:  # Token IDs
-            positions = torch.arange(x.size(1), device=x.device).unsqueeze(0)  # (1, T)
-            x = self.embedding(x) + self.pos_emb(positions)
+    #     Returns:
+    #         Tensor: The output tensor of shape (batch_size, sequence_length, num_tokens).
+    #     """
+    #     # Embed tokens through embedding layer
+    #     # x = self.embedding(x)
+    #     if x.dtype in [torch.int64, torch.int32]:  # Token IDs
+    #         positions = torch.arange(x.size(1), device=x.device).unsqueeze(0)  # (1, T)
+    #         x = self.embedding(x) + self.pos_emb(positions)
         
-        total_aux_loss = 0.0
-        # Pass through the transformer block with MoE, it's in modulelist
-        # for layer in self.layers:
-        #     x = layer(x)
-        for layer in self.layers:
-            x, layer_aux_loss = layer(x)
-            if layer_aux_loss is not None:
-                total_aux_loss = total_aux_loss + layer_aux_loss
+    #     total_aux_loss = 0.0
+    #     # Pass through the transformer block with MoE, it's in modulelist
+    #     # for layer in self.layers:
+    #     #     x = layer(x)
+    #     for layer in self.layers:
+    #         x, layer_aux_loss = layer(x)
+    #         if layer_aux_loss is not None:
+    #             total_aux_loss = total_aux_loss + layer_aux_loss
 
-        # Project to output tokens
-        # x = self.to_out(x)
-        # return BaseModelOutput(last_hidden_state=x)
-        return MoEModelOutput(last_hidden_state=x, aux_loss=total_aux_loss)
+    #     # Project to output tokens
+    #     # x = self.to_out(x)
+    #     # return BaseModelOutput(last_hidden_state=x)
+    #     return MoEModelOutput(last_hidden_state=x, aux_loss=total_aux_loss)
+    # def forward(
+    #     self,
+    #     x: Tensor,
+    #     timesteps: Optional[Tensor] = None,   # <- accept t
+    #     attention_mask: Optional[Tensor] = None,
+    #     causal: bool = False,
+    #     **kwargs
+    # ) -> MoEModelOutput:
+    #     if attention_mask is None:
+    #         # if training_losses passes model_kwargs=dict(...),
+    #         # HuggingFace-style wrappers often deliver it via kwargs
+    #         attention_mask = kwargs.get("attention_mask", None)
+
+    #     if x.dtype in (torch.int64, torch.int32):
+    #         positions = torch.arange(x.size(1), device=x.device).unsqueeze(0)
+    #         x = self.embedding(x) + self.pos_emb(positions)
+
+    #     total_aux = x.new_zeros(())
+    #     for layer in self.layers:
+    #         x, aux = layer(x, key_padding_mask=attention_mask, causal=causal)
+    #         if aux is not None:
+    #             total_aux = total_aux + aux
+
+    #     return MoEModelOutput(last_hidden_state=x, aux_loss=total_aux)
+    def forward(
+        self,
+        x: Tensor,
+        timesteps: Optional[Tensor] = None,
+        attention_mask: Optional[Tensor] = None,
+        causal: bool = False,
+        **kwargs
+        ) -> MoEModelOutput:
+        # normalize mask semantics
+        if attention_mask is None:
+            attention_mask = kwargs.get("attention_mask", None)
+        if attention_mask is not None and attention_mask.dtype != torch.bool:
+            attention_mask = attention_mask == 0   # bool mask, True = pad
+
+        if x.dtype in (torch.int64, torch.int32):  # token IDs
+            positions = torch.arange(x.size(1), device=x.device).unsqueeze(0)
+            x = self.embedding(x) + self.pos_emb(positions)
+
+        total_aux = x.new_zeros(())
+        for layer in self.layers:
+            x, aux = layer(x, key_padding_mask=attention_mask, causal=causal)
+            if aux is not None:
+                total_aux = total_aux + aux
+
+        return MoEModelOutput(last_hidden_state=x, aux_loss=total_aux)

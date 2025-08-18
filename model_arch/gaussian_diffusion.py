@@ -517,65 +517,122 @@ class GaussianDiffusion:
 
         return {'pred_xprev':pred_prev, 'pred_xstart':pred_xstart}
 
-    def training_losses_seq2seq(self, model, x_start, t, model_kwargs=None, noise=None):
-        """
-        Compute training losses for a single timestep.
+#     def training_losses_seq2seq(self, model, x_start, t, model_kwargs=None, noise=None):
+#         """
+#         Compute training losses for a single timestep.
 
-        :param model: the model to evaluate loss on.
-        :param x_start: the [N x C x ...] tensor of inputs. # not used unless fixing the input embeddings
-        :param t: a batch of timestep indices.
-        :param model_kwargs: if not None, a dict of extra keyword arguments to
-            pass to the model. This can be used for conditioning.
-        :param noise: if specified, the specific Gaussian noise to try to remove.
-        :return: a dict with the key "loss" containing a tensor of shape [N].
-                 Some mean or variance settings may also have other keys.
-        """
-        x_start_fix = x_start # save the orignal x_0
-        assert 'input_ids' in model_kwargs
-        input_ids_x = model_kwargs.pop('input_ids').to(self.device)
-        input_ids_mask = model_kwargs.pop('input_mask').to(self.device)
-        x_start_mean = model.model.get_embeds(input_ids_x).to(self.device)
+#         :param model: the model to evaluate loss on.
+#         :param x_start: the [N x C x ...] tensor of inputs. # not used unless fixing the input embeddings
+#         :param t: a batch of timestep indices.
+#         :param model_kwargs: if not None, a dict of extra keyword arguments to
+#             pass to the model. This can be used for conditioning.
+#         :param noise: if specified, the specific Gaussian noise to try to remove.
+#         :return: a dict with the key "loss" containing a tensor of shape [N].
+#                  Some mean or variance settings may also have other keys.
+#         """
+#         x_start_fix = x_start # save the orignal x_0
+#         assert 'input_ids' in model_kwargs
+#         input_ids_x = model_kwargs.pop('input_ids').to(self.device)
+#         input_ids_mask = model_kwargs.pop('input_mask').to(self.device)
+#         x_start_mean = model.model.get_embeds(input_ids_x).to(self.device)
                 
+#         std = _extract_into_tensor(self.sqrt_one_minus_alphas_cumprod,
+#                                    torch.tensor([0]),
+#                                    x_start_mean.shape)
+#         # print(std.shape, )
+#         x_start = self._get_x_start(x_start_mean, std)
+# #         print("x_start_mean shape: ", x_start_mean.shape, "x_start shape: ", x_start.shape)
+#         if noise is None:
+#             noise = torch.randn_like(x_start)
+
+#         # add noise
+#         x_t = self.q_sample(x_start, t, noise=noise, mask=input_ids_mask) # reparametrization trick.
+
+#         get_logits = model.model.get_logits
+
+#         terms = {}
+
+#         target = x_start
+#         output = model(x_t, self._scale_timesteps(t), **model_kwargs)
+#         if hasattr(output, "last_hidden_state"):
+#             model_output = output.last_hidden_state
+#         else:
+#             model_output = output
+#         aux_loss   = None
+#         if hasattr(output, "aux_loss"):
+#             aux_loss = output.aux_loss
+#         assert model_output.shape == target.shape == x_start.shape
+#         terms["mse"] = mean_flat((target - model_output) ** 2)
+
+#         model_out_x_start = self._x0_helper(model_output, x_t, t)['pred_xstart'] # predicted_xstart = model_output
+#         t0_mask = (t == 0)
+#         t0_loss = mean_flat((x_start_mean - model_out_x_start) ** 2)
+#         terms["mse"] = torch.where(t0_mask, t0_loss, terms["mse"])
+
+#         # tT_mask = (t == self.num_timesteps - 1)
+#         out_mean, _, _ = self.q_mean_variance(x_start, torch.LongTensor([self.num_timesteps - 1]).to(self.device))
+#         tT_loss =  mean_flat(out_mean ** 2)
+
+#         decoder_nll = self._token_discrete_loss(x_start, get_logits, input_ids_x) # embedding regularization
+#         terms["nll"] = self._token_discrete_loss(model_out_x_start, get_logits, input_ids_x, mask=input_ids_mask, truncate=True, t=t) # x_0->model_out_x_start
+#         # assert (model.lm_head.weight == model.word_embedding.weight).all()
+
+#         terms["loss"] = terms["mse"] + decoder_nll + tT_loss
+#         if aux_loss is not None:
+#             terms["aux_loss"] = aux_loss
+
+#         return terms
+    def training_losses_seq2seq(self, model, x_start, t, model_kwargs=None, noise=None):
+        x_start_fix = x_start
+        assert 'input_ids' in model_kwargs
+
+        input_ids_x    = model_kwargs.pop('input_ids').to(self.device)
+        input_ids_mask = model_kwargs.pop('input_mask').to(self.device)  # 1=real, 0=pad (assumed)
+
+        # if your dataloader already provides attention_mask, prefer it
+        attn_mask = model_kwargs.pop('attention_mask', None)
+        if attn_mask is None:
+            attn_mask = input_ids_mask
+
+        # convert to key_padding semantics for attention: True = should NOT attend (pad)
+        key_padding_mask = attn_mask if attn_mask.dtype == torch.bool else (attn_mask == 0)
+
+        x_start_mean = model.model.get_embeds(input_ids_x).to(self.device)
+
         std = _extract_into_tensor(self.sqrt_one_minus_alphas_cumprod,
-                                   torch.tensor([0]),
-                                   x_start_mean.shape)
-        # print(std.shape, )
+                                torch.tensor([0]), x_start_mean.shape)
         x_start = self._get_x_start(x_start_mean, std)
-#         print("x_start_mean shape: ", x_start_mean.shape, "x_start shape: ", x_start.shape)
+
         if noise is None:
             noise = torch.randn_like(x_start)
 
-        # add noise
-        x_t = self.q_sample(x_start, t, noise=noise, mask=input_ids_mask) # reparametrization trick.
+        # your q_sample masking semantics remain unchanged
+        x_t = self.q_sample(x_start, t, noise=noise, mask=input_ids_mask)
 
         get_logits = model.model.get_logits
-
         terms = {}
 
         target = x_start
-        output = model(x_t, self._scale_timesteps(t), **model_kwargs)
-        if hasattr(output, "last_hidden_state"):
-            model_output = output.last_hidden_state
-        else:
-            model_output = output
-        aux_loss   = None
-        if hasattr(output, "aux_loss"):
-            aux_loss = output.aux_loss
+        # ✅ pass timesteps + attention mask
+        output = model(x_t, self._scale_timesteps(t), attention_mask=key_padding_mask, **model_kwargs)
+
+        model_output = output.last_hidden_state if hasattr(output, "last_hidden_state") else output
+        aux_loss = getattr(output, "aux_loss", None)
+
         assert model_output.shape == target.shape == x_start.shape
         terms["mse"] = mean_flat((target - model_output) ** 2)
 
-        model_out_x_start = self._x0_helper(model_output, x_t, t)['pred_xstart'] # predicted_xstart = model_output
+        model_out_x_start = self._x0_helper(model_output, x_t, t)['pred_xstart']
         t0_mask = (t == 0)
         t0_loss = mean_flat((x_start_mean - model_out_x_start) ** 2)
         terms["mse"] = torch.where(t0_mask, t0_loss, terms["mse"])
 
-        # tT_mask = (t == self.num_timesteps - 1)
         out_mean, _, _ = self.q_mean_variance(x_start, torch.LongTensor([self.num_timesteps - 1]).to(self.device))
-        tT_loss =  mean_flat(out_mean ** 2)
+        tT_loss = mean_flat(out_mean ** 2)
 
-        decoder_nll = self._token_discrete_loss(x_start, get_logits, input_ids_x) # embedding regularization
-        terms["nll"] = self._token_discrete_loss(model_out_x_start, get_logits, input_ids_x, mask=input_ids_mask, truncate=True, t=t) # x_0->model_out_x_start
-        # assert (model.lm_head.weight == model.word_embedding.weight).all()
+        decoder_nll   = self._token_discrete_loss(x_start, get_logits, input_ids_x)
+        terms["nll"]  = self._token_discrete_loss(model_out_x_start, get_logits, input_ids_x,
+                                                mask=input_ids_mask, truncate=True, t=t)
 
         terms["loss"] = terms["mse"] + decoder_nll + tT_loss
         if aux_loss is not None:
@@ -583,60 +640,98 @@ class GaussianDiffusion:
 
         return terms
 
-    def ddim_sample(
-        self,
-        model,
-        x,
-        t,
-        clip_denoised=True,
-        denoised_fn=None,
-        model_kwargs=None,
-        eta=0.0,
-        langevin_fn=None,
-        mask=None,
-        x_start=None
-    ):
-        """
-        Sample x_{t-1} from the model using DDIM.
 
-        Same usage as p_sample().
-        """
-        out = self.p_mean_variance(
-            model,
-            x,
-            t,
-            clip_denoised=clip_denoised,
-            denoised_fn=denoised_fn,
-            model_kwargs=model_kwargs,
-        )
-        # Usually our model outputs epsilon, but we re-derive it
-        # in case we used x_start or x_prev prediction.
+    # def ddim_sample(
+    #     self,
+    #     model,
+    #     x,
+    #     t,
+    #     clip_denoised=True,
+    #     denoised_fn=None,
+    #     model_kwargs=None,
+    #     eta=0.0,
+    #     langevin_fn=None,
+    #     mask=None,
+    #     x_start=None
+    # ):
+    #     """
+    #     Sample x_{t-1} from the model using DDIM.
+
+    #     Same usage as p_sample().
+    #     """
+    #     out = self.p_mean_variance(
+    #         model,
+    #         x,
+    #         t,
+    #         clip_denoised=clip_denoised,
+    #         denoised_fn=denoised_fn,
+    #         model_kwargs=model_kwargs,
+    #     )
+    #     # Usually our model outputs epsilon, but we re-derive it
+    #     # in case we used x_start or x_prev prediction.
+    #     eps = self._predict_eps_from_xstart(x, t, out["pred_xstart"])
+    #     alpha_bar = _extract_into_tensor(self.alphas_cumprod, t, x.shape)
+    #     alpha_bar_prev = _extract_into_tensor(self.alphas_cumprod_prev, t, x.shape)
+    #     sigma = (
+    #         eta
+    #         * torch.sqrt((1 - alpha_bar_prev) / (1 - alpha_bar))
+    #         * torch.sqrt(1 - alpha_bar / alpha_bar_prev)
+    #     )
+    #     # Equation 12.
+    #     noise = torch.randn_like(x)
+    #     mean_pred = (
+    #         out["pred_xstart"] * torch.sqrt(alpha_bar_prev)
+    #         + torch.sqrt(1 - alpha_bar_prev - sigma ** 2) * eps
+    #     )
+    #     nonzero_mask = (
+    #         (t != 0).float().view(-1, *([1] * (len(x.shape) - 1)))
+    #     )  # no noise when t == 0
+    #     # print(sigma.mean())
+    #     sample = mean_pred + nonzero_mask * sigma * noise
+        
+    #     if mask == None:
+    #         pass
+    #     else:
+    #         sample = torch.where(mask==0, x_start, sample)
+        
+    #     return {"sample": sample, "pred_xstart": out["pred_xstart"]}
+    def ddim_sample(self, model, x, t, clip_denoised=True, denoised_fn=None,
+               model_kwargs=None, eta=0.0, langevin_fn=None, mask=None, x_start=None):
+
+        # ensure attention mask is present for the model at sample time
+        if model_kwargs is None:
+            model_kwargs = {}
+        if ('attention_mask' not in model_kwargs) and ('input_mask' in model_kwargs):
+            am = model_kwargs['input_mask']
+            model_kwargs = dict(model_kwargs)  # shallow copy
+            model_kwargs['attention_mask'] = (am == 0) if am.dtype != torch.bool else am
+
+        out = self.p_mean_variance(model, x, t,
+                                clip_denoised=clip_denoised,
+                                denoised_fn=denoised_fn,
+                                model_kwargs=model_kwargs)
+
         eps = self._predict_eps_from_xstart(x, t, out["pred_xstart"])
-        alpha_bar = _extract_into_tensor(self.alphas_cumprod, t, x.shape)
+        alpha_bar      = _extract_into_tensor(self.alphas_cumprod,      t, x.shape)
         alpha_bar_prev = _extract_into_tensor(self.alphas_cumprod_prev, t, x.shape)
-        sigma = (
-            eta
-            * torch.sqrt((1 - alpha_bar_prev) / (1 - alpha_bar))
-            * torch.sqrt(1 - alpha_bar / alpha_bar_prev)
-        )
-        # Equation 12.
+
+        sigma = (eta
+                * torch.sqrt((1 - alpha_bar_prev) / (1 - alpha_bar))
+                * torch.sqrt(1 - alpha_bar / alpha_bar_prev))
+
         noise = torch.randn_like(x)
-        mean_pred = (
-            out["pred_xstart"] * torch.sqrt(alpha_bar_prev)
-            + torch.sqrt(1 - alpha_bar_prev - sigma ** 2) * eps
-        )
-        nonzero_mask = (
-            (t != 0).float().view(-1, *([1] * (len(x.shape) - 1)))
-        )  # no noise when t == 0
-        # print(sigma.mean())
+        mean_pred = (out["pred_xstart"] * torch.sqrt(alpha_bar_prev)
+                    + torch.sqrt(1 - alpha_bar_prev - sigma ** 2) * eps)
+
+        nonzero_mask = (t != 0).float().view(-1, *([1] * (len(x.shape) - 1)))
         sample = mean_pred + nonzero_mask * sigma * noise
-        
-        if mask == None:
-            pass
-        else:
-            sample = torch.where(mask==0, x_start, sample)
-        
+
+        if mask is not None:
+            # inpainting-style preservation: where mask==0 keep x_start
+            sample = torch.where(mask == 0, x_start, sample)
+
         return {"sample": sample, "pred_xstart": out["pred_xstart"]}
+
 
     def ddim_sample_loop(
         self,

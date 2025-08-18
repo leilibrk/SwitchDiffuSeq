@@ -1,0 +1,77 @@
+===== SAMPLES =====
+
+[Sample 1]
+Source : [CLS] an author of a book got 6 % of the total sales of the paper cover version of his books and 12 % of the total sales of the hardcover version. if 32, 000 copies of the paper cover version were sold at $ 0. 20 each and 15, 000 copies of the hardcover version were sold at $ 0. 40 each, how much did the author earn? [SEP] [SEP]
+Output : [CLS] [CLS] second that his cover 6 < of * so. 40 0 240 thus his of 000 > $ the =. $ got = = < 20 * < 20 the. sold0 * = / 2,. * 800 < for the >, 12 32. 000 / 000 1000. 0 000 5 > so0 sold 350 = = 0 therefore0 > $ = so / = +0 900 = of 6 100 000. a.. > one is on hardcover copies and $ < = > #, + the 000 width 900 # 6000 # 210 > 000 [SEP] 12 # #
+Target : [CLS] the total earnings for the paper cover version were $ 0. 20 x 32 000 = $ < < 0. 20 * 32000 = 6400 > > 6, 400. so, the author earned $ 6, 400 x 6 / 100 = $ 384 from the paper cover version. the total earnings for the hardcover version were $ 0. 40 x 15, 000 = $ < < 0. 40 * 15000 = 6000 > > 6, 000. so, the author earned $ 6, 000 x 12 / 100 = $ < < 6000 * 12 / 100 = 720 > > 720 from the hardcover version. therefore, the author earned a total of $ 384 + $ 720 = $ < < 384 + 720 = 1104 > > 1104. # # # # 1104 [SEP]
+---------------
+[Sample 2]
+Source : [CLS] jessica's family is 300 km away from new york. if they are traveling at the rate of 50 km / h and stop to rest for 30 minutes every 2 hours, how long will it take them to reach new york? [SEP] [SEP]
+Output : [CLS] jessica the / minutes minutes 60 < 10 * / / 2 * < - > 30 > =. / / 60 for 12 km. < / hours km new 30 + / : the / 30 / so 30 take / are / 30 the > hours > = < = < 300 13 = # 900 minutes > > > # [SEP] [PAD] [SEP]
+Target : [CLS] without stopping to rest they will arrive in 300 / 50 = < < 300 / 50 = 6 > > 6 hours. they need to stop to rest after every 2 hours except for the last 2 hour stretch of time, which is when they reach new york, so they rest ( 6 / 2 ) - 1 = 3 - 1 = < < 6 / 2 - 1 = 2 > > 2 times. the time they spend resting is 2 * 30 = < < 2 * 30 = 60 > > 60 minutes or 1 hour. so they will arrive in 6 + 1 = < < 6 + 1 = 7 > > 7 hours. # # # # 7 [SEP]
+---------------
+[Sample 3]
+Source : [CLS] in 5 years, nacho will be three times older than divya. if divya is currently 5 years old, what's the sum of their ages now? [SEP] [SEP]
+Output : [CLS]a 5 5 there the years + 3a. 3 years 5 9 3 x. x <,. + = times 2a > + - 66. + - than years +a ages 5 three the, total 5 = 9., 75 - + > old + is # + [SEP] 15 # # [PAD] [SEP]
+Target : [CLS] if divya is currently 5 years old, she will be 5 + 5 = < < 5 + 5 = 10 > > 10 years old in five years. since in 5 years nacho will be three times older than divya, he will be 3 * 10 = < < 3 * 10 = 30 > > 30 years older than divya. nacho's total age in five years will be 30 + 10 = < < 30 + 10 = 40 > > 40 years. currently, nacho is 40 - 5 = < < 40 - 5 = 35 > > 35 years old. the sum of divya and nacho's age now is 35 + 5 = < < 35 + 5 = 40 > > 40 years # # # # 40 [SEP]
+---------------
+[Sample 4]
+Source : [CLS] jerry is trying to cut down on the amount of soda he drinks. right now, he drinks 48 sodas a week. if he cuts the number of sodas he drinks in half each week, how many weeks will it take him to only drink 6 sodas per week? [SEP] [SEP]
+Output : [CLS], 2 he needs soda < 6 <. 6 2 72 = = jerry 3 4 = >.s 5 < soda < + = = > < * x > 2 * * he *. < * 5 he 6 6 * / 1 < weeks week + 60 he > because 6 in < < means > > * thus 48 soda will = week < 4 18 he 6 160 - + - 5 > < 22 * < * = >s 72 35 60 > week > # 22 # # # [PAD] [PAD] [SEP]
+Target : [CLS] figure out how many sodas jerry drinks after 1 week by dividing the starting number of sodas by 2 : 48 sodas / 2 = < < 48 / 2 = 24 > > 24 sodas now repeat the process to figure out how many soda he drinks after 2 weeks : 24 sodas / 2 = < < 24 / 2 = 12 > > 12 sodas repeat the process one more time to find the number of sodas after 3 weeks : 12 sodas / 2 = < < 12 / 2 = 6 > > 6 sodas. it takes jerry 3 weeks to get down to 6 sodas. # # # # 3 [SEP]
+---------------
+[Sample 5]
+Source : [CLS] james writes 10 pages an hour. if he writes 5 pages a day to 2 different people, how many hours a week does he spend writing? [SEP] [SEP]
+Output : [CLS] < he total 2 pages < 10 < * 16 > > 5 = 10 > 2 = 5 5 day 10 writes < he < 10 12 16 4 pages < 6 = 2 2 4 3 > < he 4 pages pages 5 2 5 12 * 2 total he = people < 4 2 > = < 3 11 > number = is = the > 16 < = 16 = > = of # 33 # # # [SEP] [PAD] #
+Target : [CLS] he writes 5 * 2 = < < 5 * 2 = 10 > > 10 pages a day so he writes 10 * 7 = < < 10 * 7 = 70 > > 70 pages a week that means he writes for 70 / 10 = < < 70 / 10 = 7 > > 7 hours # # # # 7 [SEP]
+---------------
+[Sample 6]
+Source : [CLS] oliver collects trading cards. he has twice as many monster club cards as alien baseball cards. his battle gremlins card collection is the largest at 48 cards, three times the size of his alien baseball card collection. how many monster club cards does oliver have? [SEP] [SEP]
+Output : [CLS] thus < will cards cards 60 + > 2 cards 2 = > 2 = 2. 3 < 2 cards = 48 > > 4 # # # = [SEP] #
+Target : [CLS] oliver ’ s alien baseball card collection has 48 / 3 = < < 48 / 3 = 16 > > 16 cards. oliver has twice as many monster club cards, so he has 16 * 2 = < < 16 * 2 = 32 > > 32 monster club cards. # # # # 32 [SEP]
+---------------
+[Sample 7]
+Source : [CLS] lena played video games for 3. 5 hours last weekend. her brother played 17 minutes more than she did. how many minutes together did lena and her brother play video games last weekend? [SEP] [SEP]
+Output : [CLS] played = < < * - 20 24 34 < > 5 > = < < - 20 + >. + + to + + + 3 5 5 so hours + = 5 > 2 5 5 + > > < 20 17 = 9 = minutes > more 3 5 < + 35 # [SEP]. # #
+Target : [CLS] lena = 3. 5 hours = 210 minutes brother = 210 + 17 = < < 210 + 17 = 227 > > 227 minutes 210 + 227 = < < 210 + 227 = 437 > > 437 minutes together, lena and her brother played 437 minutes of video games. # # # # 437 [SEP]
+---------------
+[Sample 8]
+Source : [CLS] when jane visited iran, she visited 6 more than twice as many rehabilitation centers as han. han visited 2 less than twice as many rehabilitation centers as jude did. jude visited half fewer rehabilitation centers as lisa did. if lisa visited 6 rehabilitation centers, how many rehabilitation centers did they all visit assuming they are all different? [SEP] [SEP]
+Output : if [CLS] [CLS] centers rehabilitation visited visited 2 = 2 < 6 = + has + + > <. = > 2 all 2 6 / = 2 2 2 more. 16 6 2 = 7 + 2 2 < + = < + 26 + > # # # >
+Target : [CLS] jude visited 1 / 2 * 6 = < < 1 / 2 * 6 = 3 > > 3 rehabilitation centers. han visited 2 * 3 - 2 = < < 2 * 3 - 2 = 4 > > 4 rehabilitation centers. jane visited 6 + 2 * 4 = < < 6 + 2 * 4 = 14 > > 14 rehabilitation centers. they all visited 6 + 3 + 4 + 14 = < < 6 + 3 + 4 + 14 = 27 > > 27 rehabilitation centers. # # # # 27 [SEP]
+---------------
+[Sample 9]
+Source : [CLS] james goes to pet smart to adopt a puppy. the adoption fee is $ 200 and his friend agrees to pay 25 % of that. how much does james have to pay? [SEP] [SEP]
+Output : [CLS] [CLS] s $ % 5 the has + $ < < 200 100 $ $ $ $ + $ 40 75 $ 4 < then = ( >0 % 25 - + $. = < 200 100 $ = > 25 100 > # # # # # [SEP] [SEP] [PAD] [SEP]
+Target : [CLS] his friend agrees to pay 200 *. 25 = $ < < 200 *. 25 = 50 > > 50 so he needs to pay 200 - 50 = $ < < 200 - 50 = 150 > > 150 # # # # 150 [SEP]
+---------------
+[Sample 10]
+Source : [CLS] james can make 4 hats out of one yard of velvet. he needs three yards of velvet to make a cloak. how much velvet does he need to make 6 cloaks and 12 hats? [SEP] [SEP]
+Output : [CLS] 4 he as of of needs 4 4 * 4 = x + * 12 < 12 > 6 12 < = 13 26 4 make 24 > 4 + 12 to 4 3 < 20 1 so * < much 12 4 > 6s * 3 = < < 4 12 4 can. 2 > 4 > = = 12 > needss = < < 6 =, + 6 so < < 12 = = 20 ) = > 6 # # # # [SEP]
+Target : [CLS] first find the total amount of velvet james uses on the hats : 12 hats / 4 hats / yard = < < 12 / 4 = 3 > > 3 yards then find the total amount of velvet he needs to make the cloaks : 6 cloaks * 3 yards / cloak = < < 6 * 3 = 18 > > 18 yards then add those two amounts to find the total amount of velvet he needs : 3 yards + 18 yards = < < 3 + 18 = 21 > > 21 yards # # # # 21 [SEP]
+---------------
+[Sample 11]
+Source : [CLS] emily can type 60 words per minute. how many hours does it take her to write 10, 800 words? [SEP] [SEP]
+Output : [CLS] a type / 60 60 write + write 60 60 10 10 = 60 60 60 he < can > / < > 60 = 60 60 10 60 < take > + 300 = 60 60 take / total and, take take #. # [PAD] # #
+Target : [CLS] in an hour, emily can type 60 words * 60 minutes = < < 60 * 60 = 3600 > > 3600 words. it will take her 10800 / 3600 = < < 10800 / 3600 = 3 > > 3 hours to write 10800 words. # # # # 3 [SEP]
+---------------
+[Sample 12]
+Source : [CLS] jill is the hairdresser for the school's dance team and has to braid 8 dancers'hair. if each dancer has five braids and each braid takes 30 seconds, how many minutes will it take to braid all the dancers'hair? [SEP] [SEP]
+Output : [CLS] dance the s has if total seconds has dog have < * 10 30 * * = means 120 * > hair 30 school * 4 4 * firsts 30 19 + 22 = hair it 4 seconds 90 48 300 > < 4 to < total 9 = < 90 4. < = = 4 8 2 < = the > > / < amount 28 8 30 < = / 30 > has, < 160 = and total = because 90 8 < 30 they > 4 27 # total > # 18 [PAD] # [PAD] [PAD] [PAD] [PAD] [PAD] [SEP]
+Target : [CLS] first find the total number of braids among all the dancers : 8 dancers * 5 braids / dancer = < < 8 * 5 = 40 > > 40 braids then multiply by that the time in seconds per braid to find the total time in seconds : 40 braids * 30 seconds / braid = < < 40 * 30 = 1200 > > 1200 seconds then divide the time in seconds by the number of seconds per minute to find the time in minutes : 1200 seconds / 60 seconds / minute = < < 1200 / 60 = 20 > > 20 minutes # # # # 20 [SEP]
+---------------
+[Sample 13]
+Source : [CLS] a large puzzle costs $ 15. a small puzzle and a large puzzle together cost $ 23. how much would you pay for 1 large and 3 small puzzles? [SEP] [SEP]
+Output : [CLS] + 3 3 < > = cost + = + 3 < + = 15 <. > > > 2 15 < + < 36 * 2 = > $ 15 = $ 3 < # 60 > # [PAD] #
+Target : [CLS] a small puzzle costs $ 23 - $ 15 = $ < < 23 - 15 = 8 > > 8. three small puzzles cost $ 8 x 3 = $ < < 8 * 3 = 24 > > 24. so, 1 large and 3 small puzzles cost $ 24 + $ 15 = $ < < 24 + 15 = 39 > > 39. # # # # 39 [SEP]
+---------------
+[Sample 14]
+Source : [CLS] there are 192 soaps in a package. they put them in 2 big boxes. if each box contains 6 packages, how much soap do the 2 boxes contain in total? [SEP] [SEP]
+Output : [CLS] in 19 boxes the can 2 2 boxes 2 < < * 2 > 8 so 6 = 2 * box so in > * / soap big do soap this so /, 8 < + > = = = 4000 < < > * - # # >. # [PAD] # # [SEP]
+Target : [CLS] find how many soaps are in 1 box by multiplying the number of soaps per package by the number of packages per box : 192 * 6 = < < 192 * 6 = 1152 > > 1152 soaps. then find how many soaps 2 boxes contain by multiplying the number of boxes by the number of soaps per box : 1152 * 2 = < < 1152 * 2 = 2304 > > 2304 soaps. # # # # 2304 [SEP]
+---------------
+[Sample 15]
+Source : [CLS] jennifer's boyfriend left 5 texts about the grocery shopping, 5 times more texts asking why she wasn't responding, and a number of texts equal to 10 % of all the texts he sent previously saying he was calling the police. how many texts did he send total? [SEP] [SEP]
+Output : [CLS] a texts will * ʲ 10 10 equal of then is he 18 - < + + = < - > > she < = 40 he >. ) * < 5 combining <0 5 * < % is, > / 40 5 10 the = / a < + 5 = the > 3000 texts. 5 + 01 5 10 = 56 10 > then were <. 20 > < 5 = < - = she = > 40 to 60 + will 5 [SEP] - +. - # > # # #
+Target : [CLS] first find how many texts jennifer's boyfriend sent asking why she wasn't responding : 5 texts * 5 = < < 5 * 5 = 25 > > 25 texts then add that number to the number of grocery shopping texts : 25 texts + 5 texts = < < 25 + 5 = 30 > > 30 texts then multiply that number by 10 % to find how many texts he sent about calling the police : 30 texts * 10 % = < < 30 * 10 *. 01 = 3 > > 3 texts then added how many texts of each kind he sent to find the total number of texts he sent : 3 texts + 30 texts = < < 3 + 30 = 33 > > 33 texts # # # # 33 [SEP]
+---------------

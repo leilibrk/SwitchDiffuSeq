@@ -255,7 +255,7 @@ class TrainLoop:
                 pbar.update(1)
         
         # Create directory if needed
-        model_name = "Switch_NT_8000_16e"  # set this dynamically if needed
+        model_name = "Switch_NT_8000_8e"  # set this dynamically if needed
         timestamp = datetime.now().strftime("%m%d_%H%M")
 
         # Define model directory and loss curve filename

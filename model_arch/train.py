@@ -20,7 +20,7 @@ import sys
 import time
 from fvcore.nn import FlopCountAnalysis, flop_count_table
 from torch.nn.utils import clip_grad_norm_
-from model_arch.moe_bert import SwitchGate, SwitchMoE
+from model_arch.moe_bert import SwitchGate
 def clear_dir(directory_path):
     try:
         files = glob.glob(os.path.join(directory_path, '*'))
@@ -57,7 +57,6 @@ class TrainLoop:
         self.eval_data = eval_data
         self.batch_size = batch_size
         self.microbatch = microbatch if microbatch > 0 else batch_size
-        assert (self.batch_size % self.microbatch) == 0, "microbatch must divide batch_size"
         self.lr = lr
         self.ema_rate = (
             [ema_rate]
@@ -98,10 +97,8 @@ class TrainLoop:
         self.opt = _build_moe_groups(self.model, self.lr, self.weight_decay)
 
         # self.opt = self.AdamW_LLRD() if use_llrd else AdamW(self.master_params, lr=self.lr, weight_decay=self.weight_decay)
-        warm_up_steps = max(warm_up_steps, int(0.1 * self.learning_steps))
-        self.scheduler = get_cosine_schedule_with_warmup(self.opt, warm_up_steps, self.learning_steps)
-
-        # self.scheduler = get_cosine_schedule_with_warmup(self.opt, num_warmup_steps = warm_up_steps, num_training_steps=epochs)
+ 
+        self.scheduler = get_cosine_schedule_with_warmup(self.opt, num_warmup_steps = warm_up_steps, num_training_steps=epochs)
         self.ema_params = [copy.deepcopy(self.master_params) for _ in range(len(self.ema_rate))]
         self.min_val_loss = float('inf')
         self.train_loss_curve = []
@@ -255,7 +252,7 @@ class TrainLoop:
                 pbar.update(1)
         
         # Create directory if needed
-        model_name = "Switch_NT_8000_8e"  # set this dynamically if needed
+        model_name = "Switch_8e_Truth"  # set this dynamically if needed
         timestamp = datetime.now().strftime("%m%d_%H%M")
 
         # Define model directory and loss curve filename
@@ -379,13 +376,10 @@ class TrainLoop:
             aux_loss = losses.get("aux_loss", None)
 
             main_loss = (losses["loss"] * weights).mean()
-            # if aux_loss is not None:
-            #     total_loss = main_loss + 0.03 * aux_loss
-            # else:
-            #     total_loss = main_loss 
-            num_moe_layers = sum(1 for _ in self.model.modules() if isinstance(_, SwitchMoE))
-            aux_lambda = 0.03 / max(1, num_moe_layers)
-            total_loss = main_loss + aux_lambda * aux_loss if aux_loss is not None else main_loss
+            if aux_loss is not None:
+                total_loss = main_loss + 0.03 * aux_loss
+            else:
+                total_loss = main_loss 
             ###########
             if isinstance(self.schedule_sampler, LossAwareSampler):
                 self.schedule_sampler.update_with_local_losses(
@@ -407,12 +401,9 @@ class TrainLoop:
                         micro.size(0), dtype=torch.long, device=micro.device
                     )
                     # Compute FLOPs with both inputs:
-                    # flop_analysis = FlopCountAnalysis(
-                    #     self.model, (micro, dummy_timesteps)
-                    # )
-                    attn_mask = micro_cond.get("attention_mask", None)
-                    args = (micro, dummy_timesteps, attn_mask)
-                    flop_analysis = FlopCountAnalysis(self.model, args)
+                    flop_analysis = FlopCountAnalysis(
+                        self.model, (micro, dummy_timesteps)
+                    )
                     total_flops = flop_analysis.total()
                     print(f"\n[Step {self.step}] Estimated FLOPs: {total_flops/1e9:.2f} GFLOPs")
                     print(flop_count_table(flop_analysis, max_depth=2))

@@ -78,7 +78,7 @@ if __name__ == '__main__':
                                                                clamp_step=config['clamp_step'])
     print("\n===== SAMPLES =====\n")
     # Get encoder class name
-    model_name = "Switch_NT_8000_16e"
+    model_name = "Switch_8e_Truth"
     # Create timestamp
     timestamp = datetime.now().strftime("%m%d_%H%M")
     # Compose file name

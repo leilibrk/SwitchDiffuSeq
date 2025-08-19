@@ -112,7 +112,7 @@ class TransformerNetModel(nn.Module):
                 dim_head=config.hidden_size // config.num_attention_heads,
                 dropout=config.hidden_dropout_prob,
                 mult=4,
-                num_experts=16,
+                num_experts=8,
                 depth=config.num_hidden_layers,
             )
             self.register_buffer("position_ids", torch.arange(config.max_position_embeddings).expand((1, -1)))
@@ -149,7 +149,7 @@ class TransformerNetModel(nn.Module):
             raise NotImplementedError
 
 
-    def forward(self, x, timesteps=None, attention_mask=None, **kwargs):
+    def forward(self, x, timesteps):
         """
         Apply the model to an input batch.
 
@@ -195,7 +195,7 @@ class TransformerNetModel(nn.Module):
         emb_inputs = self.dropout(self.LayerNorm(emb_inputs))
 
         # === HERE: capture both hidden-state and aux_loss ===
-        inner_out = self.input_transformers(emb_inputs, attention_mask=attention_mask)
+        inner_out = self.input_transformers(emb_inputs)
         hidden = inner_out.last_hidden_state
         aux_loss = getattr(inner_out, "aux_loss", None)
 

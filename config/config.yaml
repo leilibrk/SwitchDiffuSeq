@@ -5,8 +5,8 @@ custom_vocab_fp: 'bert-base-uncased' # Change this for tokenizer vocabulary
 # Model hyperparameters
 lr: 0.0001 # Weight learning rate
 batch_size: 32 # Examples per data batch
-microbatch: 8
-epochs: 8000 # Number of epochs to run
+microbatch: 4
+epochs: 2000 # Number of epochs to run
 eval_interval: 1000
 ema_rate: '0.9999' 
 schedule_sampler: 'uniform' 
@@ -24,7 +24,7 @@ weight_decay: 0.0
 predict_xstart: True
 rescale_timesteps: True
 emb_scale_factor: 1.0
-data_dir: 'data/natural-questions'
+data_dir: 'data/truthfulqa'
 
 # sampling hyperparameters
 sampling_step: 1000

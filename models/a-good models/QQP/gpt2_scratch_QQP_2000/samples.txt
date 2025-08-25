@@ -1,0 +1,102 @@
+===== SAMPLES =====
+
+[Sample 1]
+Source : I can't wake up in the morning . What should I do to wake up early?
+Output : I am I do to wake up early in the morning? I do I do I do? I do? What should I do? What should I do? What should I do to do to do? What should I do? What should I do
+Target : What are the brain tricks to wake up early?
+
+[Sample 2]
+Source : How can I improve my English in all aspects?
+Output : How can I improve my English English? How can I improve my English? How can I improve my English? How can I improve my English? How can I improve my English? How can I improve my English? How can I improve my English?
+Target : How I can speak English with fluency?
+
+[Sample 3]
+Source : In populations, what are some causes of genetic variation?
+Output : What are some examples of the causes of the causes of the causes of the causes of the causes of the causes of the causes of the causes of the causes of the causes of the causes of the causes of the causes of the? What are they?
+Target : What are some possible causes of genetic variation in an environment?
+
+[Sample 4]
+Source : I want to start my career as a photographer at age of 25. Is it too late?
+Output : I want to start a age of a age of a age of 20. How can I start a age of 20. How do I start a age? How do I start a age. How do I start a age? How do I start me
+Target : Is it too late for me at the age of 25 thinking to start a career in photography?
+
+[Sample 5]
+Source : I want to stop comparing myself to others. What should I do? Can you help me?
+Output : I want to stop myself. What should I do to stop myself? What should I do? What should I do to stop myself? What should I do? What should I do? What should I do? What should I do? What should I
+Target : What should I do to stop comparing myself  or my life to other people who are better than me?
+
+[Sample 6]
+Source : How can I make friends?
+Output : How can I make friends? How can I make friends? How can I make friends? How can I make friends? How can I make friends? How can I make friends? How can I make friends? How can I make friends? How can
+Target : What is the best way to make friends?
+
+[Sample 7]
+Source : How can I lose weight without going to the gym?
+Output : How can I lose weight without going to lose weight? How can I lose weight? How do I lose weight? How do I lose weight? How do I lose weight? How do I lose weight? How do I lose weight? How do I
+Target : What are some ways to lose weight without exercising at the gym?
+
+[Sample 8]
+Source : What is the best way to prepare for an interview?
+Output : How do I prepare for an interview? What is the best way to prepare for an interview? What should I prepare for an interview? What should I prepare for an interview? What should I prepare for an interview? What should I prepare for an interview
+Target : How should I get ready for a job interview?
+
+[Sample 9]
+Source : Can you tell me how to bake a chocolate cake?
+Output : How do I tell me to a cake? What are some examples? What are some examples? What are some examples? What are some examples? What are some examples? What are some examples? What are some examples? What are some examples? What
+Target : What is the process to make a chocolate cake at home?
+
+[Sample 10]
+Source : Why do people procrastinate so much?
+Output : Why do peoplerastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrastrast?
+Target : What are the main reasons people tend to procrastinate?
+
+[Sample 11]
+Source : How do I improve my writing skills in English?
+Output : How can I improve my writing skills in English? How can I improve my English skills? How can I improve my English skills? How can I improve my writing skills? How can I improve my writing skills? How can I improve my writing skills?
+Target : What can I do to become better at writing English?
+
+[Sample 12]
+Source : Is it difficult to learn guitar on your own?
+Output : Is it difficult to learn guitar on your own? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why?
+Target : How hard is it to teach yourself guitar?
+
+[Sample 13]
+Source : What should I do if I feel anxious all the time?
+Output : What should I do if I feel if I feel if I am not? Why? Why? Why do I am not? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why
+Target : How can I deal with constant anxiety?
+
+[Sample 14]
+Source : Which programming language should I learn first?
+Output : Which programming language should I learn? Why? Why? Why? Why? Why should I learn? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why?
+Target : What is the best programming language to start with?
+
+[Sample 15]
+Source : Can meditation help reduce stress?
+Output : How can I reduce stress? How can I reduce stress? How can I reduce stress? How can I reduce stress? How can I reduce stress? How can I reduce stress? How can I reduce stress? How can I reduce stress? How can
+Target : Does practicing meditation lower stress levels?
+
+[Sample 16]
+Source : What is the easiest way to save money every month?
+Output : How can I save money? What are some good way to save money? How can I save money? What are some good way? What are some good way? What are some good way? What are some good way? What are some good way
+Target : How can I save money easily on a monthly basis?
+
+[Sample 17]
+Source : How do I learn to cook quickly?
+Output : How can I learn to cook quickly? How can I learn to learn how to learn how to learn how to learn how to learn how? How can I learn how to learn how? How? How can I learn how? How? How? How
+Target : What are some fast ways to learn cooking?
+
+[Sample 18]
+Source : Why is exercise important for health?
+Output : Why is the important important for health? Why is it important? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why? Why
+Target : How does regular exercise benefit our health?
+
+[Sample 19]
+Source : Can you explain the basics of machine learning?
+Output : How do I explain the basics of learning machine learning? How do I learn? How do I learn? How do I learn? How do I learn? How do I learn? How? How do I learn? How do I learn? How do
+Target : What are the fundamental concepts of machine learning?
+
+[Sample 20]
+Source : What can I do to improve my concentration?
+Output : How can I improve my concentration? What can I do? What do I do? What can do? What do? What do? What do? What do? What do? What do? What do? What do? What do? What do
+Target : How do I increase my focus and attention span?
+

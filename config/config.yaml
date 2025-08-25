@@ -14,7 +14,8 @@ diffusion_steps: 1000 # Number of timesteps/diffusion steps for the diffusion mo
 noise_schedule: 'sqrt'
 use_plm_init: 'no' # embedding in transformer
 transformer: 'bert-base-uncased'
-
+model_type: 'Switch' # choose Bert or Switch (remember to choose model_name for directory
+num_experts: 8 # set if you want to choose Switch
 seq_len: 256 # Amount of tokens that can be processed at once
 hidden_t_dim: 128 # Dimension for the timestep embedding
 hidden_dim: 128 # Hidden dimension for the transformer
@@ -32,4 +33,4 @@ clip_denoised: False
 top_p: 0
 clamp_step: 0
 sampling_batch_size: 16
-model_name: 'Switch_QQP_4e_2000'
+model_name: 'Switch_8e_2000_capacity=1.75_aux=0.05'

@@ -36,6 +36,8 @@ class TransformerNetModel(nn.Module):
         vocab_size=None,
         init_pretrained='no',
         logits_mode=1,
+        model_type = 'Bert',
+        num_experts = 4,
     ):
         super().__init__()
 
@@ -49,9 +51,10 @@ class TransformerNetModel(nn.Module):
         self.dropout = dropout
         self.logits_mode = logits_mode
         self.hidden_size = config.hidden_size
-
+        self.num_experts = num_experts
         self.word_embedding = nn.Embedding(vocab_size, self.input_dims)
         self.lm_head = nn.Linear(self.input_dims, vocab_size)
+        self.model_type = model_type
         with torch.no_grad():
             self.lm_head.weight = self.word_embedding.weight
 
@@ -70,32 +73,13 @@ class TransformerNetModel(nn.Module):
             print('initializing from pretrained bert...')
             print(config)
             temp_bert = BertModel.from_pretrained(config_name, config=config)
-            moe_encoder = MoEBertEncoder(config)
-            # Loop through each layer and copy weights
-            for i, (bert_layer, moe_layer) in enumerate(zip(temp_bert.encoder.layer, moe_encoder.layer)):
-                # 1. Copy attention module (same structure)
-                moe_layer.attention.load_state_dict(bert_layer.attention.state_dict())
-
-                # 2. Copy final LayerNorm (BERT's output.LayerNorm → our moe.layernorm)
-                moe_layer.moe.layernorm.load_state_dict(
-                    bert_layer.output.LayerNorm.state_dict()
-                )
-
-                # 3. Copy FFN weights to all experts
-                for expert in moe_layer.moe.experts:
-                    # Bert FFN: intermediate.dense → GELU → output.dense
-                    expert[0].weight.data.copy_(bert_layer.intermediate.dense.weight)
-                    expert[0].bias.data.copy_(bert_layer.intermediate.dense.bias)
-                    expert[2].weight.data.copy_(bert_layer.output.dense.weight)
-                    expert[2].bias.data.copy_(bert_layer.output.dense.bias)
-
             self.word_embedding = temp_bert.embeddings.word_embeddings
             with torch.no_grad():
                 self.lm_head.weight = self.word_embedding.weight
             # self.lm_head.weight.requires_grad = False
             # self.word_embedding.weight.requires_grad = False
             
-            self.input_transformers = moe_encoder
+            self.input_transformers = temp_bert.encoder
             self.register_buffer("position_ids", torch.arange(config.max_position_embeddings).expand((1, -1)))
             self.position_embeddings = temp_bert.embeddings.position_embeddings
             self.LayerNorm = temp_bert.embeddings.LayerNorm
@@ -104,17 +88,22 @@ class TransformerNetModel(nn.Module):
             del temp_bert.pooler
 
         elif init_pretrained == 'no':
-            # self.input_transformers = BertEncoder(config)
-            self.input_transformers = SwitchTransformer(
-                num_tokens=vocab_size,
-                dim=config.hidden_size,
-                heads=config.num_attention_heads,
-                dim_head=config.hidden_size // config.num_attention_heads,
-                dropout=config.hidden_dropout_prob,
-                mult=4,
-                num_experts=4,
-                depth=config.num_hidden_layers,
-            )
+            self.input_transformers = None
+            if self.model_type == 'Bert':
+                self.input_transformers = BertEncoder(config)
+            elif self.model_type == 'Switch':
+                self.input_transformers = SwitchTransformer(
+                    num_tokens=vocab_size,
+                    dim=config.hidden_size,
+                    heads=config.num_attention_heads,
+                    dim_head=config.hidden_size // config.num_attention_heads,
+                    dropout=config.hidden_dropout_prob,
+                    mult=4,
+                    num_experts=self.num_experts,
+                    depth=config.num_hidden_layers,
+                )
+            else:
+                assert "invalid model_type: choose between Bert and Switch"
             self.register_buffer("position_ids", torch.arange(config.max_position_embeddings).expand((1, -1)))
             self.position_embeddings = nn.Embedding(config.max_position_embeddings, config.hidden_size)
             self.LayerNorm = nn.LayerNorm(config.hidden_size, eps=config.layer_norm_eps)
@@ -157,54 +146,59 @@ class TransformerNetModel(nn.Module):
         :param timesteps: a 1-D batch of timesteps.
         :return: an [N x C x ...] Tensor of outputs.
         """
-        # emb_t = self.time_embed(timestep_embedding(timesteps, self.hidden_t_dim))
+        if self.model_type == 'Bert':
+            
+            emb_t = self.time_embed(timestep_embedding(timesteps, self.hidden_t_dim))
 
-        # if self.input_dims != self.hidden_size:
-        #     emb_x = self.input_up_proj(x)
-        # else:
-        #     emb_x = x
+            if self.input_dims != self.hidden_size:
+                emb_x = self.input_up_proj(x)
+            else:
+                emb_x = x
 
-        # seq_length = x.size(1)
-        # position_ids = self.position_ids[:, : seq_length ]
-        # # print(emb_x.shape, emb_t.shape, self.position_embeddings)
-        # emb_inputs = self.position_embeddings(position_ids) + emb_x + emb_t.unsqueeze(1).expand(-1, seq_length, -1)
-        # emb_inputs = self.dropout(self.LayerNorm(emb_inputs))
+            seq_length = x.size(1)
+            position_ids = self.position_ids[:, : seq_length ]
+            # print(emb_x.shape, emb_t.shape, self.position_embeddings)
+            emb_inputs = self.position_embeddings(position_ids) + emb_x + emb_t.unsqueeze(1).expand(-1, seq_length, -1)
+            emb_inputs = self.dropout(self.LayerNorm(emb_inputs))
 
-        # input_trans_hidden_states = self.input_transformers(emb_inputs).last_hidden_state
+            input_trans_hidden_states = self.input_transformers(emb_inputs).last_hidden_state
+            
+            if self.output_dims != self.hidden_size:
+                h = self.output_down_proj(input_trans_hidden_states)
+            else:
+                h = input_trans_hidden_states
+            h = h.type(x.dtype)
+            return h
+        elif self.model_type == 'Switch':
+            emb_t = self.time_embed(timestep_embedding(timesteps, self.hidden_t_dim))
+            if self.input_dims != self.hidden_size:
+                emb_x = self.input_up_proj(x)
+            else:
+                emb_x = x
+
+            seq_length = x.size(1)
+            position_ids = self.position_ids[:, :seq_length]
+            emb_inputs = (
+                self.position_embeddings(position_ids)
+                + emb_x
+                + emb_t.unsqueeze(1).expand(-1, seq_length, -1)
+            )
+            emb_inputs = self.dropout(self.LayerNorm(emb_inputs))
+
+            # capture both hidden-state and aux_loss ===
+            inner_out = self.input_transformers(emb_inputs)
+            hidden = inner_out.last_hidden_state
+            aux_loss = getattr(inner_out, "aux_loss", None)
+
+            # projection back to desired output dims
+            if self.output_dims != self.hidden_size:
+                h = self.output_down_proj(hidden)
+            else:
+                h = hidden
+            h = h.type(x.dtype)
+
+            # Wrap into our MoEModelOutput so downstream sees aux_loss
+            return MoEModelOutput(last_hidden_state=h, aux_loss=aux_loss)
         
-        # if self.output_dims != self.hidden_size:
-        #     h = self.output_down_proj(input_trans_hidden_states)
-        # else:
-        #     h = input_trans_hidden_states
-        # h = h.type(x.dtype)
-        # return h
-        emb_t = self.time_embed(timestep_embedding(timesteps, self.hidden_t_dim))
-
-        if self.input_dims != self.hidden_size:
-            emb_x = self.input_up_proj(x)
         else:
-            emb_x = x
-
-        seq_length = x.size(1)
-        position_ids = self.position_ids[:, :seq_length]
-        emb_inputs = (
-            self.position_embeddings(position_ids)
-            + emb_x
-            + emb_t.unsqueeze(1).expand(-1, seq_length, -1)
-        )
-        emb_inputs = self.dropout(self.LayerNorm(emb_inputs))
-
-        # === HERE: capture both hidden-state and aux_loss ===
-        inner_out = self.input_transformers(emb_inputs)
-        hidden = inner_out.last_hidden_state
-        aux_loss = getattr(inner_out, "aux_loss", None)
-
-        # projection back to desired output dims
-        if self.output_dims != self.hidden_size:
-            h = self.output_down_proj(hidden)
-        else:
-            h = hidden
-        h = h.type(x.dtype)
-
-        # Wrap into our MoEModelOutput so downstream sees aux_loss
-        return MoEModelOutput(last_hidden_state=h, aux_loss=aux_loss)
+            assert "unknown model"

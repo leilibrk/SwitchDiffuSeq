@@ -20,9 +20,9 @@ CONFIG = {
     "batch_size": 32,
     "max_steps": 2000,
     "warmup_steps": 100,
-    "data_dir": "data/greetings",
+    "data_dir": "data/QQP",
     "seed": 102,
-    "model_name": "gpt2_scratch_greet_2000",
+    "model_name": "gpt2_scratch_QQP_2000",
     "sample_max_new_tokens": 50,
 }
 torch.manual_seed(CONFIG["seed"])

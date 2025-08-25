@@ -40,6 +40,8 @@ if __name__ == '__main__':
                         config['noise_schedule'],
                         config['predict_xstart'],
                         config['rescale_timesteps'],
+                        config['model_type'],
+                        config['num_experts']
                     )
     
     model.to(dist_util.dev())

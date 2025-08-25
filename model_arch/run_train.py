@@ -12,6 +12,8 @@ def create_model_and_diffusion(
     noise_schedule,
     predict_xstart,
     rescale_timesteps,
+    model_type,
+    num_experts,
     **kwargs,
 ):
     model = TransformerNetModel(
@@ -21,7 +23,9 @@ def create_model_and_diffusion(
         dropout=dropout,
         config_name=config_name,
         vocab_size=vocab_size,
-        init_pretrained=use_plm_init
+        init_pretrained=use_plm_init,
+        model_type=model_type,
+        num_experts=num_experts
     )
 
     betas = get_named_beta_schedule(noise_schedule, diffusion_steps)

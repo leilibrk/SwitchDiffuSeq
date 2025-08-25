@@ -1,0 +1,102 @@
+===== SAMPLES =====
+
+[Sample 1]
+Source : Hiya! What’s on your mind?
+Output : Anything you need? Just let me know. How can I can I can I can I can make things easier for you? Just let me know. How can I can I can I can make things easier for you. How can I can I can
+Target : Ask away! I’m ready to assist.
+
+[Sample 2]
+Source : Hey, what do you need help with?
+Output : I’m here for you! How can I be of service?
+Target : Let's get started! What can I do for you?
+
+[Sample 3]
+Source : Hiya! What’s on your mind?
+Output : Anything you need? Just let me know. How can I can I can I can I can make things easier for you? Just let me know. How can I can I can I can make things easier for you. How can I can I can
+Target : Anything you need? Just let me know.
+
+[Sample 4]
+Source : Good morning, sunshine!
+Output : I’m here to help with anything you need. How can I be of service?
+Target : Helping you is my pleasure!
+
+[Sample 5]
+Source : Hey, good morning! How are you?
+Output : I’m here to help with anything you need. How can I help?
+Target : Good morning! I’m doing well, thank you. How about you?
+
+[Sample 6]
+Source : Hello! Hope you’re well.
+Output : Not much! How can I help you today? Just let me know. How can I assist?
+Target : Thank you! I hope you’re doing well too. How can I assist?
+
+[Sample 7]
+Source : Greetings!
+Output : Good afternoon! How can I assist you? Just let me know. What can I can you?
+Target : Greetings! How may I help you?
+
+[Sample 8]
+Source : What's up?
+Output : Not much! How can I help?
+Target : Not much! How can I help you today?
+
+[Sample 9]
+Source : Hello, what’s been going on?
+Output : Helping you is my pleasure! How can I help you?
+Target : Anything you need? Just let me know.
+
+[Sample 10]
+Source : Hi, what’s your question today?
+Output : I’m here to help with anything you need. How can I be of service?
+Target : Anything you need? Just let me know.
+
+[Sample 11]
+Source : Hey, how’s your day?
+Output : Not much! How can I help you today? Just let me know. How can I can I can I can I can I can I can I can I can make things?
+Target : My day’s been great, thank you! How can I help?
+
+[Sample 12]
+Source : Hello, what’s been going on?
+Output : Helping you is my pleasure! How can I help you?
+Target : Let’s make today great! How can I assist?
+
+[Sample 13]
+Source : Yo, what's new today?
+Output : Ask away! I’m ready to assist. What do for you?
+Target : I’m here for you! How can I be of service?
+
+[Sample 14]
+Source : Hiya! What’s on your mind?
+Output : Anything you need? Just let me know. How can I can I can I can I can make things easier for you? Just let me know. How can I can I can I can make things easier for you. How can I can I can
+Target : Let’s make today great! How can I assist?
+
+[Sample 15]
+Source : Hello, good to see you!
+Output : Good to connect with you too! How can I assist you?
+Target : Good to see you too! How can I assist?
+
+[Sample 16]
+Source : Howdy, partner!
+Output : I’m happy to assist, just let me know how. How can I can I can I can help?
+Target : Let's get started! What can I do for you?
+
+[Sample 17]
+Source : Hi there! Hope all is well.
+Output : Not much! How can I assist you today? Just let me know. How can I can help?
+Target : Thank you! I hope the same for you. How can I help?
+
+[Sample 18]
+Source : Hi! What are you up to?
+Output : Not much, just here to help! What about you?
+Target : Not much! I’m here to assist you. How can I help?
+
+[Sample 19]
+Source : Hey, what do you need help with?
+Output : I’m here for you! How can I be of service?
+Target : Sure thing! What’s on your mind?
+
+[Sample 20]
+Source : Hi, anything exciting today?
+Output : Tell me how I can make things easier for you. What can I can I can make?
+Target : Helping you is my pleasure!
+

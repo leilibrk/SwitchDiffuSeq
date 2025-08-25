@@ -1,4 +1,4 @@
-from transformers import AutoTokenizer, PreTrainedTokenizerFast, BertTokenizerFast
+from transformers import AutoTokenizer, PreTrainedTokenizerFast, BertTokenizerFast, GPT2TokenizerFast
 from utils.data import load_data_text
 import torch
 
@@ -20,8 +20,16 @@ class myTokenizer():
         elif vocab == 'shakespeare':
             tokenizer = BertTokenizerFast('shakespeare-tokenizer-bert/plays/vocab.txt')
             self.tokenizer = tokenizer
+        elif vocab == "gpt2":
+            tokenizer = GPT2TokenizerFast.from_pretrained("gpt2")
+            tokenizer.pad_token = tokenizer.eos_token  # GPT2 doesn’t have a pad token
 
-        self.sep_token_id = tokenizer.sep_token_id
+        self.tokenizer = tokenizer
+        if vocab == "gpt2":
+            self.sep_token_id = tokenizer.eos_token_id
+        else:
+            self.sep_token_id = tokenizer.sep_token_id
+        # self.sep_token_id = tokenizer.sep_token_id
         self.pad_token_id = tokenizer.pad_token_id
         self.vocab_size = len(self.tokenizer)
     

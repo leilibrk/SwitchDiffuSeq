@@ -63,7 +63,8 @@ if __name__ == '__main__':
             weight_decay=config['weight_decay'],
             epochs=config['epochs'],
 #             eval_data=data_valid,
-            eval_interval=config['eval_interval']
+            eval_interval=config['eval_interval'],
+            model_name = config['model_name']
         ).run_loop()
     
     word_lst_source, word_lst_recover, word_lst_ref, inter_lst_recover = sampling(model, 
@@ -78,7 +79,7 @@ if __name__ == '__main__':
                                                                clamp_step=config['clamp_step'])
     print("\n===== SAMPLES =====\n")
     # Get encoder class name
-    model_name = "Switch_8e_Truth"
+    model_name = config['model_name']
     # Create timestamp
     timestamp = datetime.now().strftime("%m%d_%H%M")
     # Compose file name

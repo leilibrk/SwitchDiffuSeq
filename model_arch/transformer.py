@@ -112,7 +112,7 @@ class TransformerNetModel(nn.Module):
                 dim_head=config.hidden_size // config.num_attention_heads,
                 dropout=config.hidden_dropout_prob,
                 mult=4,
-                num_experts=8,
+                num_experts=4,
                 depth=config.num_hidden_layers,
             )
             self.register_buffer("position_ids", torch.arange(config.max_position_embeddings).expand((1, -1)))

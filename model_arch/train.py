@@ -21,6 +21,12 @@ import time
 from fvcore.nn import FlopCountAnalysis, flop_count_table
 from torch.nn.utils import clip_grad_norm_
 from model_arch.moe_bert import SwitchGate
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from collections import defaultdict
+
+
 def clear_dir(directory_path):
     try:
         files = glob.glob(os.path.join(directory_path, '*'))
@@ -49,7 +55,8 @@ class TrainLoop:
         eval_interval=-1,
         warm_up_steps=100,
         use_llrd=False,
-        llrd_rate=0.9
+        llrd_rate=0.9,
+        model_name="default_model"
     ):
         self.model = model
         self.diffusion = diffusion
@@ -105,6 +112,12 @@ class TrainLoop:
         self.val_loss_curve = []
         self.train_nll_curve = []
         self.val_nll_curve = []
+        self.expert_usage_history = defaultdict(list)
+        self.expert_drop_history  = defaultdict(list)  
+        self.util_log_every = 100  
+        self.model_dir = None
+        self.model_name = model_name
+
     def log_expert_stats(self, aux_loss):
         # print every 100 steps; don't depend on aux_loss being non-None
         if (self.step % 100) != 0:
@@ -115,7 +128,7 @@ class TrainLoop:
         total_experts = 0
         active_experts = 0
         total_drop_rates, entropies, skews, details = [], [], [], []
-
+        details = []
         for name, module in m.named_modules():
             # accept any module that cached MoE stats
             if not (hasattr(module, "last_load") or hasattr(module, "last_expert_usage")):
@@ -134,6 +147,8 @@ class TrainLoop:
             E = load.numel()
             if E == 0:
                 continue
+            load_np = load.detach().float().cpu().numpy()
+            self.expert_usage_history[name].append(load_np)
 
             total_experts += E
 
@@ -161,6 +176,7 @@ class TrainLoop:
                 drop = float(drop.item())
             if isinstance(drop, (int, float)):
                 total_drop_rates.append(drop)
+                self.expert_drop_history[name].append(drop)
 
             details.append(f"{name}: active {layer_active}/{E} (thr≈{thr:.4f})")
 
@@ -193,6 +209,75 @@ class TrainLoop:
         }
         torch.save(ckpt, os.path.join(directory, filename))
         print(f"Saved checkpoint to {directory}/{filename}")
+
+    def _save_expert_utilization_artifacts(self):
+        if not self.expert_usage_history:
+            print("No expert utilization history recorded.")
+            return
+
+        # 1) CSV per layer + aggregated CSV
+        aggregate_rows = []
+        for layer, series in self.expert_usage_history.items():
+            # series: list of arrays [num_experts], logged every util_log_every steps
+            arr = np.stack(series, axis=0)  # [T, E]
+            # Save per-layer CSV (rows=time index, cols=expert_k)
+            df = pd.DataFrame(arr, columns=[f"expert_{i}" for i in range(arr.shape[1])])
+            df["log_step_index"] = np.arange(len(series))
+            df["train_step"] = df["log_step_index"] * self.util_log_every
+            cols = ["train_step", "log_step_index"] + [c for c in df.columns if c.startswith("expert_")]
+            df = df[cols]
+            csv_path = os.path.join(self.model_dir, f"expert_usage_{self._clean(layer)}.csv")
+            df.to_csv(csv_path, index=False)
+
+            # For aggregate CSV (mean over time per expert)
+            mean_over_time = arr.mean(axis=0)
+            for e_idx, v in enumerate(mean_over_time):
+                aggregate_rows.append({"layer": layer, "expert": e_idx, "mean_util": v})
+
+            # 2) Per-layer final histogram (mean utilization across training)
+            plt.figure(figsize=(7, 4))
+            plt.bar(np.arange(arr.shape[1]), mean_over_time)
+            plt.xlabel("Expert")
+            plt.ylabel("Mean utilization")
+            plt.title(f"Mean Expert Utilization — {layer}")
+            plt.tight_layout()
+            plt.grid(True, axis="y", alpha=0.3)
+            plt.savefig(os.path.join(self.model_dir, f"hist_mean_util_{self._clean(layer)}.png"))
+            plt.close()
+
+            # 3) Per-layer heatmap over time (experts × time)
+            # (transpose so x=time, y=expert)
+            plt.figure(figsize=(8, 4))
+            plt.imshow(arr.T, aspect="auto", origin="lower", interpolation="nearest")
+            plt.colorbar(label="Utilization (fraction)")
+            plt.xlabel(f"Log step index (every {self.util_log_every} steps)")
+            plt.ylabel("Expert")
+            plt.title(f"Expert Utilization Over Time — {layer}")
+            plt.tight_layout()
+            plt.savefig(os.path.join(self.model_dir, f"heatmap_util_{self._clean(layer)}.png"))
+            plt.close()
+
+        if aggregate_rows:
+            agg_df = pd.DataFrame(aggregate_rows)
+            agg_df.to_csv(os.path.join(self.model_dir, "expert_usage_aggregate.csv"), index=False)
+
+            # Optional: overall histogram across layers (mean of means)
+            pivot = agg_df.pivot_table(index="expert", values="mean_util", aggfunc="mean")
+            plt.figure(figsize=(7, 4))
+            plt.bar(pivot.index.values, pivot["mean_util"].values)
+            plt.xlabel("Expert (index)")
+            plt.ylabel("Mean utilization (avg across layers)")
+            plt.title("Global Mean Expert Utilization (averaged across layers)")
+            plt.tight_layout()
+            plt.grid(True, axis="y", alpha=0.3)
+            plt.savefig(os.path.join(self.model_dir, "hist_mean_util_global.png"))
+            plt.close()
+
+    @staticmethod
+    def _clean(name: str) -> str:
+        # file-safe layer name
+        return name.replace("/", "_").replace(".", "_").replace(":", "_")
+
     def AdamW_LLRD(self): 
         print("\n\n======== Using Layer-wise Learning Rate Decay with AdamW ========\n\n")
         lr = self.lr
@@ -234,6 +319,12 @@ class TrainLoop:
         
     def run_loop(self):
         print("\n\n======== Training starts now ========\n\n")
+        # Create directory if needed
+        model_name = self.model_name
+        timestamp = datetime.now().strftime("%m%d_%H%M")
+        self.model_dir = f"models/{model_name}_{timestamp}"
+        os.makedirs(self.model_dir, exist_ok=True)
+        
         self.training_timestamps = []
         start_time = time.time()
         with tqdm( total=self.learning_steps, desc="Training Steps", ascii=True, ncols=100, dynamic_ncols=False, mininterval=0.1, file=sys.stdout ) as pbar:
@@ -251,13 +342,7 @@ class TrainLoop:
                 self.step += 1
                 pbar.update(1)
         
-        # Create directory if needed
-        model_name = "Switch_8e_Truth"  # set this dynamically if needed
-        timestamp = datetime.now().strftime("%m%d_%H%M")
-
-        # Define model directory and loss curve filename
-        model_dir = f"models/{model_name}_{timestamp}"
-        os.makedirs(model_dir, exist_ok=True)
+        
         import pandas as pd
         df = pd.DataFrame({
             "step": list(range(1, self.step)),
@@ -265,10 +350,10 @@ class TrainLoop:
             "train_neg_log_ppl": [-n for n in self.train_nll_curve],
             "val_neg_log_ppl": [-n for n in self.val_nll_curve] if self.val_nll_curve else [None]*len(self.train_nll_curve),
         })
-        df.to_csv(f"{model_dir}/ppl_progress_{model_name}_{timestamp}.csv", index=False)
-        with open(f"{model_dir}/train_nll_curve.pkl", "wb") as f:
+        df.to_csv(f"{self.model_dir}/ppl_progress_{model_name}_{timestamp}.csv", index=False)
+        with open(f"{self.model_dir}/train_nll_curve.pkl", "wb") as f:
             pickle.dump(self.train_nll_curve, f)
-        with open(f"{model_dir}/train_loss_curve.pkl", "wb") as f:
+        with open(f"{self.model_dir}/train_loss_curve.pkl", "wb") as f:
             pickle.dump(self.train_loss_curve, f)
 
         plt.figure(figsize=(8, 4))
@@ -280,7 +365,7 @@ class TrainLoop:
         plt.legend()
         plt.grid(True)
         plt.tight_layout()
-        loss_curve_path = f"{model_dir}/loss_curve_{model_name}_{timestamp}.png"
+        loss_curve_path = f"{self.model_dir}/loss_curve_{model_name}_{timestamp}.png"
         plt.savefig(loss_curve_path)
         
         # Save separate plot for -log(PPL)
@@ -295,12 +380,14 @@ class TrainLoop:
         plt.tight_layout()
 
         # Save
-        log_ppl_curve_path = f"{model_dir}/neg_log_ppl_{model_name}_{timestamp}.png"
+        log_ppl_curve_path = f"{self.model_dir}/neg_log_ppl_{model_name}_{timestamp}.png"
         plt.savefig(log_ppl_curve_path)
         plt.close()
+        self._save_expert_utilization_artifacts()
+        self.save_checkpoint(self.model_dir, filename="final.pt")
 
         plt.show()
-        self.save_checkpoint(model_dir, filename="final.pt")
+        self.save_checkpoint(self.model_dir, filename="final.pt")
 
     def run_step(self, batch, cond):
         self.forward_backward(batch, cond)

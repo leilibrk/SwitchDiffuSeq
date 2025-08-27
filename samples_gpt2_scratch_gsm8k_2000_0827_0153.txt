@@ -1,0 +1,463 @@
+===== SAMPLES =====
+
+[Sample 1-run1]
+Source : An author of a book got 6% of the total sales of the paper cover version of his books and 12% of the total sales of the hardcover version. If 32,000 copies of the paper cover version were sold at $0.20 each and 15,000 copies of the hardcover version were sold at $0.40 each, how much did the author earn?
+Output : He drove 4*1.2=<<4*1.2=6>>60000 flags
+He climbed the 500*2=<<500*2=500>>500 coins of paper
+He sold 50*.9=<<50*.9
+Target : The total earnings for the paper cover version were $0.20 x 32 000 = $<<0.20*32000=6400>>6,400.
+So, the author earned $6,400 x 6/100 = $384 from the paper cover version.
+The total earnings for the hardcover version were $0.40 x 15,000 = $<<0.40*15000=6000>>6,000.
+So, the author earned $6,000 x 12/100 = $<<6000*12/100=720>>720 from the hardcover version.
+Therefore, the author earned a total of $384 + $720 = $<<384+720=1104>>1104.
+#### 1104
+---------------
+[Sample 2-run1]
+Source : Jessica's family is 300 km away from New York. If they are traveling at the rate of 50 km/h and stop to rest for 30 minutes every 2 hours, how long will it take them to reach New York?
+Output : First find the rate of the plane day: 300 km/cow * 150 km/day = <<300*150=6>>6 hours
+Then add the weight of the television is: 6 hours * $6/week = $<<6*
+Target : Without stopping to rest they will arrive in 300/50= <<300/50=6>>6 hours.
+They need to stop to rest after every 2 hours except for the last 2 hour stretch of time, which is when they reach New York, so they rest (6/2)-1= 3-1 = <<6/2-1=2>>2 times.
+The time they spend resting is 2*30= <<2*30=60>>60 minutes or 1 hour.
+So they will arrive in 6+1= <<6+1=7>>7 hours.
+#### 7
+---------------
+[Sample 3-run1]
+Source : In 5 years, Nacho will be three times older than Divya. If Divya is currently 5 years old, what's the sum of their ages now?
+Output : Let C be the number of years old.
+Let 3 = 3x
+5x+5 = 5(5)x
+5)x=5x
+5x=15
+5x=<<5=5>>5
+####
+Target : If Divya is currently 5 years old, she will be 5+5 = <<5+5=10>>10 years old in five years.
+Since in 5 years Nacho will be three times older than Divya, he will be 3*10 = <<3*10=30>>30 years older than Divya.
+Nacho's total age in five years will be 30+10 = <<30+10=40>>40 years.
+Currently, Nacho is 40-5 = <<40-5=35>>35 years old.
+The sum of Divya and Nacho's age now is 35+5 = <<35+5=40>>40 years
+#### 40
+---------------
+[Sample 4-run1]
+Source : Jerry is trying to cut down on the amount of soda he drinks. Right now, he drinks 48 sodas a week. If he cuts the number of sodas he drinks in half each week, how many weeks will it take him to only drink 6 sodas per week?
+Output : He drinks 48 grings a total of 48 tras / 2 = <<48/2=24>>24 pizzas/day
+He drinks 3 full of 3 dozen questions/day * 6 = <<3*6=36>>36 quas
+Target : Figure out how many sodas Jerry drinks after 1 week by dividing the starting number of sodas by 2: 48 sodas / 2 = <<48/2=24>>24 sodas
+Now repeat the process to figure out how many soda he drinks after 2 weeks: 24 sodas / 2 = <<24/2=12>>12 sodas
+Repeat the process one more time to find the number of sodas after 3 weeks: 12 sodas / 2 = <<12/2=6>>6 sodas. It takes Jerry 3 weeks to get down to 6 sodas.
+#### 3
+---------------
+[Sample 5-run1]
+Source : James writes 10 pages an hour.  If he writes 5 pages a day to 2 different people, how many hours a week does he spend writing?
+Output : He writes 10*2=<<10*2=20>>20 hours a week
+So he writes 20*2=<<20*2=40>>40 hours to spend 20*5=<<20*5=100>>100 hours a
+Target : He writes 5*2=<<5*2=10>>10 pages a day
+So he writes 10*7=<<10*7=70>>70 pages a week
+That means he writes for 70/10=<<70/10=7>>7 hours
+#### 7
+---------------
+[Sample 6-run1]
+Source : Oliver collects trading cards. He has twice as many Monster Club cards as Alien Baseball cards. His Battle Gremlins card collection is the largest at 48 cards, three times the size of his Alien Baseball card collection. How many Monster Club cards does Oliver have?
+Output : Henants has 48/3 = <<48/3=8>>8 cards.
+Maxanna has 48/4 = <<48/4=8>>8 cards.
+S slower than Phnut, so Lisa has 8 + 8 = <<
+Target : Oliver’s Alien Baseball card collection has 48 / 3 = <<48/3=16>>16 cards.
+Oliver has twice as many Monster Club cards, so he has 16 * 2 = <<16*2=32>>32 Monster Club cards.
+#### 32
+---------------
+[Sample 7-run1]
+Source : Lena played video games for 3.5 hours last weekend. Her brother played 17 minutes more than she did. How many minutes together did Lena and her brother play video games last weekend?
+Output : Lena played 3 * 7 = <<3*7=21>>21 minutes
+Lena's brother played 3 * 21 = <<3*21=105>>105 minutes
+Lena played 21 + 15 = <<21+15=69>>
+Target : Lena = 3.5 hours = 210 minutes
+Brother = 210 + 17 = <<210+17=227>>227 minutes
+210 + 227 = <<210+227=437>>437 minutes
+Together, Lena and her brother played 437 minutes of video games.
+#### 437
+---------------
+[Sample 8-run1]
+Source : When Jane visited Iran, she visited 6 more than twice as many rehabilitation centers as Han. Han visited 2 less than twice as many rehabilitation centers as Jude did. Jude visited half fewer rehabilitation centers as Lisa did. If Lisa visited 6 rehabilitation centers, how many rehabilitation centers did they all visit assuming they are all different?
+Output : Kim purchased 6-pot + 2116 performance = <<6+2+2=49>>49 pickup sne downstairs
+For 6 misses, Sam rode 6 problems/2 = <<6/2=3>>3 times.
+Including his normally
+Target : Jude visited 1/2*6=<<1/2*6=3>>3 rehabilitation centers.
+Han visited 2*3-2=<<2*3-2=4>>4 rehabilitation centers.
+Jane visited 6+2*4=<<6+2*4=14>>14 rehabilitation centers.
+They all visited 6+3+4+14=<<6+3+4+14=27>>27 rehabilitation centers.
+#### 27
+---------------
+[Sample 9-run1]
+Source : James goes to pet smart to adopt a puppy.  The adoption fee is $200 and his friend agrees to pay 25% of that.  How much does James have to pay?
+Output : The computer cost 200*20=$<<200*20=600>>600
+So it cost 600*.25=$<<600*.25=450>>450
+#### 45050=$<<450-50=150>>150
+#### 15015030,
+Target : His friend agrees to pay 200*.25=$<<200*.25=50>>50
+So he needs to pay 200-50=$<<200-50=150>>150
+#### 150
+---------------
+[Sample 10-run1]
+Source : James can make 4 hats out of one yard of velvet. He needs three yards of velvet to make a cloak. How much velvet does he need to make 6 cloaks and 12 hats?
+Output : Hence, there are 12 * 3 = <<12*3=36>>36 yards of fat in a weekend.
+So he needs 36 - 18 = <<36-18=22>>22 yards of money.
+#### 2222 - 22
+Target : First find the total amount of velvet James uses on the hats: 12 hats / 4 hats/yard = <<12/4=3>>3 yards
+Then find the total amount of velvet he needs to make the cloaks: 6 cloaks * 3 yards/cloak = <<6*3=18>>18 yards
+Then add those two amounts to find the total amount of velvet he needs: 3 yards + 18 yards = <<3+18=21>>21 yards
+#### 21
+---------------
+[Sample 11-run1]
+Source : Emily can type 60 words per minute. How many hours does it take her to write 10,800 words?
+Output : She can write 60 minutes / 60 minutes = <<60/60=5>>5 hours.
+Hence, she can write 5 minutes / 5 minutes/hour = <<5/5=4>>4 hours to write
+#### 4 times more
+Target : In an hour, Emily can type 60 words *60 minutes = <<60*60=3600>>3600 words.
+It will take her 10800/3600 = <<10800/3600=3>>3 hours to write 10800 words.
+#### 3
+---------------
+[Sample 12-run1]
+Source : Jill is the hairdresser for the school's dance team and has to braid 8 dancers' hair. If each dancer has five braids and each braid takes 30 seconds, how many minutes will it take to braid all the dancers' hair?
+Output : The new floors takes 5 x 5 = <<5*5=25>>25 minutes to dryfl figures.
+To make 30 - 8 = <<30-8=16>>16 cards to each day.
+To answer the school, you add
+Target : First find the total number of braids among all the dancers: 8 dancers * 5 braids/dancer = <<8*5=40>>40 braids
+Then multiply by that the time in seconds per braid to find the total time in seconds: 40 braids * 30 seconds/braid = <<40*30=1200>>1200 seconds
+Then divide the time in seconds by the number of seconds per minute to find the time in minutes: 1200 seconds / 60 seconds/minute = <<1200/60=20>>20 minutes
+#### 20
+---------------
+[Sample 13-run1]
+Source : A large puzzle costs $15. A small puzzle and a large puzzle together cost $23. How much would you pay for 1 large and 3 small puzzles?
+Output : The other small small hour would pay $15 x 3 = $<<15*3=45>>45.
+So the large bags costs $67 + $45 = $<<67+45=78>>78.
+#### 7845 left to
+Target : A small puzzle costs $23 - $15 = $<<23-15=8>>8.
+Three small puzzles cost $8 x 3 = $<<8*3=24>>24.
+So, 1 large and 3 small puzzles cost $24 + $15 = $<<24+15=39>>39.
+#### 39
+---------------
+[Sample 14-run1]
+Source : There are 192 soaps in a package. They put them in 2 big boxes. If each box contains 6 packages, how much soap do the 2 boxes contain in total?
+Output : There are 192 / 2 = <<192/2=96>>96 packages each box.
+In the box, 8 * 2 = <<8*2=16>>16 boxes were allowed to do.
+#### 1640 / 16 = <<16
+Target : Find how many soaps are in 1 box by multiplying the number of soaps per package by the number of packages per box: 192*6=<<192*6=1152>>1152 soaps.
+Then find how many soaps 2 boxes contain by multiplying the number of boxes by the number of soaps per box: 1152*2= <<1152*2=2304>>2304 soaps.
+#### 2304
+---------------
+[Sample 15-run1]
+Source : Jennifer's boyfriend left 5 texts about the grocery shopping, 5 times more texts asking why she wasn't responding, and a number of texts equal to 10% of all the texts he sent previously saying he was calling the police. How many texts did he send total?
+Output : Let's total number of dollars in one hour is 2*2*x = 5*2*x = 10
+3*x = <<3*3=15>>15 dollars
+20x - 10 = <<20-10=18>>
+Target : First find how many texts Jennifer's boyfriend sent asking why she wasn't responding: 5 texts * 5 = <<5*5=25>>25 texts
+Then add that number to the number of grocery shopping texts: 25 texts + 5 texts = <<25+5=30>>30 texts
+Then multiply that number by 10% to find how many texts he sent about calling the police: 30 texts * 10% = <<30*10*.01=3>>3 texts
+Then added how many texts of each kind he sent to find the total number of texts he sent: 3 texts + 30 texts = <<3+30=33>>33 texts
+#### 33
+---------------
+[Sample 1-run2]
+Source : An author of a book got 6% of the total sales of the paper cover version of his books and 12% of the total sales of the hardcover version. If 32,000 copies of the paper cover version were sold at $0.20 each and 15,000 copies of the hardcover version were sold at $0.40 each, how much did the author earn?
+Output : There were 2*16=<<2*16=8>>8,000 left for the setup,000 from the computer.
+This means that use 8*80,000=<<8*80000=24000>>24,000 total
+Target : The total earnings for the paper cover version were $0.20 x 32 000 = $<<0.20*32000=6400>>6,400.
+So, the author earned $6,400 x 6/100 = $384 from the paper cover version.
+The total earnings for the hardcover version were $0.40 x 15,000 = $<<0.40*15000=6000>>6,000.
+So, the author earned $6,000 x 12/100 = $<<6000*12/100=720>>720 from the hardcover version.
+Therefore, the author earned a total of $384 + $720 = $<<384+720=1104>>1104.
+#### 1104
+---------------
+[Sample 2-run2]
+Source : Jessica's family is 300 km away from New York. If they are traveling at the rate of 50 km/h and stop to rest for 30 minutes every 2 hours, how long will it take them to reach New York?
+Output : The journey will take 50 * 300 km/hour = <<50*300=450>>450 km
+At an hour, it will take the 126 km/50 hours / 300 km/hour = <<126/50=11>>11 kilometers
+
+Target : Without stopping to rest they will arrive in 300/50= <<300/50=6>>6 hours.
+They need to stop to rest after every 2 hours except for the last 2 hour stretch of time, which is when they reach New York, so they rest (6/2)-1= 3-1 = <<6/2-1=2>>2 times.
+The time they spend resting is 2*30= <<2*30=60>>60 minutes or 1 hour.
+So they will arrive in 6+1= <<6+1=7>>7 hours.
+#### 7
+---------------
+[Sample 3-run2]
+Source : In 5 years, Nacho will be three times older than Divya. If Divya is currently 5 years old, what's the sum of their ages now?
+Output : Let S be the number of years old now.
+3+2(3) + 5+5+5)=40 years old.
+3(5)=8 years old.
+This means that C-8=<<26-8=
+Target : If Divya is currently 5 years old, she will be 5+5 = <<5+5=10>>10 years old in five years.
+Since in 5 years Nacho will be three times older than Divya, he will be 3*10 = <<3*10=30>>30 years older than Divya.
+Nacho's total age in five years will be 30+10 = <<30+10=40>>40 years.
+Currently, Nacho is 40-5 = <<40-5=35>>35 years old.
+The sum of Divya and Nacho's age now is 35+5 = <<35+5=40>>40 years
+#### 40
+---------------
+[Sample 4-run2]
+Source : Jerry is trying to cut down on the amount of soda he drinks. Right now, he drinks 48 sodas a week. If he cuts the number of sodas he drinks in half each week, how many weeks will it take him to only drink 6 sodas per week?
+Output : First find the total number of sodas in a week: 48 people / 2 = <<48/2=24>>24 sodas
+Then find the total number of adults in the puppy will take in a week: 48 pigeas * 3 pizz
+Target : Figure out how many sodas Jerry drinks after 1 week by dividing the starting number of sodas by 2: 48 sodas / 2 = <<48/2=24>>24 sodas
+Now repeat the process to figure out how many soda he drinks after 2 weeks: 24 sodas / 2 = <<24/2=12>>12 sodas
+Repeat the process one more time to find the number of sodas after 3 weeks: 12 sodas / 2 = <<12/2=6>>6 sodas. It takes Jerry 3 weeks to get down to 6 sodas.
+#### 3
+---------------
+[Sample 5-run2]
+Source : James writes 10 pages an hour.  If he writes 5 pages a day to 2 different people, how many hours a week does he spend writing?
+Output : He writes 10*5=<<10*5=50>>50 pages a week
+That means he writes 50*2=<<50*2=100>>100 pages a week
+#### 10050=<<100-50=30>>30
+Target : He writes 5*2=<<5*2=10>>10 pages a day
+So he writes 10*7=<<10*7=70>>70 pages a week
+That means he writes for 70/10=<<70/10=7>>7 hours
+#### 7
+---------------
+[Sample 6-run2]
+Source : Oliver collects trading cards. He has twice as many Monster Club cards as Alien Baseball cards. His Battle Gremlins card collection is the largest at 48 cards, three times the size of his Alien Baseball card collection. How many Monster Club cards does Oliver have?
+Output : such wants to Drive to tie up 48/4 = <<48/4=6>>6 cards.
+ begin by 3 times a total of 6*4 = <<6*4=24>>24 cards.
+Therefore, James has 24+
+Target : Oliver’s Alien Baseball card collection has 48 / 3 = <<48/3=16>>16 cards.
+Oliver has twice as many Monster Club cards, so he has 16 * 2 = <<16*2=32>>32 Monster Club cards.
+#### 32
+---------------
+[Sample 7-run2]
+Source : Lena played video games for 3.5 hours last weekend. Her brother played 17 minutes more than she did. How many minutes together did Lena and her brother play video games last weekend?
+Output : Lena won 3 x 15 = <<3*15=45>>45 minutes
+Lena played 3 x 3 = <<3*3=9>>9 minutes
+Rel's brother played a total of 45 + 9 = <<45+9
+Target : Lena = 3.5 hours = 210 minutes
+Brother = 210 + 17 = <<210+17=227>>227 minutes
+210 + 227 = <<210+227=437>>437 minutes
+Together, Lena and her brother played 437 minutes of video games.
+#### 437
+---------------
+[Sample 8-run2]
+Source : When Jane visited Iran, she visited 6 more than twice as many rehabilitation centers as Han. Han visited 2 less than twice as many rehabilitation centers as Jude did. Jude visited half fewer rehabilitation centers as Lisa did. If Lisa visited 6 rehabilitation centers, how many rehabilitation centers did they all visit assuming they are all different?
+Output : She saw 2 questions in Jud kg of landslide as Tom 2 exchange total so there were 2*2 = <<2*2=4>>4 digital.
+Tylery x 6 = <<6*6=18>>18 stressesumbers.
+She
+Target : Jude visited 1/2*6=<<1/2*6=3>>3 rehabilitation centers.
+Han visited 2*3-2=<<2*3-2=4>>4 rehabilitation centers.
+Jane visited 6+2*4=<<6+2*4=14>>14 rehabilitation centers.
+They all visited 6+3+4+14=<<6+3+4+14=27>>27 rehabilitation centers.
+#### 27
+---------------
+[Sample 9-run2]
+Source : James goes to pet smart to adopt a puppy.  The adoption fee is $200 and his friend agrees to pay 25% of that.  How much does James have to pay?
+Output : The puppy cost 200*.25=$<<200*.25=200>>200
+So it cost 200*.25=$<<200*.25=50>>50
+So he pays 200-50=$<<200-50=170>>170
+#### 170
+Target : His friend agrees to pay 200*.25=$<<200*.25=50>>50
+So he needs to pay 200-50=$<<200-50=150>>150
+#### 150
+---------------
+[Sample 10-run2]
+Source : James can make 4 hats out of one yard of velvet. He needs three yards of velvet to make a cloak. How much velvet does he need to make 6 cloaks and 12 hats?
+Output : Ben can make 6 * 3 = <<6*3=18>>18 yards of suckas.
+So, the total number of consuming down was 18 + 18 = <<18+18=27>>27 Adult
+#### 27 / 3 = <<
+Target : First find the total amount of velvet James uses on the hats: 12 hats / 4 hats/yard = <<12/4=3>>3 yards
+Then find the total amount of velvet he needs to make the cloaks: 6 cloaks * 3 yards/cloak = <<6*3=18>>18 yards
+Then add those two amounts to find the total amount of velvet he needs: 3 yards + 18 yards = <<3+18=21>>21 yards
+#### 21
+---------------
+[Sample 11-run2]
+Source : Emily can type 60 words per minute. How many hours does it take her to write 10,800 words?
+Output : One minute will take 60 minutes / 60 minutes/hour = <<60/60=5>>5 minutes.
+So in 10 minutes, it will take 60 minutes / 5 minutes/hour = <<60/5=12>>12 minutes.
+
+Target : In an hour, Emily can type 60 words *60 minutes = <<60*60=3600>>3600 words.
+It will take her 10800/3600 = <<10800/3600=3>>3 hours to write 10800 words.
+#### 3
+---------------
+[Sample 12-run2]
+Source : Jill is the hairdresser for the school's dance team and has to braid 8 dancers' hair. If each dancer has five braids and each braid takes 30 seconds, how many minutes will it take to braid all the dancers' hair?
+Output : At 5 dogs, there will take 5 * 30 = <<5*30=300>>300 minutes to Ruby.
+At 5 trips, each textbooks will take 5 * 5 = <<5*5=25>>25 minutes.
+#### 2575
+Target : First find the total number of braids among all the dancers: 8 dancers * 5 braids/dancer = <<8*5=40>>40 braids
+Then multiply by that the time in seconds per braid to find the total time in seconds: 40 braids * 30 seconds/braid = <<40*30=1200>>1200 seconds
+Then divide the time in seconds by the number of seconds per minute to find the time in minutes: 1200 seconds / 60 seconds/minute = <<1200/60=20>>20 minutes
+#### 20
+---------------
+[Sample 13-run2]
+Source : A large puzzle costs $15. A small puzzle and a large puzzle together cost $23. How much would you pay for 1 large and 3 small puzzles?
+Output : The large large largeizza costs $15 x 3 = $<<15*3=45>>45.
+The large sold an large large mediumges and 2 small small and the largecles cost $45 + $45 = $<<45+45
+Target : A small puzzle costs $23 - $15 = $<<23-15=8>>8.
+Three small puzzles cost $8 x 3 = $<<8*3=24>>24.
+So, 1 large and 3 small puzzles cost $24 + $15 = $<<24+15=39>>39.
+#### 39
+---------------
+[Sample 14-run2]
+Source : There are 192 soaps in a package. They put them in 2 big boxes. If each box contains 6 packages, how much soap do the 2 boxes contain in total?
+Output : There are 60 x 6 = <<60*6=240>>240 in each box.
+There are 160 x 6 = <<160*6=480>>480 boxes of soap in total.
+Thus, the total number of soap still need 600
+Target : Find how many soaps are in 1 box by multiplying the number of soaps per package by the number of packages per box: 192*6=<<192*6=1152>>1152 soaps.
+Then find how many soaps 2 boxes contain by multiplying the number of boxes by the number of soaps per box: 1152*2= <<1152*2=2304>>2304 soaps.
+#### 2304
+---------------
+[Sample 15-run2]
+Source : Jennifer's boyfriend left 5 texts about the grocery shopping, 5 times more texts asking why she wasn't responding, and a number of texts equal to 10% of all the texts he sent previously saying he was calling the police. How many texts did he send total?
+Output : First find the total number of texts Carolyn's bumper books: 5 questions * 5 claws = <<5*5=25>>25 texts
+Then add the number of texts he push55 texts he lost on theborder texts: 25ish = <<25
+Target : First find how many texts Jennifer's boyfriend sent asking why she wasn't responding: 5 texts * 5 = <<5*5=25>>25 texts
+Then add that number to the number of grocery shopping texts: 25 texts + 5 texts = <<25+5=30>>30 texts
+Then multiply that number by 10% to find how many texts he sent about calling the police: 30 texts * 10% = <<30*10*.01=3>>3 texts
+Then added how many texts of each kind he sent to find the total number of texts he sent: 3 texts + 30 texts = <<3+30=33>>33 texts
+#### 33
+---------------
+[Sample 1-run3]
+Source : An author of a book got 6% of the total sales of the paper cover version of his books and 12% of the total sales of the hardcover version. If 32,000 copies of the paper cover version were sold at $0.20 each and 15,000 copies of the hardcover version were sold at $0.40 each, how much did the author earn?
+Output : He made 10/100*100 = <<10/100*100=10>>10 rounds of pills.
+He sold 28,000*2 = <<28000*2=2800>>2800 calories.
+He made 30/100
+Target : The total earnings for the paper cover version were $0.20 x 32 000 = $<<0.20*32000=6400>>6,400.
+So, the author earned $6,400 x 6/100 = $384 from the paper cover version.
+The total earnings for the hardcover version were $0.40 x 15,000 = $<<0.40*15000=6000>>6,000.
+So, the author earned $6,000 x 12/100 = $<<6000*12/100=720>>720 from the hardcover version.
+Therefore, the author earned a total of $384 + $720 = $<<384+720=1104>>1104.
+#### 1104
+---------------
+[Sample 2-run3]
+Source : Jessica's family is 300 km away from New York. If they are traveling at the rate of 50 km/h and stop to rest for 30 minutes every 2 hours, how long will it take them to reach New York?
+Output : Let A = the average length of the store at its difference in New rate.
+Then Y and kn home by the race will take 150 km / 3 = <<150/3=50>>50 minutes.
+Thus, both bed will take 20
+Target : Without stopping to rest they will arrive in 300/50= <<300/50=6>>6 hours.
+They need to stop to rest after every 2 hours except for the last 2 hour stretch of time, which is when they reach New York, so they rest (6/2)-1= 3-1 = <<6/2-1=2>>2 times.
+The time they spend resting is 2*30= <<2*30=60>>60 minutes or 1 hour.
+So they will arrive in 6+1= <<6+1=7>>7 hours.
+#### 7
+---------------
+[Sample 3-run3]
+Source : In 5 years, Nacho will be three times older than Divya. If Divya is currently 5 years old, what's the sum of their ages now?
+Output : Since maths will be 5 years old, the total number of years old is 5+5 = <<5+5=7>>7
+The sum of years and M is 7 years so Wendy is 7+7 = <<7+7=18
+Target : If Divya is currently 5 years old, she will be 5+5 = <<5+5=10>>10 years old in five years.
+Since in 5 years Nacho will be three times older than Divya, he will be 3*10 = <<3*10=30>>30 years older than Divya.
+Nacho's total age in five years will be 30+10 = <<30+10=40>>40 years.
+Currently, Nacho is 40-5 = <<40-5=35>>35 years old.
+The sum of Divya and Nacho's age now is 35+5 = <<35+5=40>>40 years
+#### 40
+---------------
+[Sample 4-run3]
+Source : Jerry is trying to cut down on the amount of soda he drinks. Right now, he drinks 48 sodas a week. If he cuts the number of sodas he drinks in half each week, how many weeks will it take him to only drink 6 sodas per week?
+Output : Ryan eats 48-12=<<48-12=16>>16 eaten by the sodas.
+The number of orange rides during his own he drinks he drinks is 48/2=<<48/2=24>>24
+#### 24=
+Target : Figure out how many sodas Jerry drinks after 1 week by dividing the starting number of sodas by 2: 48 sodas / 2 = <<48/2=24>>24 sodas
+Now repeat the process to figure out how many soda he drinks after 2 weeks: 24 sodas / 2 = <<24/2=12>>12 sodas
+Repeat the process one more time to find the number of sodas after 3 weeks: 12 sodas / 2 = <<12/2=6>>6 sodas. It takes Jerry 3 weeks to get down to 6 sodas.
+#### 3
+---------------
+[Sample 5-run3]
+Source : James writes 10 pages an hour.  If he writes 5 pages a day to 2 different people, how many hours a week does he spend writing?
+Output : He gets 10*5=<<10*5=50>>50 hours a week
+So he writes 50*2=<<50*2=100>>100 hours
+#### 10050=<<100-50=30>>30 hours on a
+Target : He writes 5*2=<<5*2=10>>10 pages a day
+So he writes 10*7=<<10*7=70>>70 pages a week
+That means he writes for 70/10=<<70/10=7>>7 hours
+#### 7
+---------------
+[Sample 6-run3]
+Source : Oliver collects trading cards. He has twice as many Monster Club cards as Alien Baseball cards. His Battle Gremlins card collection is the largest at 48 cards, three times the size of his Alien Baseball card collection. How many Monster Club cards does Oliver have?
+Output : To Ted has 48 cards because 48 / 2 = <<48/2=12>>12
+They have twice as many cards because 48 / 3 = <<48/3=8>>8
+#### 810 in total because 12 plus 8 + 8
+Target : Oliver’s Alien Baseball card collection has 48 / 3 = <<48/3=16>>16 cards.
+Oliver has twice as many Monster Club cards, so he has 16 * 2 = <<16*2=32>>32 Monster Club cards.
+#### 32
+---------------
+[Sample 7-run3]
+Source : Lena played video games for 3.5 hours last weekend. Her brother played 17 minutes more than she did. How many minutes together did Lena and her brother play video games last weekend?
+Output : Lena's brother finished 7 - 3 = <<7-3=4>>4 hours
+Lena played in 11 x 2 = <<11*2=22>>22 minutes
+Rena played 5 - 22 = <<5-22=4
+Target : Lena = 3.5 hours = 210 minutes
+Brother = 210 + 17 = <<210+17=227>>227 minutes
+210 + 227 = <<210+227=437>>437 minutes
+Together, Lena and her brother played 437 minutes of video games.
+#### 437
+---------------
+[Sample 8-run3]
+Source : When Jane visited Iran, she visited 6 more than twice as many rehabilitation centers as Han. Han visited 2 less than twice as many rehabilitation centers as Jude did. Jude visited half fewer rehabilitation centers as Lisa did. If Lisa visited 6 rehabilitation centers, how many rehabilitation centers did they all visit assuming they are all different?
+Output : After everyone entered theMI got 6183 hockey kilomet band * 2 = <<6*2=26>>26 ascend.
+Shara sold 6 bridge * 6 Great taxed 6 = <<6*6=18>>18 brown mobile
+Christ Grande hatch
+Target : Jude visited 1/2*6=<<1/2*6=3>>3 rehabilitation centers.
+Han visited 2*3-2=<<2*3-2=4>>4 rehabilitation centers.
+Jane visited 6+2*4=<<6+2*4=14>>14 rehabilitation centers.
+They all visited 6+3+4+14=<<6+3+4+14=27>>27 rehabilitation centers.
+#### 27
+---------------
+[Sample 9-run3]
+Source : James goes to pet smart to adopt a puppy.  The adoption fee is $200 and his friend agrees to pay 25% of that.  How much does James have to pay?
+Output : The young costs 200*.25=$<<200*.25=100>>100 to pay
+So he is to pay 200*.25=$<<200*.25=200>>200 for 525
+#### 350+200=$<<350+200=1920>>
+Target : His friend agrees to pay 200*.25=$<<200*.25=50>>50
+So he needs to pay 200-50=$<<200-50=150>>150
+#### 150
+---------------
+[Sample 10-run3]
+Source : James can make 4 hats out of one yard of velvet. He needs three yards of velvet to make a cloak. How much velvet does he need to make 6 cloaks and 12 hats?
+Output : In a capsules, it needs 4 + 6 = <<4+6=4>>4 yards.
+In total, this means he needs to make 4 + 6 = <<4+6=9>>9 bags.
+#### 9 - 4 =
+Target : First find the total amount of velvet James uses on the hats: 12 hats / 4 hats/yard = <<12/4=3>>3 yards
+Then find the total amount of velvet he needs to make the cloaks: 6 cloaks * 3 yards/cloak = <<6*3=18>>18 yards
+Then add those two amounts to find the total amount of velvet he needs: 3 yards + 18 yards = <<3+18=21>>21 yards
+#### 21
+---------------
+[Sample 11-run3]
+Source : Emily can type 60 words per minute. How many hours does it take her to write 10,800 words?
+Output : She can take 60 words / 60 hours = <<60/60=4>>4 hours a minute.
+She can sell 4 words / 4 hours = <<4/4=1>>1 hour an hour.
+#### 1 hour=1.
+Target : In an hour, Emily can type 60 words *60 minutes = <<60*60=3600>>3600 words.
+It will take her 10800/3600 = <<10800/3600=3>>3 hours to write 10800 words.
+#### 3
+---------------
+[Sample 12-run3]
+Source : Jill is the hairdresser for the school's dance team and has to braid 8 dancers' hair. If each dancer has five braids and each braid takes 30 seconds, how many minutes will it take to braid all the dancers' hair?
+Output : B sworder turns 5 - 8 = <<5-8=6>>6 more dollars.
+Cenny has 5 x 8 = <<5*8=20>>20 more breaks to has 37 seconds.
+Pill will take a total of
+Target : First find the total number of braids among all the dancers: 8 dancers * 5 braids/dancer = <<8*5=40>>40 braids
+Then multiply by that the time in seconds per braid to find the total time in seconds: 40 braids * 30 seconds/braid = <<40*30=1200>>1200 seconds
+Then divide the time in seconds by the number of seconds per minute to find the time in minutes: 1200 seconds / 60 seconds/minute = <<1200/60=20>>20 minutes
+#### 20
+---------------
+[Sample 13-run3]
+Source : A large puzzle costs $15. A small puzzle and a large puzzle together cost $23. How much would you pay for 1 large and 3 small puzzles?
+Output : The small large rows cost 3 * $23 = $<<3*23=92>>92.
+The computer lot would pay $17 * 3 = $<<17*3=213>>825.
+So the shrimp cost 22 + $104
+Target : A small puzzle costs $23 - $15 = $<<23-15=8>>8.
+Three small puzzles cost $8 x 3 = $<<8*3=24>>24.
+So, 1 large and 3 small puzzles cost $24 + $15 = $<<24+15=39>>39.
+#### 39
+---------------
+[Sample 14-run3]
+Source : There are 192 soaps in a package. They put them in 2 big boxes. If each box contains 6 packages, how much soap do the 2 boxes contain in total?
+Output : There are 330 grams in each box because 2 x 6 = <<2*6=330>>330
+There are 170 cents in total because 78 x 2 = <<78*2=1500>>300
+There are 1,300 in total because 600
+Target : Find how many soaps are in 1 box by multiplying the number of soaps per package by the number of packages per box: 192*6=<<192*6=1152>>1152 soaps.
+Then find how many soaps 2 boxes contain by multiplying the number of boxes by the number of soaps per box: 1152*2= <<1152*2=2304>>2304 soaps.
+#### 2304
+---------------
+[Sample 15-run3]
+Source : Jennifer's boyfriend left 5 texts about the grocery shopping, 5 times more texts asking why she wasn't responding, and a number of texts equal to 10% of all the texts he sent previously saying he was calling the police. How many texts did he send total?
+Output : There are 5+5=<<5+5=12>>12 34 goes from one hour.
+12/12=<<12/12=2>>2 minutes on the vet.
+There are 5-week dollars, so for 10/
+Target : First find how many texts Jennifer's boyfriend sent asking why she wasn't responding: 5 texts * 5 = <<5*5=25>>25 texts
+Then add that number to the number of grocery shopping texts: 25 texts + 5 texts = <<25+5=30>>30 texts
+Then multiply that number by 10% to find how many texts he sent about calling the police: 30 texts * 10% = <<30*10*.01=3>>3 texts
+Then added how many texts of each kind he sent to find the total number of texts he sent: 3 texts + 30 texts = <<3+30=33>>33 texts
+#### 33
+---------------

@@ -6,7 +6,7 @@ from torch.utils.data import Dataset, DataLoader
 import pandas as pd
 import matplotlib.pyplot as plt
 from tqdm import tqdm
-
+from fvcore.nn import FlopCountAnalysis, flop_count_table, parameter_count_table
 from transformers import GPT2Config, GPT2LMHeadModel, GPT2TokenizerFast, get_linear_schedule_with_warmup
 
 CONFIG = {
@@ -92,6 +92,22 @@ def build_model_and_tokenizer():
 
 def train():
     model, tok = build_model_and_tokenizer()
+    model_eval = model.eval()  # eval mode for a clean forward graph
+
+    # Dummy batch shaped like training
+    B = CONFIG["batch_size"]
+    T = CONFIG["seq_len"]
+    vocab_size = tok.vocab_size
+    dummy_input_ids = torch.randint(0, vocab_size, (B, T), device=device)
+    
+    with torch.no_grad():
+        flops = FlopCountAnalysis(model_eval, (dummy_input_ids,)).total()
+    
+    print(f"[FLOPs] Forward pass: {flops/1e9:.2f} GFLOPs per batch (B={B}, T={T})")
+    print(parameter_count_table(model_eval))
+    forward_gflops = flops/1e9
+    step_gflops_approx = forward_gflops * 3.0
+    print(f"~{step_gflops_approx:.2f} GFLOPs per training step (fwd+back)")
 
     train_ds = TextDataset(os.path.join(CONFIG["data_dir"], "train.jsonl"), tok, CONFIG["seq_len"])
     test_ds  = TextDataset(os.path.join(CONFIG["data_dir"], "test.jsonl"),  tok, CONFIG["seq_len"])

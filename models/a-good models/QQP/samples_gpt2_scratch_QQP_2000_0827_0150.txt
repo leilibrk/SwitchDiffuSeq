@@ -1,0 +1,302 @@
+===== SAMPLES =====
+
+[Sample 1-run1]
+Source : I can't wake up in the morning . What should I do to wake up early?
+Output : I have up anyone do? What should I do to get up online? Why do you think of your morning to cure? I get up the morning? I do I do not? What should I do to get up? I do to learn no
+Target : What are the brain tricks to wake up early?
+---------------
+[Sample 2-run1]
+Source : How can I improve my English in all aspects?
+Output : How can I improve my English english? Why do I get a English speaking? How can improve? Why? Why? How can I increase my English from my English? Will I improve a very things as a English so. How do I improve it
+Target : How I can speak English with fluency?
+---------------
+[Sample 3-run1]
+Source : In populations, what are some causes of genetic variation?
+Output : What are some interesting sponsored market? Why are they fire? What are some examples? If so hard? What are some examples? Will they are some examples? How are some examples? Why? What are some examples? How are some examples? What
+Target : What are some possible causes of genetic variation in an environment?
+---------------
+[Sample 4-run1]
+Source : I want to start my career as a photographer at age of 25. Is it too late?
+Output : How can I start a laptop? What's age in my me as a girl? What should I need to start with being a religion? And why I do I start it? Why? How should I start me to start me but I start it
+Target : Is it too late for me at the age of 25 thinking to start a career in photography?
+---------------
+[Sample 5-run1]
+Source : I want to stop comparing myself to others. What should I do? Can you help me?
+Output : I want to stop my me I stop me? What should I do I stop me? I do not always never the reason. How can I can I am me? Which I stop me, and I want to stop me? If there? I
+Target : What should I do to stop comparing myself  or my life to other people who are better than me?
+---------------
+[Sample 6-run1]
+Source : How can I make friends?
+Output : How can I make friends? How can I make a friends? What can I make? How do I make a more world? Is it possible? If we make my friends? How can we make? What can I make friend cry? What can
+Target : What is the best way to make friends?
+---------------
+[Sample 7-run1]
+Source : How can I lose weight without going to the gym?
+Output : How can I lose weight without going to lose weight? And how do I lose weight? What are some ways to lose weight without I'm Will I lose weight? How can I lose weight? How? How do I lose weight? How? How
+Target : What are some ways to lose weight without exercising at the gym?
+---------------
+[Sample 8-run1]
+Source : What is the best way to prepare for an interview?
+Output : How do I prepare for an interview? What are the most number for an interview? What are the world of I prepare for an interview? And how do I prepare for I prepare for them? How can I prepare for I prepare for an interview?
+Target : How should I get ready for a job interview?
+---------------
+[Sample 9-run1]
+Source : Can you tell me how to bake a chocolate cake?
+Output : How can I tell my cake? I easier? If so, what not, how do I know? Or is it's it? Why are you know it? What is there? How? What should I know? What should I tell that I
+Target : What is the process to make a chocolate cake at home?
+---------------
+[Sample 10-run1]
+Source : Why do people procrastinate so much?
+Output : Why do people procrastrastrastrastination? Why is interview? What are its tips to won everything? If they cheat it? How do so much? And so much? What do so much not? Why? Are they run on all where
+Target : What are the main reasons people tend to procrastinate?
+---------------
+[Sample 11-run1]
+Source : How do I improve my writing skills in English?
+Output : How can I improve my writing skills in English? Is there so good English while a writing skills as a writing? Why? How can I do I improve my writing skills in writing skills. How can I improve my writing skills?Tech? What are
+Target : What can I do to become better at writing English?
+---------------
+[Sample 12-run1]
+Source : Is it difficult to learn guitar on your own?
+Output : What is the essay on mix on the competitive ability? What is it to learn doing a Christmas? How do you want it? Why? What is it like to learn how to start it? Why? Why? And how to learn it? If
+Target : How hard is it to teach yourself guitar?
+---------------
+[Sample 13-run1]
+Source : What should I do if I feel anxious all the time?
+Output : What is the best way to achieve others? I could be able to do? Why should we feel back? And why? If we found? If so? If why? Is it? How do? Why? Why? I do they should we
+Target : How can I deal with constant anxiety?
+---------------
+[Sample 14-run1]
+Source : Which programming language should I learn first?
+Output : Which programming language should I learn to learn at? I want? If what? What is it? What should I learn, what programming language in programming language, where should I know? Why? And why? What should I learn programming? What should
+Target : What is the best programming language to start with?
+---------------
+[Sample 15-run1]
+Source : Can meditation help reduce stress?
+Output : Can exist exist that is cry without stress? Can they work? What are make the books for his work? Why? Is they exist and why? If it? How can they make it? How can they make? Are they work? If so
+Target : Does practicing meditation lower stress levels?
+---------------
+[Sample 16-run1]
+Source : What is the easiest way to save money every month?
+Output : How can I save money through a month? Why? Why? What are some examples? How do I can you easy way to save this earn money? Where do? What are some examples? Is it? Are they are some of that some of
+Target : How can I save money easily on a monthly basis?
+---------------
+[Sample 17-run1]
+Source : How do I learn to cook quickly?
+Output : How can I learn to Web myself? How can I learn to speak for it? Is it? How? Do I learn how to learn up it? I learn? What's the internet? What are the internet? How can I learn myself?
+Target : What are some fast ways to learn cooking?
+---------------
+[Sample 18-run1]
+Source : Why is exercise important for health?
+Output : Why is someone's important? How is it important? Why so life? Why so bad? How to exactly so important? Why? Why? Why? Why is it? What is it so bad? Why? Why? Why is the important that
+Target : How does regular exercise benefit our health?
+---------------
+[Sample 19-run1]
+Source : Can you explain the basics of machine learning?
+Output : Can you deal with learning code in Android machine learning? If yes, how? If so how to come I created? What is it be very game, how to build coding game? What? What is it? What are they mean? How?
+Target : What are the fundamental concepts of machine learning?
+---------------
+[Sample 20-run1]
+Source : What can I do to improve my concentration?
+Output : How can I improve my concentration? How can I improve them? How do I improve my idea? I improve my concentration? Is it? How? How? How do I improve my up my concentration without India? What can I improve my real?
+Target : How do I increase my focus and attention span?
+---------------
+[Sample 1-run2]
+Source : I can't wake up in the morning . What should I do to wake up early?
+Output : I. I can do to post up in the morning? How do I follow up early as on this back up at the morning. How do I use and I give me? How can I do I get up early? I do I have a
+Target : What are the brain tricks to wake up early?
+---------------
+[Sample 2-run2]
+Source : How can I improve my English in all aspects?
+Output : How can I improve my English pronunciation? Why do you improve how to improve my English? I improve he? How can I improve it? How can I improve my English? Does so safe? Can it?
+Target : How I can speak English with fluency?
+---------------
+[Sample 3-run2]
+Source : In populations, what are some causes of genetic variation?
+Output : Are she discriminate like like zero of the Tos richer? Why does it feel for tr funk? What are some people? If so much? What are my performing this examples? Why? What are they mean? If so many people? Why? Why
+Target : What are some possible causes of genetic variation in an environment?
+---------------
+[Sample 4-run2]
+Source : I want to start my career as a photographer at age of 25. Is it too late?
+Output : I want to start a language for me? What should I want to start medical. What should I start me other or listen to start a age. Am it? Where I start me with me with me. Why? Are me it in my age
+Target : Is it too late for me at the age of 25 thinking to start a career in photography?
+---------------
+[Sample 5-run2]
+Source : I want to stop comparing myself to others. What should I do? Can you help me?
+Output : I want to stop myself. What should I do? What should I do I do when I should I do to stop me me one day. Who should I? What should I do? What do I do? I do? What I do I
+Target : What should I do to stop comparing myself  or my life to other people who are better than me?
+---------------
+[Sample 6-run2]
+Source : How can I make friends?
+Output : How can I make friends? I earn a friends? And what one can start with any time? Where can be, why? Can I keep a friends? And why? Why? Or not different it? I make a friends? How can I
+Target : What is the best way to make friends?
+---------------
+[Sample 7-run2]
+Source : How can I lose weight without going to the gym?
+Output : How can I lose weight without December in space? Which we do I lose 30? How can help me? How do I lose all exercise? Why? I lose a way to lose weight. Can I lose me in other. Is it? Do
+Target : What are some ways to lose weight without exercising at the gym?
+---------------
+[Sample 8-run2]
+Source : What is the best way to prepare for an interview?
+Output : How do I prepare for an interview? If how? If so? What are the best way? Why? How do I prepare for an interview. What do I prepare? And how do I prepare for civil interview? What I prepare for them about
+Target : How should I get ready for a job interview?
+---------------
+[Sample 9-run2]
+Source : Can you tell me how to bake a chocolate cake?
+Output : How can I tell myself to fresmat comfortable? Why or I am taken to? Is it? I know what I know what I know me years do to best way to know it? And how? Why? I know what to know what should
+Target : What is the process to make a chocolate cake at home?
+---------------
+[Sample 10-run2]
+Source : Why do people procrastinate so much?
+Output : Why do people certainrastal so much arastination? How do they make? Why are people worrying to becamerast leave on their speed? Why? Why? How do they are some people on it so much people on? How do they do
+Target : What are the main reasons people tend to procrastinate?
+---------------
+[Sample 11-run2]
+Source : How do I improve my writing skills in English?
+Output : How can I improve my writing skills in English? I improve my English)? Should I improve my English in English and writing skills? How can I improve my writing skills. How do I improve my literature? Why are like my writing not successful games?
+Target : What can I do to become better at writing English?
+---------------
+[Sample 12-run2]
+Source : Is it difficult to learn guitar on your own?
+Output : How does it feel the racism on anger? Why or college keep it? How does it? Why? Why it compare to learn the successful? Why? And why? Can it to learn to learn the U. How to learn? Why? Why
+Target : How hard is it to teach yourself guitar?
+---------------
+[Sample 13-run2]
+Source : What should I do if I feel anxious all the time?
+Output : What is the best way to that we feel about all time? When to be the age of all time? Is it? How do I'm improved. How? Will it too where we feel long exactly and why? How can't me? What
+Target : How can I deal with constant anxiety?
+---------------
+[Sample 14-run2]
+Source : Which programming language should I learn first?
+Output : Which programming language should I learn? What programming language for I start game)? programming language to be best? How should I start? I could learn? Why? Why? What is the best? How do I talk? Can I learn? Am I
+Target : What is the best programming language to start with?
+---------------
+[Sample 15-run2]
+Source : Can meditation help reduce stress?
+Output : How would I reduce stress of stress? How can I get stress? If yes, what happens to reduce piano? How can I increase the stress? How can I get later? If what I could help it? How can I reduce its weight?
+Target : Does practicing meditation lower stress levels?
+---------------
+[Sample 16-run2]
+Source : What is the easiest way to save money every month?
+Output : How can I save money on my month? What is it? Why? What are some month? How do I give my month? How do you have to save a month? Or does it? How can I give to give them for a month
+Target : How can I save money easily on a monthly basis?
+---------------
+[Sample 17-run2]
+Source : How do I learn to cook quickly?
+Output : How can I learn very beginner free? And how I watch how can I stay myself? How do I learn learn it? Why? What to be used it? Can I keep it? I die. How can I learn to learn it? How
+Target : What are some fast ways to learn cooking?
+---------------
+[Sample 18-run2]
+Source : Why is exercise important for health?
+Output : Why is GM diet to study? If it? How? And why not so different way to study? If so? If so important? How do I become so other food? If so want? How do they went so so? Why? If
+Target : How does regular exercise benefit our health?
+---------------
+[Sample 19-run2]
+Source : Can you explain the basics of machine learning?
+Output : How do I overcome me in begin and learning brand and Western creation? How do I start learning fast? What are the algorithms? What are some of beginners? Is it in working? How to start them? What is it? What are they could
+Target : What are the fundamental concepts of machine learning?
+---------------
+[Sample 20-run2]
+Source : What can I do to improve my concentration?
+Output : How can I improve my chances? What should I do? If not? What should I improve their history? What should I improve your mechanical gifts? Why? How can know? What can we should I do? I do? What do? How
+Target : How do I increase my focus and attention span?
+---------------
+[Sample 1-run3]
+Source : I can't wake up in the morning . What should I do to wake up early?
+Output : I'm or I h early in 50 days. How can do I’t survive is the morning to 2017? I want to wake up in the morning? Why can I do I think my completely great test. galaxy of them? What should
+Target : What are the brain tricks to wake up early?
+---------------
+[Sample 2-run3]
+Source : How can I improve my English in all aspects?
+Output : How can I improve my English effectively? Why are some of all all Canada does we don't want to improve my English again? What should speak my rid of all law? I improve my English habits? How can I improve all good that I get
+Target : How I can speak English with fluency?
+---------------
+[Sample 3-run3]
+Source : In populations, what are some causes of genetic variation?
+Output : What are some groups by John chic? Why are they importance of consequences? What are not anonymous? What are they used? What are? Why? If to be examples? Why? How? Whichollywood movies? And why? What are all in
+Target : What are some possible causes of genetic variation in an environment?
+---------------
+[Sample 4-run3]
+Source : I want to start my career as a photographer at age of 25. Is it too late?
+Output : I want to start a's age after 25. Is it, if I need to start my age. I start her. How to start her. If he become them. How and not? What should I start the fast? Is it have my
+Target : Is it too late for me at the age of 25 thinking to start a career in photography?
+---------------
+[Sample 5-run3]
+Source : I want to stop comparing myself to others. What should I do? Can you help me?
+Output : I want to blocky should I stop me from every painful should I? What should I do? Are more great and cons of me. What should I just something or apple what should I I do? Why, some tips? What can find me
+Target : What should I do to stop comparing myself  or my life to other people who are better than me?
+---------------
+[Sample 6-run3]
+Source : How can I make friends?
+Output : How can I make friends? I earn friends? Which field? Why? Can you make one earn it for friends? How? Why? Please know friends? Does them when we make computer? Why? How do I be more? What are the
+Target : What is the best way to make friends?
+---------------
+[Sample 7-run3]
+Source : How can I lose weight without going to the gym?
+Output : How can I lose weight without going to lose weight? Are going to lose 20. How and weight like after we lose weight? Why? If how can I lose the I lose as needingth by 5s gain food? What are we I lose
+Target : What are some ways to lose weight without exercising at the gym?
+---------------
+[Sample 8-run3]
+Source : What is the best way to prepare for an interview?
+Output : How do I prepare for an interview? I prepare for an interview? If so? What should I prepare for an interview? What should I prepare for interview? Why? How do I do I prepare for an interview, how do for an? How
+Target : How should I get ready for a job interview?
+---------------
+[Sample 9-run3]
+Source : Can you tell me how to bake a chocolate cake?
+Output : How do I improve a Italian being feet? Do I earn a Friends? How do I treat player? And how? Have this puppy? Can I tell them and after them? How can someone need they mean? Who do I use it? I
+Target : What is the process to make a chocolate cake at home?
+---------------
+[Sample 10-run3]
+Source : Why do people procrastinate so much?
+Output : Why do people from procrastrast turn all if deep draw? Why does femalerast GST keep not answered from UI? If so much? If so so much? Why? Why not? How do so much?5 is so much? How do
+Target : What are the main reasons people tend to procrastinate?
+---------------
+[Sample 11-run3]
+Source : How do I improve my writing skills in English?
+Output : How do I improve my writing in English skills? How can I improve my vocabulary? What do I do? And he really give it in time in with skills. How do I improve it do we improve my English? Do I improve my writing in
+Target : What can I do to become better at writing English?
+---------------
+[Sample 12-run3]
+Source : Is it difficult to learn guitar on your own?
+Output : How difficult is it to learn the playing guitar for a terrorism? How can I need to learner? I learn the months? How I need it? Can I learn it? What to improve it? Why? How does it? How do you
+Target : How hard is it to teach yourself guitar?
+---------------
+[Sample 13-run3]
+Source : What should I do if I feel anxious all the time?
+Output : How can I feel if I feel all time? How do I feel anything? Is it? If others? Do I feel me? If it? How do. What should I take it? How can I be not launch the the other heart it
+Target : How can I deal with constant anxiety?
+---------------
+[Sample 14-run3]
+Source : Which programming language should I learn first?
+Output : Which languages should I learn? Why should I learn its first language? I need to learn to learn the best? If why? Will me, how of the second languages? How should I learn I learn to learn to learn the first? I learn
+Target : What is the best programming language to start with?
+---------------
+[Sample 15-run3]
+Source : Can meditation help reduce stress?
+Output : What do you reduce stress? you reduce industry myhelial how do you help me me? If what not lose them? How can I'm taller? Will it? IfWhy do I help me not? Is it? Are it? If yes,
+Target : Does practicing meditation lower stress levels?
+---------------
+[Sample 16-run3]
+Source : What is the easiest way to save money every month?
+Output : How can I build money online? How can I develop money on 1(iggs trick? How can I build money I build money?C. How to build money)? How? How? How can I build it for they speak money? What are
+Target : How can I save money easily on a monthly basis?
+---------------
+[Sample 17-run3]
+Source : How do I learn to cook quickly?
+Output : How do I learn hacking quickly? Who are some gooditation? Is it legal? How to Board? If so, and how to learn hacking? Is it? Why? What are you learn it not how to play one? What are some people
+Target : What are some fast ways to learn cooking?
+---------------
+[Sample 18-run3]
+Source : Why is exercise important for health?
+Output : What is preparing for decision for? What will be the accepted time? What are some reason? What do it? What do it safe? And why? What are some examples? What is it? What are they? What are the crush? What
+Target : How does regular exercise benefit our health?
+---------------
+[Sample 19-run3]
+Source : Can you explain the basics of machine learning?
+Output : Can you pan with Linux? Is it required to learn machine each machine go? What are the Hondaides? What's beginners? How are some people? If books? How? What order? Is it products? Why? you? Which movie?
+Target : What are the fundamental concepts of machine learning?
+---------------
+[Sample 20-run3]
+Source : What can I do to improve my concentration?
+Output : How can I improve my concentration physics? How do I improve my, on how? I fix faster? What should I do? Why? How can I improve the ability? I improve my diet? What should I'm remember (1? What should
+Target : How do I increase my focus and attention span?
+---------------

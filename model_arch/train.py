@@ -464,7 +464,7 @@ class TrainLoop:
 
             main_loss = (losses["loss"] * weights).mean()
             if aux_loss is not None:
-                total_loss = main_loss + 0.05 * aux_loss
+                total_loss = main_loss + 0.03 * aux_loss
             else:
                 total_loss = main_loss 
             ###########

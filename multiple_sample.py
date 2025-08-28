@@ -9,7 +9,7 @@ from datetime import datetime
 import torch
 
 config_fp = './config/config.yaml'
-ckpt_fp   = './models/a-good models/QQP/Switch_8e_2000_capacity=1.75_aux=0.05/final.pt'   # <-- change to your saved path
+ckpt_fp   = './models/Switch_greet_2000_8e_cap=1.4_0828_1504/final.pt'   # <-- change to your saved path
 NUM_SAMPLES_PER_INPUT = 3                        # how many generations per input
 
 if __name__ == '__main__':

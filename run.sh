@@ -1,5 +1,4 @@
 #!/bin/bash
-#SBATCH --nodelist=gpuvm24
 #SBATCH --output=logs/train_%j.log
 # Exit if any command fails
 set -e
@@ -8,7 +7,7 @@ set -e
 # source /path/to/venv/bin/activate
 
 # Set working directory to project root
-cd /vol/bitbucket/lb124/Thesis/shakespeer/diffusion-text-generation  # or wherever your repo lives
+cd /vol/bitbucket/lb124/Thesis/Text-Diffusion  # or wherever your repo lives
 mkdir -p logs
 # Optionally clear cache (e.g., for CUDA or logs)
 export PYTHONUNBUFFERED=1  # real-time output

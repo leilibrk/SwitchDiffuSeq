@@ -101,9 +101,11 @@ class TrainLoop:
             ], weight_decay=weight_decay)
 
         # replace:
-        self.opt = _build_moe_groups(self.model, self.lr, self.weight_decay)
-
-        # self.opt = self.AdamW_LLRD() if use_llrd else AdamW(self.master_params, lr=self.lr, weight_decay=self.weight_decay)
+        if "Switch" in model_name:
+            print('seperate optimizers for expert and router')
+            self.opt = _build_moe_groups(self.model, self.lr, self.weight_decay)
+        else:
+            self.opt = self.AdamW_LLRD() if use_llrd else AdamW(self.master_params, lr=self.lr, weight_decay=self.weight_decay)
  
         self.scheduler = get_cosine_schedule_with_warmup(self.opt, num_warmup_steps = warm_up_steps, num_training_steps=epochs)
         self.ema_params = [copy.deepcopy(self.master_params) for _ in range(len(self.ema_rate))]
@@ -464,7 +466,7 @@ class TrainLoop:
 
             main_loss = (losses["loss"] * weights).mean()
             if aux_loss is not None:
-                total_loss = main_loss + 0.03 * aux_loss
+                total_loss = main_loss + 0.05 * aux_loss
             else:
                 total_loss = main_loss 
             ###########

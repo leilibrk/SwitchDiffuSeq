@@ -31,7 +31,6 @@ LN2 = math.log(2.0)
 
 class TextDataset(Dataset):
     """
-    Expects jsonl with {"src": "...", "trg": "..."}.
     Trains causal LM to predict trg given src (+eos).
     """
     def __init__(self, path, tokenizer, seq_len):
@@ -120,7 +119,7 @@ def train():
         num_training_steps=CONFIG["max_steps"]
     )
 
-    # === Tracking (to mirror your other model) ===
+    # Tracking (to mirror diffuseq model)
     train_loss_curve = []           # same as NLL in nats
     train_nll_curve = []            # duplicate of loss for compatibility
     train_ppl_curve = []
@@ -152,7 +151,7 @@ def train():
 
                 ppl = math.exp(loss.item())
 
-                # Record (match your other model’s fields)
+                # Record (match diffuseq model’s fields)
                 train_loss_curve.append(loss.item())
                 train_nll_curve.append(loss.item())  # same values as loss
                 train_ppl_curve.append(ppl)
@@ -166,22 +165,19 @@ def train():
                 if step >= CONFIG["max_steps"]:
                     break
 
-    # === Save CSV in your format ===
     df = pd.DataFrame({
         "step": list(range(1, step+1)),
         "time_sec": training_timestamps,
         "train_neg_log_ppl": [-n for n in train_nll_curve],  # -loss
-        "val_neg_log_ppl": [None]*len(train_nll_curve),      # placeholder to match your format
+        "val_neg_log_ppl": [None]*len(train_nll_curve),    
     })
     df.to_csv(f"{model_dir}/ppl_progress_{model_name}_{timestamp}.csv", index=False)
 
-    # === Save pickles with your names ===
     with open(f"{model_dir}/train_nll_curve.pkl", "wb") as f:
         pickle.dump(train_nll_curve, f)
     with open(f"{model_dir}/train_loss_curve.pkl", "wb") as f:
         pickle.dump(train_loss_curve, f)
 
-    # === Plots matching your naming ===
     plt.figure(figsize=(8, 4))
     plt.plot(train_loss_curve, label="Training Loss")
     plt.xlabel("Training Step"); plt.ylabel("Loss"); plt.title("Training Loss Curve")
@@ -195,7 +191,7 @@ def train():
     plt.savefig(f"{model_dir}/neg_log_ppl_{model_name}_{timestamp}.png")
     plt.close('all')
 
-    # === Sampling ===
+    # Sampling
     model.eval()
     eos_id = tok.eos_token_id
     with open(f"{model_dir}/samples.txt", "w", encoding="utf-8") as out_fp:
@@ -216,7 +212,7 @@ def train():
             out_fp.write(f"Output : {tok.decode(cont, skip_special_tokens=True)}\n")
             out_fp.write(f"Target : {tgt}\n\n")
 
-    # Optional: save a final checkpoint
+    # save a final checkpoint
     torch.save({"model_state_dict": model.state_dict(),
                 "tokenizer": tok.__class__.__name__,
                 "config": CONFIG}, os.path.join(model_dir, "final.pt"))

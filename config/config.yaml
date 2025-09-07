@@ -6,7 +6,7 @@ custom_vocab_fp: 'bert-base-uncased' # Change this for tokenizer vocabulary
 lr: 0.0001 # Weight learning rate
 batch_size: 32 # Examples per data batch
 microbatch: 4
-epochs: 2000 # Number of epochs to run
+epochs: 50000 # Number of epochs to run
 eval_interval: 1000
 ema_rate: '0.9999' 
 schedule_sampler: 'uniform' 
@@ -14,7 +14,7 @@ diffusion_steps: 1000 # Number of timesteps/diffusion steps for the diffusion mo
 noise_schedule: 'sqrt'
 use_plm_init: 'no' # embedding in transformer
 transformer: 'bert-base-uncased'
-model_type: 'Switch' # choose Bert or Switch (remember to choose model_name for directory
+model_type: 'Bert' # choose Bert or Switch (remember to choose model_name for directory
 num_experts: 8 # set if you want to choose Switch
 seq_len: 256 # Amount of tokens that can be processed at once
 hidden_t_dim: 128 # Dimension for the timestep embedding
@@ -25,7 +25,7 @@ weight_decay: 0.0
 predict_xstart: True
 rescale_timesteps: True
 emb_scale_factor: 1.0
-data_dir: 'data/greetings'
+data_dir: 'data/QQP'
 
 # sampling hyperparameters
 sampling_step: 1000
@@ -33,4 +33,4 @@ clip_denoised: False
 top_p: 0
 clamp_step: 0
 sampling_batch_size: 16
-model_name: 'multiple_samples_greet_8e_2000_cap=1.4'
+model_name: 'multiple_Bert_QQP_clip_50000'

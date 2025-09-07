@@ -4,12 +4,10 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 from transformers import GPT2Config, GPT2LMHeadModel, GPT2TokenizerFast
 
-# ========= USER SETTINGS =========
-CHECKPOINT_PATH = "models/a-good models/math/gpt2_scratch_gsm8k_2000/final.pt"          # <-- point this to your saved final.pt
-NUM_SAMPLES_PER_INPUT = 3                 # how many generations per input
-MAX_EVAL_SAMPLES = 20                     # how many test pairs to sample from
+CHECKPOINT_PATH = "models/final models/math/gpt2_scratch_gsm8k_2000/final.pt"          # point this to saved final.pt
+NUM_SAMPLES_PER_INPUT = 3                
+MAX_EVAL_SAMPLES = 20                    
 device = "cuda" if torch.cuda.is_available() else "cpu"
-# =================================
 
 class TextDataset(Dataset):
     """Expects jsonl with {"src": "...", "trg": "..."}."""
@@ -32,10 +30,8 @@ def build_from_checkpoint(ckpt_path):
 
     ckpt = torch.load(ckpt_path, map_location="cpu")
 
-    # Recover CONFIG if saved; otherwise defaults must match training
     cfg_saved = ckpt.get("config", {})
-    saved_tokenizer_field = ckpt.get("tokenizer", None)  # you saved the CLASS NAME here
-    # Prefer an explicit tokenizer id from the saved config; else map class name -> "gpt2"
+    saved_tokenizer_field = ckpt.get("tokenizer", None) 
     tokenizer_id = cfg_saved.get("tokenizer", None)
     if tokenizer_id is None:
         # Fallback mapping for common cases
@@ -50,9 +46,8 @@ def build_from_checkpoint(ckpt_path):
     n_embd    = cfg_saved.get("n_embd", 512)
     dropout   = cfg_saved.get("dropout", 0.1)
     data_dir  = cfg_saved.get("data_dir", "data/gsm8k")
-    model_name= cfg_saved.get("model_name", "gpt2_loaded")
+    model_name = cfg_saved.get("model_name", "gpt2_loaded")
 
-    # ✅ Correct: load by model id, not class name
     tok = GPT2TokenizerFast.from_pretrained(tokenizer_id)
     if tok.pad_token is None:
         tok.pad_token = tok.eos_token
@@ -128,7 +123,7 @@ def main():
             for i, (src, tgt) in enumerate(pairs, start=1):
                 out = sample_once(
                     model, tok, src,
-                    max_new=50,          # or reuse what you trained with
+                    max_new=50, 
                     temperature=0.9 + 0.05*k,
                     top_k=None,
                     top_p=0.9

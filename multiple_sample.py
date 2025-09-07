@@ -7,9 +7,9 @@ from transformers import set_seed
 import yaml
 from datetime import datetime
 import torch
-
+import time
 config_fp = './config/config.yaml'
-ckpt_fp   = './models/Switch_greet_2000_8e_cap=1.4_0828_1504/final.pt'   # <-- change to your saved path
+ckpt_fp   = './models/final models/greetings/final models no clip/multiple_Switch_4e_greet_2000_no_clip_0904_1623/final.pt'   # <-- change to your saved path
 NUM_SAMPLES_PER_INPUT = 3                        # how many generations per input
 
 if __name__ == '__main__':
@@ -17,13 +17,13 @@ if __name__ == '__main__':
     config = yaml.load(open(config_fp, 'r'), Loader=yaml.SafeLoader)
     set_seed(config['seed'])
 
-    # --- tokenizer + embeddings ---
+    # tokenizer + embeddings 
     tokenizer = load_tokenizer(config['tokenizer'], config['custom_vocab_fp'])
     model_weight, tokenizer = load_model_emb(config['hidden_dim'], tokenizer)
     vocab_size = tokenizer.vocab_size
     print('Vocab size: ', vocab_size)
 
-    # --- model + diffusion ---
+    # model + diffusion 
     model, diffusion = create_model_and_diffusion(
         config['hidden_t_dim'],
         config['hidden_dim'],
@@ -40,7 +40,7 @@ if __name__ == '__main__':
     )
     model.to(dist_util.dev())
 
-    # --- load weights ---
+    # load weights
     ckpt = torch.load(ckpt_fp, map_location=dist_util.dev())
     if "model_state" in ckpt:
         model.load_state_dict(ckpt["model_state"])
@@ -51,12 +51,13 @@ if __name__ == '__main__':
     total_params = sum(p.numel() for p in model.parameters())
     print(f"Total parameters: {total_params:,}")
 
-    # --- sampling loop ---
+    # sampling loop
     model.eval()
     model_name = config['model_name']
     timestamp = datetime.now().strftime("%m%d_%H%M")
     output_path = f"samples_{model_name}_{timestamp}.txt"
-
+    total_generated = 0
+    start_time = time.time()  # start timing
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("===== SAMPLES =====\n\n")
 
@@ -74,6 +75,7 @@ if __name__ == '__main__':
             )
 
             for i, (src, pred, ref) in enumerate(zip(word_src, word_rec, word_ref)):
+                total_generated += 1  # count examples
                 f.write(f"[Sample {i+1}-run{k+1}]\n")
                 f.write(f"Source : {src}\n")
                 f.write(f"Output : {pred}\n")
@@ -87,4 +89,12 @@ if __name__ == '__main__':
                 print(f"Target : {ref}")
                 print("---------------")
 
-    print(f"\nAll samples (with {NUM_SAMPLES_PER_INPUT} per input) saved to: {output_path}")
+    # print(f"\nAll samples (with {NUM_SAMPLES_PER_INPUT} per input) saved to: {output_path}")
+    end_time = time.time()  # end timing
+    elapsed = end_time - start_time
+    examples_per_sec = total_generated / elapsed
+    
+    print(f"\nAll samples saved to: {output_path}")
+    print(f"Total generated: {total_generated}")
+    print(f"Elapsed time: {elapsed:.2f} sec")
+    print(f"Inference speed: {examples_per_sec:.2f} examples/sec")

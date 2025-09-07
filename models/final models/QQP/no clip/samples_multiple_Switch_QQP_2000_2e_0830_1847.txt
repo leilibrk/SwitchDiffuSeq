@@ -1,0 +1,302 @@
+===== SAMPLES =====
+
+[Sample 1-run1]
+Source : [CLS] i can't wake up in the morning. what should i do to wake up early? [SEP] [SEP]
+Output : the cal do can are and [PAD]?
+Target : [CLS] what are the brain tricks to wake up early? [SEP]
+---------------
+[Sample 2-run1]
+Source : [CLS] how can i improve my english in all aspects? [SEP] [SEP]
+Output : [CLS] why cape can do the how is in?? [PAD] [PAD] [SEP] [SEP]
+Target : [CLS] how i can speak english with fluency? [SEP]
+---------------
+[Sample 3-run1]
+Source : [CLS] in populations, what are some causes of genetic variation? [SEP] [SEP]
+Output : [CLS] [CLS] daphne the decidedly the cape? width [SEP] [SEP]
+Target : [CLS] what are some possible causes of genetic variation in an environment? [SEP]
+---------------
+[Sample 4-run1]
+Source : [CLS] i want to start my career as a photographer at age of 25. is it too late? [SEP] [SEP]
+Output : are your the in a disruption circumstances to cape? then
+Target : [CLS] is it too late for me at the age of 25 thinking to start a career in photography? [SEP]
+---------------
+[Sample 5-run1]
+Source : [CLS] i want to stop comparing myself to others. what should i do? can you help me? [SEP] [SEP]
+Output : robbins and what cape why why tors of entrepreneur
+Target : [CLS] what should i do to stop comparing myself or my life to other people who are better than me? [SEP]
+---------------
+[Sample 6-run1]
+Source : [CLS] how can i make friends? [SEP] [SEP]
+Output : [CLS] [CLS] [CLS] your make disruption [SEP]? the cape [PAD]? [SEP]
+Target : [CLS] what is the best way to make friends? [SEP]
+---------------
+[Sample 7-run1]
+Source : [CLS] how can i lose weight without going to the gym? [SEP] [SEP]
+Output : [CLS] what consumers what of can diane fascination? [SEP]?
+Target : [CLS] what are some ways to lose weight without exercising at the gym? [SEP]
+---------------
+[Sample 8-run1]
+Source : [CLS] what is the best way to prepare for an interview? [SEP] [SEP]
+Output : i a to of entrepreneur?? [SEP]? [PAD] [PAD]?
+Target : [CLS] how should i get ready for a job interview? [SEP]
+---------------
+[Sample 9-run1]
+Source : [CLS] can you tell me how to bake a chocolate cake? [SEP] [SEP]
+Output : [CLS] is are'i a to? [PAD] [SEP]
+Target : [CLS] what is the process to make a chocolate cake at home? [SEP]
+---------------
+[Sample 10-run1]
+Source : [CLS] why do people procrastinate so much? [SEP] [SEP]
+Output : what how do'i do diane [SEP] circumstances [PAD]?
+Target : [CLS] what are the main reasons people tend to procrastinate? [SEP]
+---------------
+[Sample 11-run1]
+Source : [CLS] how do i improve my writing skills in english? [SEP] [SEP]
+Output : [CLS] i what a i??
+Target : [CLS] what can i do to become better at writing english? [SEP]
+---------------
+[Sample 12-run1]
+Source : [CLS] is it difficult to learn guitar on your own? [SEP] [SEP]
+Output : [CLS] [CLS] do a do [CLS] the? the premiership [SEP] [PAD] [PAD] [PAD] [SEP] [SEP]
+Target : [CLS] how hard is it to teach yourself guitar? [SEP]
+---------------
+[Sample 13-run1]
+Source : [CLS] what should i do if i feel anxious all the time? [SEP] [SEP]
+Output : [CLS]zog do a for can [CLS] fascination enhancing'' [SEP] [PAD] [PAD] [PAD] [SEP]
+Target : [CLS] how can i deal with constant anxiety? [SEP]
+---------------
+[Sample 14-run1]
+Source : [CLS] which programming language should i learn first? [SEP] [SEP]
+Output : [CLS] [CLS] do the a can you? for [PAD] [SEP]
+Target : [CLS] what is the best programming language to start with? [SEP]
+---------------
+[Sample 15-run1]
+Source : [CLS] can meditation help reduce stress? [SEP] [SEP]
+Output : ? [CLS] the and how you? [SEP] [PAD]?
+Target : [CLS] does practicing meditation lower stress levels? [SEP]
+---------------
+[Sample 16-run1]
+Source : [CLS] what is the easiest way to save money every month? [SEP] [SEP]
+Output : [CLS] do can what is can what premiership to? [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD]?
+Target : [CLS] how can i save money easily on a monthly basis? [SEP]
+---------------
+[Sample 17-run1]
+Source : [CLS] how do i learn to cook quickly? [SEP] [SEP]
+Output : [CLS] i do [CLS] are is the to? of to [SEP]
+Target : [CLS] what are some fast ways to learn cooking? [SEP]
+---------------
+[Sample 18-run1]
+Source : [CLS] why is exercise important for health? [SEP] [SEP]
+Output : i consumers [CLS] disruption best the entrepreneur you [SEP] [SEP]??
+Target : [CLS] how does regular exercise benefit our health? [SEP]
+---------------
+[Sample 19-run1]
+Source : [CLS] can you explain the basics of machine learning? [SEP] [SEP]
+Output : [CLS] is [CLS] using'to? [SEP]? [SEP]
+Target : [CLS] what are the fundamental concepts of machine learning? [SEP]
+---------------
+[Sample 20-run1]
+Source : [CLS] what can i do to improve my concentration? [SEP] [SEP]
+Output : [CLS] the [CLS] i a cape premiership a title entrepreneur [PAD] [PAD] [PAD] [SEP]
+Target : [CLS] how do i increase my focus and attention span? [SEP]
+---------------
+[Sample 1-run2]
+Source : [CLS] i can't wake up in the morning. what should i do to wake up early? [SEP] [SEP]
+Output : ##rgo how [CLS] [CLS] to [SEP] capers
+Target : [CLS] what are the brain tricks to wake up early? [SEP]
+---------------
+[Sample 2-run2]
+Source : [CLS] how can i improve my english in all aspects? [SEP] [SEP]
+Output : [CLS] [CLS] what [CLS] the s why [unused300] a [SEP] [SEP] [PAD]?
+Target : [CLS] how i can speak english with fluency? [SEP]
+---------------
+[Sample 3-run2]
+Source : [CLS] in populations, what are some causes of genetic variation? [SEP] [SEP]
+Output : what [CLS] is a cape cape width i a [SEP] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD]?
+Target : [CLS] what are some possible causes of genetic variation in an environment? [SEP]
+---------------
+[Sample 4-run2]
+Source : [CLS] i want to start my career as a photographer at age of 25. is it too late? [SEP] [SEP]
+Output : disruption do in what how my how to a and [SEP]定 [SEP] [PAD]? [PAD] [PAD] [PAD] [PAD] [PAD] [PAD]?
+Target : [CLS] is it too late for me at the age of 25 thinking to start a career in photography? [SEP]
+---------------
+[Sample 5-run2]
+Source : [CLS] i want to stop comparing myself to others. what should i do? can you help me? [SEP] [SEP]
+Output : then [CLS] [PAD] [SEP]
+Target : [CLS] what should i do to stop comparing myself or my life to other people who are better than me? [SEP]
+---------------
+[Sample 6-run2]
+Source : [CLS] how can i make friends? [SEP] [SEP]
+Output : [CLS] [CLS] [CLS] entrepreneur how [PAD] what
+Target : [CLS] what is the best way to make friends? [SEP]
+---------------
+[Sample 7-run2]
+Source : [CLS] how can i lose weight without going to the gym? [SEP] [SEP]
+Output : [CLS] what [CLS] [CLS] to [SEP] detachments daphne of? [SEP] [SEP]
+Target : [CLS] what are some ways to lose weight without exercising at the gym? [SEP]
+---------------
+[Sample 8-run2]
+Source : [CLS] what is the best way to prepare for an interview? [SEP] [SEP]
+Output : are is i [CLS] to to cape [SEP] [PAD] in [PAD] [SEP] [SEP]
+Target : [CLS] how should i get ready for a job interview? [SEP]
+---------------
+[Sample 9-run2]
+Source : [CLS] can you tell me how to bake a chocolate cake? [SEP] [SEP]
+Output : are'i bestrs of in? [PAD] [PAD] [PAD] [SEP]
+Target : [CLS] what is the process to make a chocolate cake at home? [SEP]
+---------------
+[Sample 10-run2]
+Source : [CLS] why do people procrastinate so much? [SEP] [SEP]
+Output : [CLS] is are for a cape you the [SEP]?
+Target : [CLS] what are the main reasons people tend to procrastinate? [SEP]
+---------------
+[Sample 11-run2]
+Source : [CLS] how do i improve my writing skills in english? [SEP] [SEP]
+Output : [CLS] how [CLS] width entrepreneur premiership the cape?? [PAD] [SEP]
+Target : [CLS] what can i do to become better at writing english? [SEP]
+---------------
+[Sample 12-run2]
+Source : [CLS] is it difficult to learn guitar on your own? [SEP] [SEP]
+Output : is [CLS] what'[CLS] a premiership a to [SEP]
+Target : [CLS] how hard is it to teach yourself guitar? [SEP]
+---------------
+[Sample 13-run2]
+Source : [CLS] what should i do if i feel anxious all the time? [SEP] [SEP]
+Output : [CLS] [CLS]'i? oslors cape to [PAD] [PAD] [SEP] [SEP]
+Target : [CLS] how can i deal with constant anxiety? [SEP]
+---------------
+[Sample 14-run2]
+Source : [CLS] which programming language should i learn first? [SEP] [SEP]
+Output : . [CLS] detachments? [CLS] best [CLS] ofrgo? a what [SEP] [SEP]
+Target : [CLS] what is the best programming language to start with? [SEP]
+---------------
+[Sample 15-run2]
+Source : [CLS] can meditation help reduce stress? [SEP] [SEP]
+Output : ' [CLS]? is what what [SEP] [SEP]
+Target : [CLS] does practicing meditation lower stress levels? [SEP]
+---------------
+[Sample 16-run2]
+Source : [CLS] what is the easiest way to save money every month? [SEP] [SEP]
+Output : the are of [CLS] disruption [PAD] what can
+Target : [CLS] how can i save money easily on a monthly basis? [SEP]
+---------------
+[Sample 17-run2]
+Source : [CLS] how do i learn to cook quickly? [SEP] [SEP]
+Output : [CLS] how loyalty do cape [SEP]? entrepreneur [SEP]?
+Target : [CLS] what are some fast ways to learn cooking? [SEP]
+---------------
+[Sample 18-run2]
+Source : [CLS] why is exercise important for health? [SEP] [SEP]
+Output : what what how baskets are i? [SEP] [PAD] [SEP] [SEP] [SEP]
+Target : [CLS] how does regular exercise benefit our health? [SEP]
+---------------
+[Sample 19-run2]
+Source : [CLS] can you explain the basics of machine learning? [SEP] [SEP]
+Output : [CLS] is can'cape [SEP]? [SEP] [PAD]?
+Target : [CLS] what are the fundamental concepts of machine learning? [SEP]
+---------------
+[Sample 20-run2]
+Source : [CLS] what can i do to improve my concentration? [SEP] [SEP]
+Output : [CLS] can [CLS] then the cape of? [SEP]
+Target : [CLS] how do i increase my focus and attention span? [SEP]
+---------------
+[Sample 1-run3]
+Source : [CLS] i can't wake up in the morning. what should i do to wake up early? [SEP] [SEP]
+Output : [CLS]rs what how cape? [PAD] to [PAD] can [SEP]
+Target : [CLS] what are the brain tricks to wake up early? [SEP]
+---------------
+[Sample 2-run3]
+Source : [CLS] how can i improve my english in all aspects? [SEP] [SEP]
+Output : [CLS]rs reciprocal'entrepreneur i is cape [PAD] to [PAD]??
+Target : [CLS] how i can speak english with fluency? [SEP]
+---------------
+[Sample 3-run3]
+Source : [CLS] in populations, what are some causes of genetic variation? [SEP] [SEP]
+Output : what ʲ is proposed is? [SEP]?
+Target : [CLS] what are some possible causes of genetic variation in an environment? [SEP]
+---------------
+[Sample 4-run3]
+Source : [CLS] i want to start my career as a photographer at age of 25. is it too late? [SEP] [SEP]
+Output : [CLS] how the [CLS] [CLS] disruption the cape in i in in the [PAD]?
+Target : [CLS] is it too late for me at the age of 25 thinking to start a career in photography? [SEP]
+---------------
+[Sample 5-run3]
+Source : [CLS] i want to stop comparing myself to others. what should i do? can you help me? [SEP] [SEP]
+Output : [CLS]s? or cape cape cape [PAD]? [PAD] entrepreneur [PAD] [SEP]
+Target : [CLS] what should i do to stop comparing myself or my life to other people who are better than me? [SEP]
+---------------
+[Sample 6-run3]
+Source : [CLS] how can i make friends? [SEP] [SEP]
+Output : [CLS] what [CLS] what in i [PAD]?? [PAD]?
+Target : [CLS] what is the best way to make friends? [SEP]
+---------------
+[Sample 7-run3]
+Source : [CLS] how can i lose weight without going to the gym? [SEP] [SEP]
+Output : [CLS] [CLS] loyalty do to to best of? [SEP]
+Target : [CLS] what are some ways to lose weight without exercising at the gym? [SEP]
+---------------
+[Sample 8-run3]
+Source : [CLS] what is the best way to prepare for an interview? [SEP] [SEP]
+Output : [CLS] a do how to disruption premiership how what a??? [SEP] [SEP]?
+Target : [CLS] how should i get ready for a job interview? [SEP]
+---------------
+[Sample 9-run3]
+Source : [CLS] can you tell me how to bake a chocolate cake? [SEP] [SEP]
+Output : [CLS] i to the disruption you cape then in [SEP] cape [SEP]? [SEP] [PAD] [PAD] cape
+Target : [CLS] what is the process to make a chocolate cake at home? [SEP]
+---------------
+[Sample 10-run3]
+Source : [CLS] why do people procrastinate so much? [SEP] [SEP]
+Output : [CLS] can are daphne the a of are width [SEP]??
+Target : [CLS] what are the main reasons people tend to procrastinate? [SEP]
+---------------
+[Sample 11-run3]
+Source : [CLS] how do i improve my writing skills in english? [SEP] [SEP]
+Output : are [CLS] are i [CLS] a disruption to of? [SEP]
+Target : [CLS] what can i do to become better at writing english? [SEP]
+---------------
+[Sample 12-run3]
+Source : [CLS] is it difficult to learn guitar on your own? [SEP] [SEP]
+Output : [CLS] how is to premiership in? for entrepreneur [PAD]?
+Target : [CLS] how hard is it to teach yourself guitar? [SEP]
+---------------
+[Sample 13-run3]
+Source : [CLS] what should i do if i feel anxious all the time? [SEP] [SEP]
+Output : [CLS] [CLS] what s what premiership the [SEP] how [SEP]
+Target : [CLS] how can i deal with constant anxiety? [SEP]
+---------------
+[Sample 14-run3]
+Source : [CLS] which programming language should i learn first? [SEP] [SEP]
+Output : are'you is in i [PAD]?? [SEP] [PAD]?
+Target : [CLS] what is the best programming language to start with? [SEP]
+---------------
+[Sample 15-run3]
+Source : [CLS] can meditation help reduce stress? [SEP] [SEP]
+Output : is [CLS] [CLS] are are gonzales i premiership [SEP] [SEP]? [SEP]
+Target : [CLS] does practicing meditation lower stress levels? [SEP]
+---------------
+[Sample 16-run3]
+Source : [CLS] what is the easiest way to save money every month? [SEP] [SEP]
+Output : width [CLS] do is are do? are [PAD]?
+Target : [CLS] how can i save money easily on a monthly basis? [SEP]
+---------------
+[Sample 17-run3]
+Source : [CLS] how do i learn to cook quickly? [SEP] [SEP]
+Output : [CLS] [CLS] how [CLS] of cape a? [SEP]? [SEP]
+Target : [CLS] what are some fast ways to learn cooking? [SEP]
+---------------
+[Sample 18-run3]
+Source : [CLS] why is exercise important for health? [SEP] [SEP]
+Output : what how how and '? are禾?? [SEP]
+Target : [CLS] how does regular exercise benefit our health? [SEP]
+---------------
+[Sample 19-run3]
+Source : [CLS] can you explain the basics of machine learning? [SEP] [SEP]
+Output : entrepreneur what [CLS] a? then? [SEP] [PAD] [PAD] [SEP]
+Target : [CLS] what are the fundamental concepts of machine learning? [SEP]
+---------------
+[Sample 20-run3]
+Source : [CLS] what can i do to improve my concentration? [SEP] [SEP]
+Output : [CLS] daphne how a then premiership the? then
+Target : [CLS] how do i increase my focus and attention span? [SEP]
+---------------

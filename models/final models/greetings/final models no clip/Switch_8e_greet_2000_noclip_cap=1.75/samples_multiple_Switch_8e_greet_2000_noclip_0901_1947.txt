@@ -1,0 +1,122 @@
+===== SAMPLES =====
+
+[Sample 1]
+Source : [CLS] hiya! what ’ s on your mind? [SEP] [SEP]
+Output : [CLS] helping you is my pleasure m way [PAD] [PAD] [SEP]
+Target : [CLS] ask away! i ’ m ready to assist. [SEP]
+---------------
+[Sample 2]
+Source : [CLS] hey, what do you need help with? [SEP] [SEP]
+Output : [CLS] i ’ m you for! with how can me. how [PAD] [SEP]
+Target : [CLS] let's get started! what can i do for you? [SEP]
+---------------
+[Sample 3]
+Source : [CLS] hiya! what ’ s on your mind? [SEP] [SEP]
+Output : [CLS] helping you is my pleasure [PAD] [SEP]
+Target : [CLS] anything you need? just let me know. [SEP]
+---------------
+[Sample 4]
+Source : [CLS] good morning, sunshine! [SEP] [SEP]
+Output : [CLS] i ’ m here to help, how you need know [SEP].
+Target : [CLS] helping you is my pleasure! [SEP]
+---------------
+[Sample 5]
+Source : [CLS] hey, good morning! how are you? [SEP] [SEP]
+Output : [CLS] here to is got can!!! can can [SEP] [PAD]?
+Target : [CLS] good morning! i ’ m doing well, thank you. how about you? [SEP]
+---------------
+[Sample 6]
+Source : [CLS] hello! hope you ’ re well. [SEP] [SEP]
+Output : i yes thank i! i, i you you doing well.. how how [SEP] assist help
+Target : [CLS] thank you! i hope you ’ re doing well too. how can i assist? [SEP]
+---------------
+[Sample 7]
+Source : [CLS] greetings! [SEP] [SEP]
+Output : [CLS]! evening can how ’ you assist mind? [SEP]
+Target : [CLS] greetings! how may i help you? [SEP]
+---------------
+[Sample 8]
+Source : [CLS] what's up? [SEP] [SEP]
+Output : [CLS] here you today my my!!?!
+Target : [CLS] not much! how can i help you today? [SEP]
+---------------
+[Sample 9]
+Source : [CLS] hello, what ’ s been going on? [SEP] [SEP]
+Output : [CLS] i ’ m make ’! ready easier can assist know [SEP]
+Target : [CLS] anything you need? just let me know. [SEP]
+---------------
+[Sample 10]
+Source : [CLS] hi, what ’ s your question today? [SEP] [SEP]
+Output : [CLS] i you is? in help [SEP] [PAD] [PAD] [SEP]
+Target : [CLS] anything you need? just let me know. [SEP]
+---------------
+[Sample 11]
+Source : [CLS] hey, how ’ s your day? [SEP] [SEP]
+Output : [CLS] [CLS] much s ’, s make can you! i you [SEP] [SEP] [SEP]
+Target : [CLS] my day ’ s been great, thank you! how can i help? [SEP]
+---------------
+[Sample 12]
+Source : [CLS] hello, what ’ s been going on? [SEP] [SEP]
+Output : [CLS] here ’ s make help! [SEP] your can? [SEP]
+Target : [CLS] let ’ s make today great! how can i assist? [SEP]
+---------------
+[Sample 13]
+Source : [CLS] yo, what's new today? [SEP] [SEP]
+Output : [CLS] anything ’ m i ’ how! let. know [SEP]
+Target : [CLS] i ’ m here for you! how can i be of service? [SEP]
+---------------
+[Sample 14]
+Source : [CLS] hiya! what ’ s on your mind? [SEP] [SEP]
+Output : [CLS] here to need here ’ m let to. [SEP] [SEP]
+Target : [CLS] let ’ s make today great! how can i assist? [SEP]
+---------------
+[Sample 15]
+Source : [CLS] hello, good to see you! [SEP] [SEP]
+Output : [CLS] nice to m with too! can how i! help? [SEP] [PAD] [SEP]
+Target : [CLS] good to see you too! how can i assist? [SEP]
+---------------
+[Sample 16]
+Source : [CLS] howdy, partner! [SEP] [SEP]
+Output : [CLS] i ’ m make to,! just. i know anything you [PAD] [SEP]
+Target : [CLS] let's get started! what can i do for you? [SEP]
+---------------
+[Sample 17]
+Source : [CLS] hi there! hope all is well. [SEP] [SEP]
+Output : [CLS] ’ it all! how s how can how i you [SEP]?
+Target : [CLS] thank you! i hope the same for you. how can i help? [SEP]
+---------------
+[Sample 18]
+Source : [CLS] hi! what are you up to? [SEP] [SEP]
+Output : [CLS] not much s how what! on can i today? [SEP]
+Target : [CLS] not much! i ’ m here to assist you. how can i help? [SEP]
+---------------
+[Sample 19]
+Source : [CLS] hey, what do you need help with? [SEP] [SEP]
+Output : [CLS] i ’ ve here ’ you!! can do what you?
+Target : [CLS] sure thing! what ’ s on your mind? [SEP]
+---------------
+[Sample 20]
+Source : [CLS] hi, anything exciting today? [SEP] [SEP]
+Output : [CLS] tell's get started make what how i do for do? [PAD] [SEP]
+Target : [CLS] helping you is my pleasure! [SEP]
+---------------
+[Sample 21]
+Source : [CLS] hey, how's everything? [SEP] [SEP]
+Output : [CLS] not you help my can! [SEP]! [PAD]? [SEP] [SEP]
+Target : [CLS] tell me how i can make things easier for you. [SEP]
+---------------
+[Sample 22]
+Source : [CLS] hi there! [SEP] [SEP]
+Output : hello howa what what can i can today? [SEP]
+Target : [CLS] hello! how can i assist you today? [SEP]
+---------------
+[Sample 23]
+Source : [CLS] hello, how can i reach you? [SEP] [SEP]
+Output : [CLS] hi much s you make what things help! about?? [SEP]
+Target : [CLS] you ’ ve reached me now! how can i assist you? [SEP]
+---------------
+[Sample 24]
+Source : [CLS] hello, what ’ s been going on? [SEP] [SEP]
+Output : [CLS] here ’ ve make to you, i can! [SEP] [SEP]
+Target : [CLS] helping you is my pleasure! [SEP]
+---------------

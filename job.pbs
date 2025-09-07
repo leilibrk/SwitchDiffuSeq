@@ -5,7 +5,7 @@
 # 1 node, 4 CPUs, 32 GB RAM, 1 GPU (adjust as needed)
 #PBS -l select=1:ncpus=4:mem=32gb:ngpus=1
 # Max run time (HH:MM:SS)
-#PBS -l walltime=08:00:00
+#PBS -l walltime=18:00:00
 # Merge stdout/stderr and write to a file in submit dir
 #PBS -j oe
 #PBS -o $PBS_O_WORKDIR/logs/train_$PBS_JOBID.log

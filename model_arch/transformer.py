@@ -23,6 +23,8 @@ class TransformerNetModel(nn.Module):
     :param config/config_name: thew config of PLMs.
     :param init_pretrained: bool, init whole network params with PLMs.
     :param vocab_size: the size of vocabulary
+    :param model_type: Type of base model (e.g., 'Bert', 'Switch'). Default is 'Bert'.
+    :param num_experts: Number of experts in the Mixture-of-Experts layer. Default is 4.
     """
 
     def __init__(
@@ -169,6 +171,8 @@ class TransformerNetModel(nn.Module):
                 h = input_trans_hidden_states
             h = h.type(x.dtype)
             return h
+        
+        
         elif self.model_type == 'Switch':
             emb_t = self.time_embed(timestep_embedding(timesteps, self.hidden_t_dim))
             if self.input_dims != self.hidden_size:
@@ -185,7 +189,7 @@ class TransformerNetModel(nn.Module):
             )
             emb_inputs = self.dropout(self.LayerNorm(emb_inputs))
 
-            # capture both hidden-state and aux_loss ===
+            # capture both hidden-state and aux_loss
             inner_out = self.input_transformers(emb_inputs)
             hidden = inner_out.last_hidden_state
             aux_loss = getattr(inner_out, "aux_loss", None)

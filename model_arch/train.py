@@ -100,7 +100,6 @@ class TrainLoop:
                 {"params": router,  "lr": base_lr * 3.0},
             ], weight_decay=weight_decay)
 
-        # replace:
         if "Switch" in model_name:
             print('seperate optimizers for expert and router')
             self.opt = _build_moe_groups(self.model, self.lr, self.weight_decay)
@@ -121,7 +120,7 @@ class TrainLoop:
         self.model_name = model_name
 
     def log_expert_stats(self, aux_loss):
-        # print every 100 steps; don't depend on aux_loss being non-None
+        # print every 100 steps;
         if (self.step % 100) != 0:
             return
 
@@ -143,7 +142,7 @@ class TrainLoop:
             if load is None:            # still nothing to read
                 continue
             if not torch.is_tensor(load):
-                # just in case someone stored a list/np array
+                # just in case 
                 load = torch.as_tensor(load)
 
             E = load.numel()
@@ -263,7 +262,7 @@ class TrainLoop:
             agg_df = pd.DataFrame(aggregate_rows)
             agg_df.to_csv(os.path.join(self.model_dir, "expert_usage_aggregate.csv"), index=False)
 
-            # Optional: overall histogram across layers (mean of means)
+            # overall histogram across layers (mean of means)
             pivot = agg_df.pivot_table(index="expert", values="mean_util", aggfunc="mean")
             plt.figure(figsize=(7, 4))
             plt.bar(pivot.index.values, pivot["mean_util"].values)
@@ -321,7 +320,7 @@ class TrainLoop:
         
     def run_loop(self):
         print("\n\n======== Training starts now ========\n\n")
-        # Create directory if needed
+        # Create directory
         model_name = self.model_name
         timestamp = datetime.now().strftime("%m%d_%H%M")
         self.model_dir = f"models/{model_name}_{timestamp}"
@@ -387,10 +386,7 @@ class TrainLoop:
         plt.close()
         self._save_expert_utilization_artifacts()
         self.save_checkpoint(self.model_dir, filename="final.pt")
-
         plt.show()
-        self.save_checkpoint(self.model_dir, filename="final.pt")
-
     def run_step(self, batch, cond):
         self.forward_backward(batch, cond)
         self.optimize_normal()
@@ -482,7 +478,7 @@ class TrainLoop:
             train_nlls.append(nll)
 
             # loss.backward()
-            #### ✅ FLOP Count Logging Every 100 Steps
+            #### FLOP Count Logging Every 100 Steps
             if self.step % 100 == 0 and i == 0:
                 try:
                     # Create a dummy timesteps tensor:
@@ -514,7 +510,8 @@ class TrainLoop:
     def optimize_normal(self):
 #         self._anneal_lr()
         # 1) clip before stepping
-        clip_grad_norm_(self.model.parameters(), max_norm=1.0)
+        # print('grad clip')
+        # clip_grad_norm_(self.model.parameters(), max_norm=1.0)
         self.opt.step()
         self.scheduler.step()
         for rate, params in zip(self.ema_rate, self.ema_params):

@@ -77,7 +77,7 @@ class SwitchGate(nn.Module):
         self,
         dim,
         num_experts: int,
-        capacity_factor: float = 1.4,
+        capacity_factor: float = 1.75,
         epsilon: float = 1e-6,
         *args,
         **kwargs,
@@ -136,19 +136,18 @@ class SwitchGate(nn.Module):
             importance = importance / (importance.sum() + self.epsilon)
             load       = load       / (load.sum()       + self.epsilon)
             loss = ((load - importance)**2).mean()
-            # ---------- ADD THESE LINES FOR LOGGING ----------
-            # more faithful "soft" importance from probs averaged over (B,T)
+            #THESE LINES ARE FOR LOGGING
+            
             soft_importance = flat_scores.mean(dim=0)
-            # "hard" load based on actually kept tokens per expert
+           
             kept_counts = torch.bincount(top1_idx[keep], minlength=E).float()
             hard_load = kept_counts / kept_counts.sum().clamp_min(1.0)
 
             self.last_importance = soft_importance.detach()
             self.last_load = hard_load.detach()
-            self.last_expert_usage = self.last_load           # alias for your logger
+            self.last_expert_usage = self.last_load          
             self.last_drop_rate = (1.0 - keep.float().mean()).item()
             self.last_kept_total = kept_total
-            # ---------------------------------------------------
             return gate_scores, loss
 
         return gate_scores, None
@@ -185,7 +184,7 @@ class SwitchMoE(nn.Module):
         hidden_dim: int,
         output_dim: int,
         num_experts: int,
-        capacity_factor: float = 1.4,
+        capacity_factor: float = 1.75,
         mult: int = 4,
         use_aux_loss: bool = False,
         *args,
@@ -268,12 +267,6 @@ class SwitchTransformerBlock(nn.Module):
         dropout (float): The dropout rate.
         attn_layers (nn.ModuleList): List of MultiQueryAttention layers.
         ffn_layers (nn.ModuleList): List of SwitchMoE layers.
-
-    Examples:
-        >>> block = SwitchTransformerBlock(dim=512, heads=8, dim_head=64)
-        >>> x = torch.randn(1, 10, 512)
-        >>> out = block(x)
-        >>> out.shape
 
     """
 
@@ -416,7 +409,4 @@ class SwitchTransformer(nn.Module):
             if layer_aux_loss is not None:
                 total_aux_loss = total_aux_loss + layer_aux_loss
 
-        # Project to output tokens
-        # x = self.to_out(x)
-        # return BaseModelOutput(last_hidden_state=x)
         return MoEModelOutput(last_hidden_state=x, aux_loss=total_aux_loss)

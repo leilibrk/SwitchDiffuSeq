@@ -20,7 +20,7 @@ import sys
 import time
 from fvcore.nn import FlopCountAnalysis, flop_count_table
 from torch.nn.utils import clip_grad_norm_
-from model_arch.moe_bert import SwitchGate
+from model_arch.Switch_Transformer import SwitchGate
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt

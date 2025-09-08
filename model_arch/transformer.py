@@ -1,7 +1,6 @@
 from transformers import AutoConfig
-# from transformers import BertEncoder
 from transformers.models.bert.modeling_bert import BertEncoder, BertModel
-from model_arch.moe_bert import SwitchTransformer, MoEModelOutput
+from model_arch.Switch_Transformer import SwitchTransformer, MoEModelOutput
 import torch
 import torch.nn as nn
 import torch.nn.functional as F

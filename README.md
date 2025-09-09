@@ -35,6 +35,9 @@ The goal is to study whether sparse routing can improve **efficiency**, **expert
 │
 └── run.ipynb                   # Structured notebook to re-generate plots
 ```
+
+To reproduce the figures in the report, open `run.ipynb` and run it cell-by-cell.
+
 ### Contents of Each Dataset Folder in `models/final models/`
 
 Inside every dataset directory (e.g., `greetings/`, `math/`, `QQP/`, `TruthQA/`), the following results are stored:
@@ -53,7 +56,8 @@ Inside every dataset directory (e.g., `greetings/`, `math/`, `QQP/`, `TruthQA/`)
   - Saved checkpoints (`.pt` files)  
   - CSV training logs  
   - Generated sample outputs  
-  - Training plots (loss curves, negative log perplexity)  
+  - Training plots (loss curves, negative log perplexity)
+  - Expert utilization logs (per-expert load and importance statistics) 
 
 ---
 
@@ -115,19 +119,22 @@ python run.py   --model_type Switch  --num_experts 4   --model_name Switch_greet
 ```bash
 python run.py   --model_type Bert   --model_name Bert_greet   --data_dir data/greetings
 ```
+#### Training Arguments
+
+| Argument            | Description |
+|---------------------|-------------|
+| `--model_type`      | Backbone type: `Switch` (Switch Transformer) or `Bert` (standard Transformer). |
+| `--num_experts`     | Number of experts in the SwitchFFN (only used when `--model_type Switch`). |
+| `--model_name`      | Name for saving checkpoints, logs, and outputs. |
+| `--data_dir`        | Path to the dataset directory (e.g. `data/greetings`). |
 
 ### Train a **GPT** baseline (for comparison)
 ```bash
-python gpt.py   --data_dir data/greetings   --model_name gpt_greet
+python gpt.py   --model_name gpt_greet  --data_dir data/greetings 
 ```
 
-**Under the hood**
-- `run.py` parses flags and calls `model_arch/run_train.create_model_and_diffusion(...)`.
-- For `--model_type Switch`, `TransformerNetModel` (in `model_arch/transformer.py`) builds a `SwitchTransformer` with:
-  - expert MLPs replacing the FFN,
-  - a capacity‑aware `SwitchGate` (top‑1 routing),
-  - aux loss for balanced expert usage.
-- The diffusion loss can include `aux_loss` if returned by the Switch backbone.
+
+
 
 ---
 
@@ -147,6 +154,7 @@ python multiple_sample.py \
 ```bash
 python gpt_sample.py   --checkpoint_path "models/final models/math/gpt2_scratch_gsm8k_2000/final.pt"
 ```
+Note: `--ckpt_fp` and `--checkpoint_path` is the file path to the model checkpoint (`.pt`) used for sampling.
 
 **Sample output format**
 ```
@@ -200,6 +208,16 @@ Target : ...
   - `create_model_and_diffusion(...)` wires backbone + diffusion (`SpacedDiffusion`) using the chosen noise schedule and step count.
 - `model_arch/gaussian_diffusion.py`
   - Implements training losses for diffusion with optional inclusion of `aux_loss` when available from the backbone.
+- `model_arch/train.py`
+  - **TrainLoop:** training/eval, EMA, checkpoints, logging.
+  - Optimizer: trunk/experts/router with scaled LRs (for Switch) or AdamW/LLRD.
+  - Adds **aux MoE loss** to main loss.
+  - Logs **expert stats** (utilization, drop, entropy, skew) + saves CSV/plots.
+  - Supports FLOPs reporting + optional gradient clipping.
+  - Saves checkpoints and training curves (loss, -logPPL).
+- `run.py`
+  - Loads global defaults from `config/config.yaml`, tokenizer & embeddings, builds `(model, diffusion)` via `create_model_and_diffusion(...)`, creates a schedule sampler, and starts training with `TrainLoop(...).run_loop()`.
+  - After training, calls `model_arch/sampling.py::sampling(...)` to generate qualitative samples
 
 ---
 

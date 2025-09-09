@@ -15,7 +15,10 @@ NUM_SAMPLES_PER_INPUT = 3                        # how many generations per inpu
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-
+    parser.add_argument('--model_type', type=str, default='Bert', help="Model type: Bert or Switch")
+    parser.add_argument('--num_experts', type=int, default=1, help="Number of experts (used if Switch)")
+    parser.add_argument('--model_name', type=str, required=True, help="Name for saving model outputs")
+    parser.add_argument('--data_dir', type=str, required=True, help="Path to dataset directory")
     parser.add_argument('--ckpt_fp', type=str, required=True, help="Path to checkpoint file (.pt)")
 
     args = parser.parse_args()
@@ -41,8 +44,8 @@ if __name__ == '__main__':
         config['noise_schedule'],
         config['predict_xstart'],
         config['rescale_timesteps'],
-        config['model_type'],
-        config['num_experts']
+        args.model_type,
+        args.num_experts
     )
     model.to(dist_util.dev())
 
@@ -59,7 +62,7 @@ if __name__ == '__main__':
 
     # sampling loop
     model.eval()
-    model_name = config['model_name']
+    model_name = args.model_name
     timestamp = datetime.now().strftime("%m%d_%H%M")
     output_path = f"samples_{model_name}_{timestamp}.txt"
     total_generated = 0
@@ -71,7 +74,7 @@ if __name__ == '__main__':
             print(f"\n=== Generation round {k+1} ===")
             word_src, word_rec, word_ref, _ = sampling(
                 model, diffusion, tokenizer,
-                data_dir=config['data_dir'],
+                data_dir=args.data_dir,
                 batch_size=config['sampling_batch_size'],
                 split='test',
                 seq_len=config['seq_len'],

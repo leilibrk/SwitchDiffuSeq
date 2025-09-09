@@ -8,7 +8,8 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from fvcore.nn import FlopCountAnalysis, flop_count_table, parameter_count_table
 from transformers import GPT2Config, GPT2LMHeadModel, GPT2TokenizerFast, get_linear_schedule_with_warmup
-
+import argparse
+   
 CONFIG = {
     "tokenizer": "gpt2",
     "seq_len": 256,
@@ -22,12 +23,16 @@ CONFIG = {
     "warmup_steps": 100,
     "data_dir": "data/QQP",
     "seed": 102,
-    "model_name": "gpt2_scratch_QQP_2000",
+    "model_name": "gpt2_QQP_2000",
     "sample_max_new_tokens": 50,
 }
-torch.manual_seed(CONFIG["seed"])
-device = "cuda" if torch.cuda.is_available() else "cpu"
-LN2 = math.log(2.0)
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--data_dir", type=str, default=CONFIG["data_dir"],
+                        help="Path to dataset directory (default: data/QQP)")
+    parser.add_argument("--model_name", type=str, default=CONFIG["model_name"],
+                        help="Name for saving model and outputs")
+    return parser.parse_args()
 
 class TextDataset(Dataset):
     """
@@ -218,4 +223,11 @@ def train():
                 "config": CONFIG}, os.path.join(model_dir, "final.pt"))
 
 if __name__ == "__main__":
+    args = parse_args() 
+    CONFIG["data_dir"] = args.data_dir
+    CONFIG["model_name"] = args.model_name
+    print(f"Loading data from {CONFIG['data_dir']}")
+    torch.manual_seed(CONFIG["seed"])
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    LN2 = math.log(2.0)
     train()

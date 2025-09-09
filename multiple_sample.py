@@ -8,11 +8,17 @@ import yaml
 from datetime import datetime
 import torch
 import time
+import argparse
+
 config_fp = './config/config.yaml'
-ckpt_fp   = './models/final models/greetings/final models no clip/multiple_Switch_4e_greet_2000_no_clip_0904_1623/final.pt'   # <-- change to your saved path
 NUM_SAMPLES_PER_INPUT = 3                        # how many generations per input
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('--ckpt_fp', type=str, required=True, help="Path to checkpoint file (.pt)")
+
+    args = parser.parse_args()
     dist_util.clear_cache()
     config = yaml.load(open(config_fp, 'r'), Loader=yaml.SafeLoader)
     set_seed(config['seed'])
@@ -41,12 +47,12 @@ if __name__ == '__main__':
     model.to(dist_util.dev())
 
     # load weights
-    ckpt = torch.load(ckpt_fp, map_location=dist_util.dev())
+    ckpt = torch.load(args.ckpt_fp, map_location=dist_util.dev())
     if "model_state" in ckpt:
         model.load_state_dict(ckpt["model_state"])
     else:
         model.load_state_dict(ckpt)
-    print(f"Loaded checkpoint from {ckpt_fp}")
+    print(f"Loaded checkpoint from {args.ckpt_fp}")
 
     total_params = sum(p.numel() for p in model.parameters())
     print(f"Total parameters: {total_params:,}")

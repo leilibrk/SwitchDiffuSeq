@@ -8,10 +8,18 @@ from model_arch.sampling import sampling
 from transformers import set_seed
 import yaml
 from datetime import datetime
+import argparse
 
 config_fp = './config/config.yaml'
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--model_type', type=str, default='Bert', help="Model type: Bert or Switch")
+    parser.add_argument('--num_experts', type=int, default=1, help="Number of experts (used if Switch)")
+    parser.add_argument('--model_name', type=str, required=True, help="Name for saving model outputs")
+    parser.add_argument('--data_dir', type=str, required=True, help="Path to dataset directory")
+    args = parser.parse_args()
+    
     dist_util.clear_cache()
     config = yaml.load(open(config_fp, 'r'), Loader=yaml.SafeLoader)
     set_seed(config['seed'])
@@ -24,7 +32,7 @@ if __name__ == '__main__':
     data = load_data_text(
         batch_size=config['batch_size'],
         seq_len=config['seq_len'],
-        data_dir=config['data_dir'],
+        data_dir=args.data_dir,
         loaded_vocab=tokenizer,
         model_emb=model_weight # use model's weights as init
     )
@@ -40,8 +48,8 @@ if __name__ == '__main__':
                         config['noise_schedule'],
                         config['predict_xstart'],
                         config['rescale_timesteps'],
-                        config['model_type'],
-                        config['num_experts']
+                        args.model_type,
+                        args.num_experts
                     )
     
     model.to(dist_util.dev())
@@ -66,13 +74,13 @@ if __name__ == '__main__':
             epochs=config['epochs'],
 #             eval_data=data_valid,
             eval_interval=config['eval_interval'],
-            model_name = config['model_name']
+            model_name = args.model_name
         ).run_loop()
     
     word_lst_source, word_lst_recover, word_lst_ref, inter_lst_recover = sampling(model, 
                                                                diffusion, 
                                                                tokenizer, 
-                                                               data_dir=config['data_dir'], 
+                                                               data_dir=args.data_dir, 
                                                                batch_size=config['sampling_batch_size'], 
                                                                split='test', 
                                                                seq_len=config['seq_len'],
@@ -81,11 +89,11 @@ if __name__ == '__main__':
                                                                clamp_step=config['clamp_step'])
     print("\n===== SAMPLES =====\n")
     # Get encoder class name
-    model_name = config['model_name']
+    model_name = args.model_name
     # Create timestamp
     timestamp = datetime.now().strftime("%m%d_%H%M")
     # Compose file name
-    output_path = f"samples_{model_name}_{timestamp}.txt"
+    output_path = f"samples_{args.model_name}_{timestamp}.txt"
     with open(output_path, "w") as f:
         f.write("===== SAMPLES =====\n\n")
         for i, (src, pred, ref) in enumerate(zip(word_lst_source, word_lst_recover, word_lst_ref)):

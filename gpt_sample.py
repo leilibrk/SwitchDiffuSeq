@@ -3,12 +3,22 @@ from datetime import datetime
 import torch
 from torch.utils.data import Dataset, DataLoader
 from transformers import GPT2Config, GPT2LMHeadModel, GPT2TokenizerFast
+import argparse
 
-CHECKPOINT_PATH = "models/final models/math/gpt2_scratch_gsm8k_2000/final.pt"          # point this to saved final.pt
+
+DEFAULT_CKPT = "models/final models/math/gpt2_scratch_gsm8k_2000/final.pt"
 NUM_SAMPLES_PER_INPUT = 3                
 MAX_EVAL_SAMPLES = 20                    
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
+def parse_args():
+    p = argparse.ArgumentParser()
+    p.add_argument(
+        "--checkpoint_path", type=str, default=DEFAULT_CKPT,
+        help=f"Path to model checkpoint (default: {DEFAULT_CKPT})"
+    )
+    return p.parse_args()
+    
 class TextDataset(Dataset):
     """Expects jsonl with {"src": "...", "trg": "..."}."""
     def __init__(self, path, tokenizer, seq_len):
@@ -45,8 +55,9 @@ def build_from_checkpoint(ckpt_path):
     n_head    = cfg_saved.get("n_head", 4)
     n_embd    = cfg_saved.get("n_embd", 512)
     dropout   = cfg_saved.get("dropout", 0.1)
-    data_dir  = cfg_saved.get("data_dir", "data/gsm8k")
-    model_name = cfg_saved.get("model_name", "gpt2_loaded")
+    data_dir  = cfg_saved.get("data_dir")
+    model_name = cfg_saved.get("model_name")
+    print(f"Loaded config -> data_dir: {data_dir}, model_name: {model_name}")
 
     tok = GPT2TokenizerFast.from_pretrained(tokenizer_id)
     if tok.pad_token is None:
@@ -100,8 +111,11 @@ def sample_once(model, tok, src, max_new=50, temperature=1.0, top_k=None, top_p=
     cont = gen[0, prompt_ids.size(1):]
     return tok.decode(cont, skip_special_tokens=True)
 
-def main():
-    model, tok, meta = build_from_checkpoint(CHECKPOINT_PATH)
+def main(checkpoint_path):
+    if not os.path.isfile(checkpoint_path):
+        raise FileNotFoundError(f"checkpoint not found: {checkpoint_path}")
+        
+    model, tok, meta = build_from_checkpoint(checkpoint_path)
     seq_len   = meta["seq_len"]
     data_dir  = meta["data_dir"]
     model_name= meta["model_name"]
@@ -144,4 +158,7 @@ def main():
     print(f"\nAll samples (with {NUM_SAMPLES_PER_INPUT} per input) saved to: {out_path}")
 
 if __name__ == "__main__":
-    main()
+    args = parse_args()
+    checkpoint_path = args.checkpoint_path
+    print(f"Loading checkpoint from: {checkpoint_path}")
+    main(checkpoint_path)
